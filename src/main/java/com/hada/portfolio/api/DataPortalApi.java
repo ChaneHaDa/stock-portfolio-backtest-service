@@ -16,7 +16,7 @@ public class DataPortalApi {
     @Value("${dataPortal.url}")
     private String dataPortalUrl;
 
-    public String getStockInfo(String baseDate) {
+    public String getStockJson(String baseDate) {
         String apiUrl = dataPortalUrl+"/getStockPriceInfo";
         String queryParams = "?serviceKey=" + dataPortalKey
                 + "&numOfRows=10000&resultType=json"
@@ -34,6 +34,12 @@ public class DataPortalApi {
                 .getAsJsonObject("items")
                 .getAsJsonArray("item");
 
+        return itemsArray;
+    }
+
+    public JsonArray getStock(String baseDate) {
+        String json = getStockJson(baseDate);
+        JsonArray itemsArray = parseJson(json);
         return itemsArray;
     }
 
