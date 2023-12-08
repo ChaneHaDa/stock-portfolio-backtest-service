@@ -26,6 +26,10 @@ public class DataPortalApi {
     }
 
     public JsonArray parseJson(String json) {
+        if(json == null){
+            return null;
+        }
+
         Gson gson = new Gson();
         JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
 

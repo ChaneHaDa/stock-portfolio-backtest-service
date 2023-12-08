@@ -26,23 +26,26 @@ public final class JsonUtility {
             System.out.println(e.getMessage());
         }
 
-        return "{}";
+        return null;
     }
 
     public static String getJsonFromFile(String filePath) {
         try {
             ClassPathResource resource = new ClassPathResource(filePath);
-            BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+            if(resource.exists()){
+                BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+                String result;
+                String line;
+                for (result = ""; (line = br.readLine()) != null; result = result + line) {
+                }
 
-            String result;
-            String line;
-            for (result = ""; (line = br.readLine()) != null; result = result + line) {
+                return result;
+            }else{
+                return null;
             }
-
-            return result;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "{}";
+        return null;
     }
 }

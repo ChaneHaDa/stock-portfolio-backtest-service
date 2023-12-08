@@ -4,8 +4,12 @@ import com.google.gson.JsonArray;
 import com.hada.portfolio.api.DataPortalApi;
 import com.hada.portfolio.stock.info.StockInfo;
 import com.hada.portfolio.stock.info.StockInfoService;
+import com.hada.portfolio.stock.price.StockPrice;
 import com.hada.portfolio.stock.price.StockPriceService;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Component
 public class StockDataLoader {
@@ -19,7 +23,7 @@ public class StockDataLoader {
         this.dataPortalApi = dataPortalApi;
     }
 
-    public void loadStockInfo(String baseDate) {
+    public void loadStockInfoByBaseDate(String baseDate) {
         JsonArray stockJson = dataPortalApi.getStock(baseDate);
 
         for(int i = 0 ; i < stockJson.size() ; i++){
@@ -29,8 +33,38 @@ public class StockDataLoader {
             stockInfo.setSrtnCd(stockJson.get(i).getAsJsonObject().get("srtnCd").getAsString());
             stockInfo.setIsinCd(stockJson.get(i).getAsJsonObject().get("isinCd").getAsString());
 
-            System.out.println(stockInfo.getItmsNm());
+            stockInfoService.save(stockInfo);
         }
+    }
 
+    public void loadStockPriceByBaseDate(String baseDate) {
+        JsonArray stockJson = dataPortalApi.getStock(baseDate);
+
+        for(int i = 0 ; i < stockJson.size() ; i++){
+            StockPrice stockPrice = new StockPrice();
+            stockPrice.setItmsNm(stockJson.get(i).getAsJsonObject().get("itmsNm").getAsString());
+            stockPrice.setMkp(Long.parseLong(stockJson.get(i).getAsJsonObject().get("mkp").getAsString()));
+            stockPrice.setClpr(Long.parseLong(stockJson.get(i).getAsJsonObject().get("clpr").getAsString()));
+            stockPrice.setHipr(Long.parseLong(stockJson.get(i).getAsJsonObject().get("hipr").getAsString()));
+            stockPrice.setLopr(Long.parseLong(stockJson.get(i).getAsJsonObject().get("lopr").getAsString()));
+            stockPrice.setTrqu(Long.parseLong(stockJson.get(i).getAsJsonObject().get("trqu").getAsString()));
+            stockPrice.setTrPrc(Long.parseLong(stockJson.get(i).getAsJsonObject().get("trPrc").getAsString()));
+            stockPrice.setMrktTotAmt(Long.parseLong(stockJson.get(i).getAsJsonObject().get("mrktTotAmt").getAsString()));
+            String basDt = stockJson.get(i).getAsJsonObject().get("basDt").getAsString();
+            LocalDate date = LocalDate.parse(basDt, DateTimeFormatter.ofPattern("yyyyMMdd"));
+            stockPrice.setBasDt(date);
+
+            stockPriceService.save(stockPrice);
+        }
+    }
+
+    public void loadStockPriceByTerm(String startDate, String endDate){
+        LocalDate start = LocalDate.parse(startDate, DateTimeFormatter.ofPattern("yyyyMMdd"));
+        LocalDate end = LocalDate.parse(endDate, DateTimeFormatter.ofPattern("yyyyMMdd")).plusDays(1);
+        LocalDate date = start;
+        while(date.isBefore(end)){
+            loadStockPriceByBaseDate(date.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+            date = date.plusDays(1);
+        }
     }
 }
