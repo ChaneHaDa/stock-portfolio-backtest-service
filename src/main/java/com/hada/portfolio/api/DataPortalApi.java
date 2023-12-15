@@ -17,6 +17,11 @@ public class DataPortalApi {
     private String dataPortalUrl;
 
     public String getStockJson(String baseDate) {
+        String path = "json/stock/"+baseDate.substring(0, 4)+"/"+baseDate+".json";
+        if(JsonUtility.getJsonFromFile(path) != null){
+            return JsonUtility.getJsonFromFile(path);
+        }
+
         String apiUrl = dataPortalUrl+"/getStockPriceInfo";
         String queryParams = "?serviceKey=" + dataPortalKey
                 + "&numOfRows=10000&resultType=json"

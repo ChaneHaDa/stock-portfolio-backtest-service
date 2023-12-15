@@ -1,0 +1,27 @@
+<html layout:decorate="~{layout_admin}">
+<div layout:fragment="content">
+    <h1 class="mt-4">주식 정보 페이지</h1>
+    <div class="row mt-4">
+        <p>총 데이터 수: <span th:text="${totalStocks}">0</span></p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">아이템 이름</th>
+                <th scope="col">시장 카테고리</th>
+                <th scope="col">정렬 코드</th>
+                <th scope="col">ISIN 코드</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- 여기에 DB에서 가져온 정보를 출력하는 부분 -->
+            <tr th:each="stock : ${stocks}">
+                <td th:text="${stock.itmsNm}">itmsNm Name</td>
+                <td th:text="${stock.mrktCtg}">Market Category</td>
+                <td th:text="${stock.srtnCd}">Sorting Code</td>
+                <td th:text="${stock.isinCd}">ISIN Code</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</html>

@@ -6,10 +6,12 @@ import com.hada.portfolio.stock.info.StockInfo;
 import com.hada.portfolio.stock.info.StockInfoService;
 import com.hada.portfolio.stock.price.StockPrice;
 import com.hada.portfolio.stock.price.StockPriceService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Component
 public class StockDataLoader {
@@ -26,6 +28,10 @@ public class StockDataLoader {
     public void loadStockInfoByBaseDate(String baseDate) {
         JsonArray stockJson = dataPortalApi.getStock(baseDate);
 
+        if(stockJson == null){
+            return;
+        }
+
         for(int i = 0 ; i < stockJson.size() ; i++){
             StockInfo stockInfo = new StockInfo();
             stockInfo.setItmsNm(stockJson.get(i).getAsJsonObject().get("itmsNm").getAsString());
@@ -39,6 +45,10 @@ public class StockDataLoader {
 
     public void loadStockPriceByBaseDate(String baseDate) {
         JsonArray stockJson = dataPortalApi.getStock(baseDate);
+
+        if(stockJson == null){
+            return;
+        }
 
         for(int i = 0 ; i < stockJson.size() ; i++){
             StockPrice stockPrice = new StockPrice();
@@ -67,4 +77,9 @@ public class StockDataLoader {
             date = date.plusDays(1);
         }
     }
+
+    public List<StockInfo> getStockInfo() {
+        return stockInfoService.findAll();
+    }
+
 }

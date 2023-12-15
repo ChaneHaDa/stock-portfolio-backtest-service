@@ -84,7 +84,7 @@ public class StockPriceTest {
         stockPrice.setLopr(lopr);
         stockPrice.setTrqu(trqu);
         stockPrice.setTrPrc(trPrc);
-        stockPrice.setMkrtTotAmt(mkrtTotAmt);
+        stockPrice.setMrktTotAmt(mkrtTotAmt);
 
         return stockPrice;
 
