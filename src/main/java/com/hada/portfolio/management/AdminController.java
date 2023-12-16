@@ -2,6 +2,7 @@ package com.hada.portfolio.management;
 
 import com.hada.portfolio.stock.StockDataLoader;
 import com.hada.portfolio.stock.info.StockInfo;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,11 +28,10 @@ public class AdminController {
     }
 
     @GetMapping("/stockinfo")
-    public String showStockInfo(Model model) {
-        List<StockInfo> stocks = stockDataLoader.getStockInfo();
-
-        model.addAttribute("stocks", stocks);
-        model.addAttribute("totalStocks", stocks.size());
+    public String showStockInfo(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+        Page<StockInfo> pagingStocks = stockDataLoader.getStockInfo(page);
+        model.addAttribute("paging", pagingStocks);
+        model.addAttribute("totalStocks", pagingStocks.getTotalElements());
 
         return "stockinfo";
     }

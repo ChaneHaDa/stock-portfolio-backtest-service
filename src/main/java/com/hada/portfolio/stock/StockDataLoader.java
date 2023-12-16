@@ -82,4 +82,8 @@ public class StockDataLoader {
         return stockInfoService.findAll();
     }
 
+    public Page<StockInfo> getStockInfo(int page) {
+        return stockInfoService.findAll(page);
+    }
+
 }
