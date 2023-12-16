@@ -38,4 +38,8 @@ public class StockInfoService {
         }
     }
 
+    public Page<StockInfo> findAllByMrktCtg(String filter, int page) {
+        Pageable pageable = PageRequest.of(page, 20);
+        return stockInfoRepository.findAllByMrktCtg(filter, pageable);
+    }
 }
