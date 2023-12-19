@@ -53,6 +53,7 @@ public class StockDataLoader {
         for(int i = 0 ; i < stockJson.size() ; i++){
             StockPrice stockPrice = new StockPrice();
             stockPrice.setItmsNm(stockJson.get(i).getAsJsonObject().get("itmsNm").getAsString());
+            stockPrice.setSrtnCd(stockJson.get(i).getAsJsonObject().get("srtnCd").getAsString());
             stockPrice.setMkp(Long.parseLong(stockJson.get(i).getAsJsonObject().get("mkp").getAsString()));
             stockPrice.setClpr(Long.parseLong(stockJson.get(i).getAsJsonObject().get("clpr").getAsString()));
             stockPrice.setHipr(Long.parseLong(stockJson.get(i).getAsJsonObject().get("hipr").getAsString()));

@@ -17,6 +17,8 @@ public class StockPrice {
 
     // 종목코드
     private String itmsNm;
+    // 종목명
+    private String srtnCd;
     // 시가
     private Long mkp;
     // 종가

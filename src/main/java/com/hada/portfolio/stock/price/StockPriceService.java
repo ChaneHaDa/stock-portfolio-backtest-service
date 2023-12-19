@@ -1,8 +1,13 @@
 package com.hada.portfolio.stock.price;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -13,6 +18,9 @@ public class StockPriceService {
     }
 
     public StockPrice save(StockPrice stockPrice) {
+        if(stockPriceRepository.findByItmsNmAndBasDt(stockPrice.getItmsNm(), stockPrice.getBasDt()) != null) {
+            return null;
+        }
         return stockPriceRepository.save(stockPrice);
     }
 
@@ -28,4 +36,31 @@ public class StockPriceService {
         return stockPriceRepository.findByItmsNmAndBasDtBetween(itmsNm, startDate, endDate);
     }
 
+    public Page<StockPrice> findAll(int page, boolean isDesc) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        if(isDesc) {
+            sorts.add(Sort.Order.desc("basDt"));
+        }else {
+            sorts.add(Sort.Order.asc("basDt"));
+        }
+        Pageable pageable = PageRequest.of(page, 20, Sort.by(sorts));
+        return stockPriceRepository.findAll(pageable);
+    }
+
+    public Page<StockPrice> findAllByItmsNmOrSrtnCd(String query, int page, boolean isDesc) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        if (isDesc) {
+            sorts.add(Sort.Order.desc("basDt"));
+        } else {
+            sorts.add(Sort.Order.asc("basDt"));
+        }
+
+        Pageable pageable = PageRequest.of(page, 20, Sort.by(sorts));
+
+        if (query.charAt(0) <= '9' && query.charAt(0) >= '0') {
+            return stockPriceRepository.findAllBySrtnCd(query, pageable);
+        } else {
+            return stockPriceRepository.findAllByItmsNm(query, pageable);
+        }
+    }
 }

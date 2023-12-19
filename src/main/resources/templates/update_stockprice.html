@@ -1,0 +1,15 @@
+<html layout:decorate="~{layout_admin}">
+<div layout:fragment="content">
+    <h1>주식 정보 업데이트</h1>
+    <form th:action="@{/admin/update/stockprice}" method="post">
+        <div class="mb-3">
+            <label for="dateInput" class="form-label">시작 날짜 입력:</label>
+            <input type="date" class="form-control" id="startDate" name="startDate">
+            <label for="dateInput" class="form-label">끝 날짜 입력:</label>
+            <input type="date" class="form-control" id="endDate" name="endDate">
+            <p class="text-danger" th:if="${error}" th:text="${error}"></p>
+        </div>
+        <button type="submit" class="btn btn-primary">주식 정보 업데이트</button>
+    </form>
+</div>
+</html>

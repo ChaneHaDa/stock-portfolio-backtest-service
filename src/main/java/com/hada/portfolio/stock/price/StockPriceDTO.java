@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Setter
 public class StockPriceDTO {
     private String itmsNm;
+    private String srtnCd;
     private Long mkp;
     private Long clpr;
     private Long hipr;
