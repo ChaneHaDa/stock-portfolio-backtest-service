@@ -13,15 +13,6 @@
     </div>
     <div class="row mt-4">
         <p>총 데이터 수: <span th:text="${totalStocks}">0</span></p>
-        <div class="row mt-3">
-            <div class="col-md-12">
-                <div class="btn-group me-2" role="group" aria-label="Market Categories">
-            <span th:each="mrktCtg : ${mrktCtgList}">
-                <button type="button" class="btn btn-secondary me-2 mb-2" th:text="${mrktCtg}" onclick="sendFilterRequest(this.innerText)"></button>
-            </span>
-                </div>
-            </div>
-        </div>
         <table class="table">
             <thead>
             <tr>

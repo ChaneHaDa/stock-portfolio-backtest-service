@@ -36,20 +36,10 @@ public class AdminController {
     }
 
     @GetMapping("/stockinfo")
-    public String showStockInfoPage(Model model, @RequestParam(value="page", defaultValue="0") int page, @RequestParam(required=false) String filter) {
+    public String showStockInfoPage(Model model, @RequestParam(value="page", defaultValue="0") int page) {
         Page<StockInfo> pagingStocks = stockInfoService.findAll(page);
-        List<String> mrktCtgList = pagingStocks.getContent()
-                .stream()
-                .map(StockInfo::getMrktCtg)
-                .distinct()
-                .collect(Collectors.toList());
-
-        if(filter != null && !filter.equals("")) {
-            pagingStocks = stockInfoService.findAllByMrktCtg(filter, page);
-        }
 
         model.addAttribute("paging", pagingStocks);
-        model.addAttribute("mrktCtgList", mrktCtgList);
         model.addAttribute("totalStocks", pagingStocks.getTotalElements());
 
         return "stockinfo";
@@ -59,7 +49,7 @@ public class AdminController {
     public String searchStockInfoPage(Model model, @RequestParam String query) {
         StockInfo stock = stockInfoService.findByItmsNmOrSrtnCd(query);
         model.addAttribute("stock", stock);
-
+        model.addAttribute("query", query);
         return "search_stockinfo";
     }
 

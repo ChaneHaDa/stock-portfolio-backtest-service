@@ -2,9 +2,9 @@
 <div layout:fragment="content">
     <h1 class="mt-4">주식 정보 페이지</h1>
     <div class="row mt-4 mb-3">
-        <form action="/stockinfo/search" method="get" class="row g-3 align-items-center">
+        <form action="/admin/stockinfo/search" method="get" class="row g-3 align-items-center">
             <div class="col-md-4">
-                <input name="query" class="form-control" type="text" placeholder="검색어 입력">
+                <input name="query" class="form-control" type="text" th:value="${query}" placeholder="검색어 입력">
             </div>
             <div class="col-md-2">
                 <button type="submit" class="btn btn-primary">검색</button>
