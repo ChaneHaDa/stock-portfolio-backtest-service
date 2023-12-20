@@ -65,6 +65,8 @@ public class AdminController {
             return "update_stockinfo";
         }
 
+        System.out.println(baseDate);
+
         LocalDate baseDates = LocalDate.parse(baseDate, java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         LocalDate today = LocalDate.now();
         if (baseDates.isAfter(today)) {
@@ -80,15 +82,19 @@ public class AdminController {
 
     @GetMapping("/stockprice")
     public String showStockPricePage(Model model, @RequestParam(value="page", defaultValue="0") int page, @RequestParam(required=false) String query , @RequestParam(defaultValue = "desc") String filter) {
+        Page<StockPrice> pagingStocks;
+        model.addAttribute("filter", filter);
+
         if(query != null && !query.equals("")) {
-            Page<StockPrice> pagingStocks = stockPriceService.findAllByItmsNmOrSrtnCd(query, page, filter.equals("desc"));
+            pagingStocks = stockPriceService.findAllByItmsNmOrSrtnCd(query, page, filter.equals("desc"));
             model.addAttribute("paging", pagingStocks);
             model.addAttribute("totalStocks", pagingStocks.getTotalElements());
             model.addAttribute("query", query);
             return "stockprice";
         }
 
-        Page<StockPrice> pagingStocks = stockPriceService.findAll(page, filter.equals("desc"));
+
+        pagingStocks = stockPriceService.findAll(page, filter.equals("desc"));
         model.addAttribute("paging", pagingStocks);
         model.addAttribute("totalStocks", pagingStocks.getTotalElements());
 

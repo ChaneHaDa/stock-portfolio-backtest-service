@@ -2,30 +2,31 @@
 <div layout:fragment="content">
     <h1 class="mt-4">주식 가격 페이지</h1>
     <div class="row mt-4 mb-3">
-        <form action="/admin/stockprice" method="get" class="row g-3 align-items-center">
+        <form action="/admin/stockprice" method="get" class="row g-3 align-items-center" id="searchForm">
             <div class="col-md-4">
-                <input name="query" class="form-control" type="text" placeholder="검색어 입력">
+                <input name="query" th:value="${query}" class="form-control" type="text" placeholder="검색어 입력">
             </div>
+            <input type="hidden" id="page" name="page" th:value="${paging.number}">
 <!--            <div class="mb-3">-->
 <!--                <label for="dateInput" class="form-label">날짜 입력:</label>-->
 <!--                <input type="date" class="form-control" id="baseDate" name="baseDate">-->
 <!--            </div>-->
             <div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="filter" id="asc" value="asc">
+                    <input class="form-check-input" type="radio" name="filter" id="asc" value="asc" th:checked="${filter == 'asc'}">
                     <label class="form-check-label" for="asc">
                         오름차순
                     </label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="filter" id="desc" value="desc">
+                    <input class="form-check-input" type="radio" name="filter" id="desc" value="desc" th:checked="${filter == 'desc'}">
                     <label class="form-check-label" for="desc">
                         내림차순
                     </label>
                 </div>
             </div>
             <div class="col-md-2">
-                <button type="submit" class="btn btn-primary">검색</button>
+                <button type="submit" class="btn btn-primary" id="btn_search">검색</button>
             </div>
         </form>
     </div>
@@ -53,24 +54,36 @@
         <div th:if="${!paging.isEmpty()}">
             <ul class="pagination justify-content-center">
                 <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-                    <a class="page-link"
-                       th:href="@{|?page=${paging.number-1}|}">
+                    <a class="page-link" href="javascript:void(0)" th:data-page="${paging.number-1}">
                         <span>이전</span>
                     </a>
                 </li>
                 <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
                     th:if="${page >= paging.number-5 and page <= paging.number+5}"
-                    th:classappend="${page == paging.number} ? 'active'"
-                    class="page-item">
-                    <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                    th:classappend="${page == paging.number} ? 'active'" class="page-item">
+                    <a th:text="${page}" class="page-link" href="javascript:void(0)" th:data-page="${page}"></a>
                 </li>
                 <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-                    <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                    <a class="page-link" href="javascript:void(0)" th:data-page="${paging.number+1}">
                         <span>다음</span>
                     </a>
                 </li>
             </ul>
         </div>
     </div>
+    <script layout:fragment="script" type='text/javascript'>
+        const page_elements = document.getElementsByClassName("page-link");
+        Array.from(page_elements).forEach(function(element) {
+            element.addEventListener('click', function() {
+                document.getElementById('page').value = this.dataset.page;
+                document.getElementById('searchForm').submit();
+            });
+        });
+        const btn_search = document.getElementById("btn_search");
+        btn_search.addEventListener('click', function() {
+            document.getElementById('page').value = 0;
+            document.getElementById('searchForm').submit();
+        });
+    </script>
 </div>
 </html>
