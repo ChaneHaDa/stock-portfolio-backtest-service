@@ -18,10 +18,16 @@ public class StockPriceService {
     }
 
     public StockPrice save(StockPrice stockPrice) {
-        if(stockPriceRepository.findByItmsNmAndBasDt(stockPrice.getItmsNm(), stockPrice.getBasDt()) != null) {
-            return null;
-        }
+//        if(stockPriceRepository.findByItmsNmAndBasDt(stockPrice.getItmsNm(), stockPrice.getBasDt()) == null) {
+//            return stockPriceRepository.save(stockPrice);
+//        }
+//        return null;
+
         return stockPriceRepository.save(stockPrice);
+    }
+
+    public List<StockPrice> saveAll(List<StockPrice> stockPrices) {
+        return stockPriceRepository.saveAll(stockPrices);
     }
 
     public List<StockPrice> findByItmsNm(String itmsNm) {

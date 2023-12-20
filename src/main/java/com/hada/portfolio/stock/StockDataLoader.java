@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -49,6 +50,7 @@ public class StockDataLoader {
         if(stockJson == null){
             return;
         }
+        List<StockPrice> stockPrices = new ArrayList<>();
 
         for(int i = 0 ; i < stockJson.size() ; i++){
             StockPrice stockPrice = new StockPrice();
@@ -65,8 +67,9 @@ public class StockDataLoader {
             LocalDate date = LocalDate.parse(basDt, DateTimeFormatter.ofPattern("yyyyMMdd"));
             stockPrice.setBasDt(date);
 
-            stockPriceService.save(stockPrice);
+            stockPrices.add(stockPrice);
         }
+        stockPriceService.saveAll(stockPrices);
     }
 
     public void loadStockPriceByTerm(String startDate, String endDate){
