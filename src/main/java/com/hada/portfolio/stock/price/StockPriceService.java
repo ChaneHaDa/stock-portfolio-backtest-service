@@ -17,29 +17,8 @@ public class StockPriceService {
         this.stockPriceRepository = stockPriceRepository;
     }
 
-    public StockPrice save(StockPrice stockPrice) {
-//        if(stockPriceRepository.findByItmsNmAndBasDt(stockPrice.getItmsNm(), stockPrice.getBasDt()) == null) {
-//            return stockPriceRepository.save(stockPrice);
-//        }
-//        return null;
-
-        return stockPriceRepository.save(stockPrice);
-    }
-
     public List<StockPrice> saveAll(List<StockPrice> stockPrices) {
         return stockPriceRepository.saveAll(stockPrices);
-    }
-
-    public List<StockPrice> findByItmsNm(String itmsNm) {
-        return stockPriceRepository.findByItmsNm(itmsNm);
-    }
-
-    public List<StockPrice> findByBasDt(LocalDate basDt) {
-        return stockPriceRepository.findByBasDt(basDt);
-    }
-
-    public List<StockPrice> findByItmsNmAndBasDtBetween(String itmsNm, LocalDate startDate, LocalDate endDate) {
-        return stockPriceRepository.findByItmsNmAndBasDtBetween(itmsNm, startDate, endDate);
     }
 
     public Page<StockPrice> findAll(int page, boolean isDesc) {
@@ -68,5 +47,24 @@ public class StockPriceService {
         } else {
             return stockPriceRepository.findAllByItmsNm(query, pageable);
         }
+    }
+
+    public Long getPriceByItmsNmAndMonth(String itmsNm, int year, int month) {
+        LocalDate startDate = LocalDate.of(year, month, 1);
+        LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
+        List<StockPrice> stockPrices = stockPriceRepository.findByItmsNmAndBasDtBetween(itmsNm, startDate, endDate);
+        if(stockPrices.size() > 0) {
+            return stockPrices.get(stockPrices.size() - 1).getClpr();
+        }
+
+        return 0L;
+    }
+
+    public List<Long> getPricesByItemsNmAndYear(String itmsNm, int year) {
+        List<Long> prices = new ArrayList<>();
+        for(int i = 1 ; i <= 12 ; i++) {
+            prices.add(getPriceByItmsNmAndMonth(itmsNm, year, i));
+        }
+        return prices;
     }
 }

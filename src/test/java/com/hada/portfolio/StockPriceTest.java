@@ -40,28 +40,7 @@ public class StockPriceTest {
     }
 
     @Test
-    @Order(3)
-    public void testFindByItmsNm() {
-        String itmsNm = "ABC";
-        List<StockPrice> stockPrices = this.stockPriceRepository.findByItmsNm(itmsNm);
-
-        assertEquals(3, stockPrices.size());
-
-    }
-
-    @Test
     @Order(2)
-    public void testFindByBasDt() {
-        LocalDate basDt = LocalDate.of(2023, 12, 1); // 날짜 설정
-
-        List<StockPrice> stockPrices = this.stockPriceRepository.findByBasDt(basDt);
-
-        assertEquals(2, stockPrices.size());
-
-    }
-
-    @Test
-    @Order(4)
     public void testFindByItmsNmAndBasDtBetween() {
         String itmsNm = "ABC"; // 종목명 설정
         LocalDate startDate = LocalDate.of(2023, 11, 1); // 시작 날짜 설정
@@ -91,3 +70,5 @@ public class StockPriceTest {
     }
 
 }
+
+

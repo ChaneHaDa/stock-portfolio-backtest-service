@@ -9,13 +9,19 @@ public final class RorCalculator {
         return (sellPrice - buyPrice) / buyPrice * 100;
     }
 
+    public static double getRor(long buyPrice, long sellPrice) {
+        return getRor((double) buyPrice, (double) sellPrice);
+    }
+
     public static List<Double> getRorList(List<Double> priceList){
         List<Double> rorList = new ArrayList<>();
-        for(int i=1; i<priceList.size(); i++){
-            rorList.add(getRor(priceList.get(i-1), priceList.get(i)));
+        for(int i = 1; i < priceList.size(); i++){
+            rorList.add(getRor(priceList.get(i - 1), priceList.get(i)));
         }
         return rorList;
     }
+
+
 
     public static double getLogRor(double buyPrice, double sellPrice){
         return Math.log(sellPrice / buyPrice);
