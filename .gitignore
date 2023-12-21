@@ -35,3 +35,12 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### API KEY ###
+application-API-KEY.properties
+
+### TsetContorller###
+TestController.java
+
+### DB josn ###
+json
