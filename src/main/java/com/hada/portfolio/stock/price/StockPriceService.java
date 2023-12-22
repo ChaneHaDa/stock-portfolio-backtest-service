@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class StockPriceService {
@@ -54,17 +56,43 @@ public class StockPriceService {
         LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
         List<StockPrice> stockPrices = stockPriceRepository.findByItmsNmAndBasDtBetween(itmsNm, startDate, endDate);
         if(stockPrices.size() > 0) {
-            return stockPrices.get(stockPrices.size() - 1).getClpr();
+            return stockPrices.get(0).getClpr();
         }
-
         return 0L;
     }
 
-    public List<Long> getPricesByItemsNmAndYear(String itmsNm, int year) {
-        List<Long> prices = new ArrayList<>();
-        for(int i = 1 ; i <= 12 ; i++) {
-            prices.add(getPriceByItmsNmAndMonth(itmsNm, year, i));
-        }
-        return prices;
+    public List<StockPrice> findAllByItmsNmAndYear(String itmsNm, int year) {
+        LocalDate startDate = LocalDate.of(year, 1, 1);
+        LocalDate endDate = LocalDate.of(year, 12, 31);
+        return stockPriceRepository.findByItmsNmAndBasDtBetween(itmsNm, startDate, endDate);
     }
+
+    public List<Long> getPricesByItmsNmAndYear(String itmsNm, int year) {
+        List<StockPrice> stockPrices = findAllByItmsNmAndYear(itmsNm, year);
+
+        List<Long> clprs = new ArrayList<>();
+
+        if (stockPrices != null && !stockPrices.isEmpty()) {
+            Map<Integer, Long> firstMonthPrices = new HashMap<>();
+
+            for (StockPrice stockPrice : stockPrices) {
+                LocalDate basDt = stockPrice.getBasDt();
+                int month = basDt.getMonthValue();
+
+                if (!firstMonthPrices.containsKey(month)) {
+                    firstMonthPrices.put(month, stockPrice.getClpr());
+                }
+            }
+
+            for (int i = 1; i <= 12; i++) {
+                Long clpr = firstMonthPrices.get(i);
+                if (clpr != null) {
+                    clprs.add(clpr);
+                }
+            }
+        }
+
+        return clprs;
+    }
+
 }
