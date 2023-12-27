@@ -3,7 +3,7 @@
     <div class="container mt-4">
         <div>
             <div class="p-3 mb-2 bg-secondary text-white fs-5">포트폴리오 백테스트</div>
-            <form>
+            <form th:action="@{/backtest-portfolio}" method="post">
                 <div class="row my-2">
                     <div class="col">
                         <input type="text" class="form-control" name="input1" placeholder="첫 번째 입력창">
@@ -22,6 +22,22 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
+        </div>
+        <div th:if="${portfolioRorList != null}">
+            <div class="p-3 mb-2 my-2 bg-secondary text-white fs-5">결과</div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>ror</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${portfolioRorList}">
+                    <td th:text="${item}"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
