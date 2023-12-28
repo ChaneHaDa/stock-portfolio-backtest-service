@@ -3,38 +3,59 @@
     <div class="container mt-4">
         <div>
             <div class="p-3 mb-2 bg-secondary text-white fs-5">포트폴리오 백테스트</div>
-            <form th:action="@{/backtest-portfolio}" method="post">
-                <div class="row my-2">
-                    <div class="col">
-                        <input type="text" class="form-control" name="input1" placeholder="첫 번째 입력창">
+            <div class="p-3 border">
+                <form th:action="@{/backtest-portfolio}" method="post">
+                    <div>
+                        <label for="startYear" class="form-label fs-5 fw-bold">시작 년도</label>
+                        <select class="form-select" id="startYear">
+                            <option th:each="year : ${#numbers.sequence(2001, 2023)}" th:text="${year}"></option>
+                        </select>
+                        <label for="startYear" class="form-label fs-5 fw-bold">끝 년도</label>
+                        <select class="form-select" id="endYear">
+                            <option th:each="year : ${#numbers.sequence(2001, 2023)}" th:text="${year}"></option>
+                        </select>
+
+                        <label for="startAmount" class="form-label fs-5 fw-bold">시작 금액</label>
+                        <input type="text" class="form-control" id="startAmount">
                     </div>
-                    <div class="col">
-                        <input type="text" class="form-control" name="input2" placeholder="두 번째 입력창">
+
+                    <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
+                    <div class="row my-2">
+                        <div class="col">
+                            <input type="text" class="form-control" name="input1" placeholder="첫 번째 입력창">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" name="input2" placeholder="두 번째 입력창">
+                        </div>
                     </div>
-                </div>
-                <div class="row my-2">
-                    <div class="col">
-                        <input type="text" class="form-control" name="input3" placeholder="첫 번째 입력창">
+                    <div class="row my-2">
+                        <div class="col">
+                            <input type="text" class="form-control" name="input3" placeholder="첫 번째 입력창">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" name="input4" placeholder="두 번째 입력창">
+                        </div>
                     </div>
-                    <div class="col">
-                        <input type="text" class="form-control" name="input4" placeholder="두 번째 입력창">
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
         </div>
-        <div th:if="${portfolioRorList != null}">
+
+        <div th:if="${data != null}">
             <div class="p-3 mb-2 my-2 bg-secondary text-white fs-5">결과</div>
             <table class="table">
                 <thead>
                 <tr>
+                    <th>일자</th>
                     <th>ror</th>
-
+                    <th>금액</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="item : ${portfolioRorList}">
-                    <td th:text="${item}"></td>
+                <tr th:each="i : ${#numbers.sequence(0, #lists.size(data.periods) - 1)}">
+                    <td th:text="${data.periods[i]}"></td>
+                    <td th:text="${data.returns[i]}"></td>
+                    <td th:text="${data.amount[i]}"></td>
                 </tr>
                 </tbody>
             </table>

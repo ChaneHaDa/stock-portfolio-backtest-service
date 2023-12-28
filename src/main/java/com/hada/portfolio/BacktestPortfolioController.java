@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/backtest-portfolio")
@@ -44,15 +45,17 @@ public class BacktestPortfolioController {
         weights.add(Double.parseDouble(params.get("input2")));
         weights.add(Double.parseDouble(params.get("input4")));
 
-        List<Double> portfolioRorList = new ArrayList<>();
-
-        for(int i = 0; i < stock1RorList.size(); i++){
-            portfolioRorList.add(stock1RorList.get(i) * weights.get(0) + stock2RorList.get(i) * weights.get(1));
-        }
-
-        model.addAttribute("portfolioRorList", portfolioRorList);
+        List<Double> portfolioRorList = RorCalculator.getPortfolioRorList(List.of(stock1RorList, stock2RorList), weights);
 
 
+        Map<String, Object> data = new HashMap<>();
+        portfolioRorList.add(0, 0.0);
+
+        data.put("periods", List.of( 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11));
+        data.put("returns", portfolioRorList);
+        data.put("amount", RorCalculator.getCashByRorList(portfolioRorList, 10000000));
+
+        model.addAttribute("data", data);
         return "backtest_portfolio";
     }
 

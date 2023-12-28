@@ -13,6 +13,10 @@ public final class RorCalculator {
         return getRor((double) buyPrice, (double) sellPrice);
     }
 
+    public static long getCashByRor(long cash, double ror){
+        return (long) (cash * (1 + ror / 100));
+    }
+
     public static List<Double> getRorList(List<Double> priceList){
         List<Double> rorList = new ArrayList<>();
         for(int i = 1; i < priceList.size(); i++){
@@ -37,7 +41,24 @@ public final class RorCalculator {
         return portfolioRor;
     }
 
-    public static double getLogRor(double buyPrice, double sellPrice){
-        return Math.log(sellPrice / buyPrice);
+    public static List<Double> getPortfolioRorList(List<List<Double>> rorList, List<Double> weightList){
+        List<Double> portfolioRorList = new ArrayList<>();
+        for(int i = 0; i < rorList.get(0).size(); i++){
+            double portfolioRor = 0;
+            for(int j = 0; j < rorList.size(); j++){
+                portfolioRor += rorList.get(j).get(i) * weightList.get(j);
+            }
+            portfolioRorList.add(portfolioRor);
+        }
+        return portfolioRorList;
+    }
+
+    public static List<Long> getCashByRorList(List<Double> rorList, long cash){
+        List<Long> cashList = new ArrayList<>();
+        cashList.add(cash);
+        for(int i = 0; i < rorList.size(); i++){
+            cashList.add((long) (cashList.get(i) * (1 + rorList.get(i) / 100)));
+        }
+        return cashList;
     }
 }
