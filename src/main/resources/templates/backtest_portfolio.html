@@ -23,16 +23,16 @@
                     <div class="mx-2">
                         <div class="p-3 mb-2 bg-secondary text-white fs-5 bg-opacity-50">포트폴리오 구성</div>
                         <div id="inputFields">
-                            <div class="row m-2" id="input1">
-                                    <div class="col-3">
-                                        종목 1
-                                    </div>
-                                    <div class="col-5">
-                                        <input type="text" class="form-control" name="stock1" placeholder="종목">
-                                    </div>
-                                    <div class="col-4">
-                                        <input type="text" class="form-control" name="weight1" placeholder="비중">
-                                    </div>
+                            <div class="row m-2" th:each="i : ${#numbers.sequence(1, count)}" th:id="'input' + ${i}">
+                                <div class="col-3">
+                                    <label th:text="'종목 ' + ${i}">종목</label>
+                                </div>
+                                <div class="col-5">
+                                    <input type="text" class="form-control" th:value="'stock' + ${i}" th:name="'stock' + ${i}" th:placeholder="'종목 ' + ${i}">
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control" th:value="'weight' + ${i}" th:name="'weight' + ${i}" th:placeholder="'비중 ' + ${i}">
+                                </div>
                             </div>
                         </div>
 
@@ -45,7 +45,7 @@
                     <div class="col text-center">
                         <button type="submit" class="btn btn-dark">Submit</button>
                     </div>
-                    <input type="hidden" name="count" value="1">
+                    <input type="hidden" name="count" th:value="${count}">
 
                 </form>
             </div>
@@ -72,46 +72,47 @@
         </div>
     </div>
     <script>
-        var x = 1;
-        document.addEventListener('DOMContentLoaded', function () {
-            var maxFields = 10;
-            var addButton = document.getElementById('addInput');
-            var inputFields = document.getElementById('inputFields');
-            var countField = document.querySelector('input[name="count"]');
+        var countInput = document.querySelector('input[name="count"]');
+        var x = parseInt(countInput.value);
+      document.addEventListener('DOMContentLoaded', function () {
+          var maxFields = 10;
+          var addButton = document.getElementById('addInput');
+          var inputFields = document.getElementById('inputFields');
+          var countField = document.querySelector('input[name="count"]');
 
-            addButton.addEventListener('click', function () {
-                if (x < maxFields) {
-                    x++;
-                    countField.value = x;
-                    var newField = document.createElement('div');
-                    newField.classList.add('row', 'm-2');
-                    newField.id = 'input' + x;
-                    newField.innerHTML = `
-                        <div class="col-3">
-                            종목 ${x}
-                        </div>
-                        <div class="col-5">
-                            <input type="text" class="form-control" name="stock${x}" placeholder="종목">
-                        </div>
-                        <div class="col-4">
-                            <input type="text" class="form-control" name="weight${x}" placeholder="비중">
-                        </div>
-                    `;
-                    inputFields.appendChild(newField);
-                } else {
-                    alert('더 이상 추가할 수 없습니다.');
-                }
-            });
+          addButton.addEventListener('click', function () {
+              if (x < maxFields) {
+                  x++;
+                  countField.value = x;
+                  var newField = document.createElement('div');
+                  newField.classList.add('row', 'm-2');
+                  newField.id = 'input' + x;
+                  newField.innerHTML = `
+                      <div class="col-3">
+                          종목 ${x}
+                      </div>
+                      <div class="col-5">
+                          <input type="text" class="form-control" name="stock${x}" placeholder="종목 ${x}">
+                      </div>
+                      <div class="col-4">
+                          <input type="text" class="form-control" name="weight${x}" placeholder="비중 ${x}">
+                      </div>
+                  `;
+                  inputFields.appendChild(newField);
+              } else {
+                  alert('더 이상 추가할 수 없습니다.');
+              }
+          });
 
 
-        });
+      });
 
-        function removeInput(id) {
-            var elemToRemove = document.getElementById('input' + x);
-            elemToRemove.parentNode.removeChild(elemToRemove);
-            x--;
-            countField.value = x;
-        }
+      function removeInput(id) {
+          var elemToRemove = document.getElementById('input' + x);
+          elemToRemove.parentNode.removeChild(elemToRemove);
+          x--;
+          countField.value = x;
+      }
 
     </script>
 </div>

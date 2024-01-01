@@ -27,6 +27,7 @@ public class BacktestPortfolioController {
 
     @GetMapping("")
     public String index(Model model) {
+        model.addAttribute("count", 3);
         return "backtest_portfolio";
     }
 
