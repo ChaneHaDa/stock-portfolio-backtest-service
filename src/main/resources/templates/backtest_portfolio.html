@@ -2,47 +2,57 @@
 <div layout:fragment="content">
     <div class="container mt-4">
         <div>
-            <div class="p-3 mb-2 bg-secondary text-white fs-5">포트폴리오 백테스트</div>
+            <div class="p-3 mb-2 bg-secondary text-white fs-4">포트폴리오 백테스트</div>
             <div class="p-3 border">
                 <form th:action="@{/backtest-portfolio}" method="post">
                     <div>
                         <label for="startYear" class="form-label fs-5 fw-bold">시작 년도</label>
-                        <select class="form-select" id="startYear">
-                            <option th:each="year : ${#numbers.sequence(2001, 2023)}" th:text="${year}"></option>
+                        <select class="form-select" name="startYear">
+                            <option th:each="year : ${#numbers.sequence(2023, 2023)}" th:text="${year}" th:value="${startYear}"></option>
                         </select>
                         <label for="startYear" class="form-label fs-5 fw-bold">끝 년도</label>
-                        <select class="form-select" id="endYear">
-                            <option th:each="year : ${#numbers.sequence(2001, 2023)}" th:text="${year}"></option>
+                        <select class="form-select" name="endYear">
+                            <option th:each="year : ${#numbers.sequence(2023, 2023)}" th:text="${year}" th:value="${endYear}"></option>
                         </select>
 
                         <label for="startAmount" class="form-label fs-5 fw-bold">시작 금액</label>
-                        <input type="text" class="form-control" id="startAmount">
+                        <input type="text" class="form-control" name="startAmount" th:value="${startAmount}">
                     </div>
 
                     <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
-                    <div class="row my-2">
-                        <div class="col">
-                            <input type="text" class="form-control" name="input1" placeholder="첫 번째 입력창">
+                    <div class="mx-2">
+                        <div class="p-3 mb-2 bg-secondary text-white fs-5 bg-opacity-50">포트폴리오 구성</div>
+                        <div id="inputFields">
+                            <div class="row m-2" id="input1">
+                                    <div class="col-3">
+                                        종목 1
+                                    </div>
+                                    <div class="col-5">
+                                        <input type="text" class="form-control" name="stock1" placeholder="종목">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="text" class="form-control" name="weight1" placeholder="비중">
+                                    </div>
+                            </div>
                         </div>
-                        <div class="col">
-                            <input type="text" class="form-control" name="input2" placeholder="두 번째 입력창">
-                        </div>
+
                     </div>
-                    <div class="row my-2">
-                        <div class="col">
-                            <input type="text" class="form-control" name="input3" placeholder="첫 번째 입력창">
-                        </div>
-                        <div class="col">
-                            <input type="text" class="form-control" name="input4" placeholder="두 번째 입력창">
-                        </div>
+                    <div class="col text-center">
+                        <button type="button" id="addInput" class="btn btn-secondary">+</button>
+                        <button type="button" class="btn btn-secondary" onclick="removeInput(1)">-</button>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
+                    <div class="col text-center">
+                        <button type="submit" class="btn btn-dark">Submit</button>
+                    </div>
+                    <input type="hidden" name="count" value="1">
+
                 </form>
             </div>
         </div>
 
         <div th:if="${data != null}">
-            <div class="p-3 mb-2 my-2 bg-secondary text-white fs-5">결과</div>
+            <div class="p-2 mb-2 my-2 bg-secondary text-white fs-5">결과</div>
             <table class="table">
                 <thead>
                 <tr>
@@ -61,5 +71,48 @@
             </table>
         </div>
     </div>
+    <script>
+        var x = 1;
+        document.addEventListener('DOMContentLoaded', function () {
+            var maxFields = 10;
+            var addButton = document.getElementById('addInput');
+            var inputFields = document.getElementById('inputFields');
+            var countField = document.querySelector('input[name="count"]');
+
+            addButton.addEventListener('click', function () {
+                if (x < maxFields) {
+                    x++;
+                    countField.value = x;
+                    var newField = document.createElement('div');
+                    newField.classList.add('row', 'm-2');
+                    newField.id = 'input' + x;
+                    newField.innerHTML = `
+                        <div class="col-3">
+                            종목 ${x}
+                        </div>
+                        <div class="col-5">
+                            <input type="text" class="form-control" name="stock${x}" placeholder="종목">
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" name="weight${x}" placeholder="비중">
+                        </div>
+                    `;
+                    inputFields.appendChild(newField);
+                } else {
+                    alert('더 이상 추가할 수 없습니다.');
+                }
+            });
+
+
+        });
+
+        function removeInput(id) {
+            var elemToRemove = document.getElementById('input' + x);
+            elemToRemove.parentNode.removeChild(elemToRemove);
+            x--;
+            countField.value = x;
+        }
+
+    </script>
 </div>
 </html>

@@ -26,7 +26,7 @@ public class BacktestPortfolioController {
     }
 
     @GetMapping("")
-    public String index() {
+    public String index(Model model) {
         return "backtest_portfolio";
     }
 
@@ -34,28 +34,35 @@ public class BacktestPortfolioController {
     public String indexPost(@RequestParam HashMap<String, String> params, Model model) {
         System.out.println(params);
 
+        List<String> stockNames = new ArrayList<>();
         List<Double> weights = new ArrayList<>();
 
-        String stock1 = params.get("input1");
-        String stock2 = params.get("input3");
+        for(int i = 1 ; i <= Integer.parseInt(params.get("count")) ; i++){
+            stockNames.add(params.get("stock" + i));
+            weights.add(Double.parseDouble(params.get("weight" + i)));
+        }
 
-        List<Double> stock1RorList = RorCalculator.getRorList(stockPriceService.getPricesByItmsNmAndYear(stock1,2023), true);
-        List<Double> stock2RorList = RorCalculator.getRorList(stockPriceService.getPricesByItmsNmAndYear(stock2,2023), true);
+        List<List<Double>> rorList = new ArrayList<>();
+        for(String stockName : stockNames){
+            rorList.add(RorCalculator.getRorList(stockPriceService.getPricesByItmsNmAndYear(stockName, 2023), true));
+        }
 
-        weights.add(Double.parseDouble(params.get("input2")));
-        weights.add(Double.parseDouble(params.get("input4")));
-
-        List<Double> portfolioRorList = RorCalculator.getPortfolioRorList(List.of(stock1RorList, stock2RorList), weights);
-
+        List<Double> portfolioRorList = RorCalculator.getPortfolioRorList(rorList, weights);
 
         Map<String, Object> data = new HashMap<>();
         portfolioRorList.add(0, 0.0);
+
+        Map<String, Object> portfolioForm = new HashMap<>();
+        portfolioForm.put("startAmount", "111111");
+
+        model.addAttribute("portfolioForm", portfolioForm);
 
         data.put("periods", List.of( 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11));
         data.put("returns", portfolioRorList);
         data.put("amount", RorCalculator.getCashByRorList(portfolioRorList, 10000000));
 
         model.addAttribute("data", data);
+
         return "backtest_portfolio";
     }
 
