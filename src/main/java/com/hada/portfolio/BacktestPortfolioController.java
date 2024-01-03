@@ -27,16 +27,22 @@ public class BacktestPortfolioController {
 
     @GetMapping("")
     public String index(Model model) {
-        model.addAttribute("count", 3);
+        model.addAttribute("count", 1);
+        model.addAttribute("startAmount", 10000000);
         return "backtest_portfolio";
     }
 
     @PostMapping("")
     public String indexPost(@RequestParam HashMap<String, String> params, Model model) {
-        System.out.println(params);
+
+        for (String key : params.keySet()) {
+            String value = params.get(key);
+            model.addAttribute(key, value);
+        }
 
         List<String> stockNames = new ArrayList<>();
         List<Double> weights = new ArrayList<>();
+
 
         for(int i = 1 ; i <= Integer.parseInt(params.get("count")) ; i++){
             stockNames.add(params.get("stock" + i));
@@ -50,19 +56,13 @@ public class BacktestPortfolioController {
 
         List<Double> portfolioRorList = RorCalculator.getPortfolioRorList(rorList, weights);
 
-        Map<String, Object> data = new HashMap<>();
-        portfolioRorList.add(0, 0.0);
+        Map<String, Object> backtestResult = new HashMap<>();
+        backtestResult.put("startAmount", params.get("startAmount"));
+        backtestResult.put("totalRor", RorCalculator.getTotalRor(portfolioRorList));
+        backtestResult.put("endAmount", Double.valueOf(params.get("startAmount")) * (1 + RorCalculator.getTotalRor(portfolioRorList)) / 100);
 
-        Map<String, Object> portfolioForm = new HashMap<>();
-        portfolioForm.put("startAmount", "111111");
 
-        model.addAttribute("portfolioForm", portfolioForm);
-
-        data.put("periods", List.of( 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11));
-        data.put("returns", portfolioRorList);
-        data.put("amount", RorCalculator.getCashByRorList(portfolioRorList, 10000000));
-
-        model.addAttribute("data", data);
+        model.addAttribute("backtestResult", backtestResult);
 
         return "backtest_portfolio";
     }

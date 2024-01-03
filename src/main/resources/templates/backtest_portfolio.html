@@ -28,10 +28,10 @@
                                     <label th:text="'종목 ' + ${i}">종목</label>
                                 </div>
                                 <div class="col-5">
-                                    <input type="text" class="form-control" th:value="'stock' + ${i}" th:name="'stock' + ${i}" th:placeholder="'종목 ' + ${i}">
+                                    <input type="text" class="form-control" th:value="${#strings.isEmpty(#vars['stock' + i]) ? '' : #vars['stock' + i]}"  th:name="'stock' + ${i}" th:placeholder="'종목 ' + ${i}">
                                 </div>
                                 <div class="col-4">
-                                    <input type="text" class="form-control" th:value="'weight' + ${i}" th:name="'weight' + ${i}" th:placeholder="'비중 ' + ${i}">
+                                    <input type="text" class="form-control" th:value="${#strings.isEmpty(#vars['weight' + i]) ? '' : #vars['weight' + i]}" th:name="'weight' + ${i}" th:placeholder="'비중 ' + ${i}">
                                 </div>
                             </div>
                         </div>
@@ -39,42 +39,46 @@
                     </div>
                     <div class="col text-center">
                         <button type="button" id="addInput" class="btn btn-secondary">+</button>
-                        <button type="button" class="btn btn-secondary" onclick="removeInput(1)">-</button>
+                        <button type="button" class="btn btn-secondary" onclick="removeInput()">-</button>
                     </div>
                     <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
                     <div class="col text-center">
                         <button type="submit" class="btn btn-dark">Submit</button>
                     </div>
-                    <input type="hidden" name="count" th:value="${count}">
+                    <input type="hidden" name="count" th:value="${count != null} ? ${count} : 1">
 
                 </form>
             </div>
         </div>
 
-        <div th:if="${data != null}">
-            <div class="p-2 mb-2 my-2 bg-secondary text-white fs-5">결과</div>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>일자</th>
-                    <th>ror</th>
-                    <th>금액</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="i : ${#numbers.sequence(0, #lists.size(data.periods) - 1)}">
-                    <td th:text="${data.periods[i]}"></td>
-                    <td th:text="${data.returns[i]}"></td>
-                    <td th:text="${data.amount[i]}"></td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="my-3" th:if="${backtestResult != null}">
+            <div class="p-3 mb-2 bg-secondary text-white fs-4">결과</div>
+            <div class="p-3 border">
+                <div class="p-3 mb-2 bg-secondary text-white fs-5 bg-opacity-50">결과 요약</div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>시작금액</th>
+                        <th>수익률</th>
+                        <th>최종금액</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td th:text="${backtestResult.startAmount}"></td>
+                        <td th:text="${backtestResult.totalRor}"></td>
+                        <td th:text="${backtestResult.endAmount}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     <script>
         var countInput = document.querySelector('input[name="count"]');
         var x = parseInt(countInput.value);
-      document.addEventListener('DOMContentLoaded', function () {
+
+        document.addEventListener('DOMContentLoaded', function () {
           var maxFields = 10;
           var addButton = document.getElementById('addInput');
           var inputFields = document.getElementById('inputFields');
@@ -103,16 +107,15 @@
                   alert('더 이상 추가할 수 없습니다.');
               }
           });
+        });
 
-
-      });
-
-      function removeInput(id) {
+        function removeInput() {
+          var countInput = document.querySelector('input[name="count"]');
           var elemToRemove = document.getElementById('input' + x);
           elemToRemove.parentNode.removeChild(elemToRemove);
           x--;
-          countField.value = x;
-      }
+          countInput.value = x;
+        }
 
     </script>
 </div>

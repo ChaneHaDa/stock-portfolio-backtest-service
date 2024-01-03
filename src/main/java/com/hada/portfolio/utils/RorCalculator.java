@@ -61,4 +61,12 @@ public final class RorCalculator {
         }
         return cashList;
     }
+
+    public static Double getTotalRor(List<Double> rorList) {
+    	Double totalRor = 1.0;
+    	for(int i = 0; i < rorList.size(); i++){
+    		totalRor *= (1 + rorList.get(i) / 100);
+        }
+    	return (totalRor - 1) * 100;
+    }
 }
