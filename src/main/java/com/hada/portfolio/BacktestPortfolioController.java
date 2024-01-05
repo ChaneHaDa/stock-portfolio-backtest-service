@@ -61,7 +61,6 @@ public class BacktestPortfolioController {
         backtestResult.put("totalRor", RorCalculator.getTotalRor(portfolioRorList));
         backtestResult.put("endAmount", Double.valueOf(params.get("startAmount")) * (1 + RorCalculator.getTotalRor(portfolioRorList)) / 100);
 
-
         model.addAttribute("backtestResult", backtestResult);
 
         return "backtest_portfolio";
