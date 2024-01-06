@@ -10,7 +10,7 @@
                         <select class="form-select" name="startYear">
                             <option th:each="year : ${#numbers.sequence(2023, 2023)}" th:text="${year}" th:value="${startYear}"></option>
                         </select>
-                        <label for="startYear" class="form-label fs-5 fw-bold">끝 년도</label>
+                        <label for="endYear" class="form-label fs-5 fw-bold">끝 년도</label>
                         <select class="form-select" name="endYear">
                             <option th:each="year : ${#numbers.sequence(2023, 2023)}" th:text="${year}" th:value="${endYear}"></option>
                         </select>

@@ -35,6 +35,64 @@
                 </table>
             </div>
         </div>
+        <div class="my-2">
+            <div class="p-3 mb-2 bg-secondary text-white fs-4">복리 계산기</div>
+            <div class="p-3 border">
+                <form th:action="@{/calculator/welfare}">
+                    <label for="price" class="form-label fs-7 fw-bold">초기 금액</label>
+                    <input type="text" class="form-control" name="price" th:value="${price}">
+                    <label for="term" class="form-label fs-7 fw-bold">복리 횟수</label>
+                    <input type="text" class="form-control" name="term" th:value="${term}">
+                    <label for="welfareRor" class="form-label fs-7 fw-bold">수익률</label>
+                    <input type="text" class="form-control" name="welfareRor" th:value="${welfareRor}">
+                    <div class="col text-center my-3">
+                        <button type="submit" class="btn btn-dark">Submit</button>
+                    </div>
+                </form>
+            </div>
+            <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
+            <div class="p-3 my-1 border">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">총 수익</h5>
+                                <p class="card-text" th:text="${totalProfit}"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">최종 금액</h5>
+                                <p class="card-text" th:text="${finalAmount}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>횟수</th>
+                        <th>수익</th>
+                        <th>총액</th>
+                        <th>수익률</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- 여기에 각 행을 추가 -->
+<!--                    <tr th:each="result : ${backtestResults}">-->
+<!--                        <td th:text="${result.count}"></td>-->
+<!--                        <td th:text="${result.profit}"></td>-->
+<!--                        <td th:text="${result.totalAmount}"></td>-->
+<!--                        <td th:text="${result.profitPercentage}"></td>-->
+<!--                    </tr>-->
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
 
     </div>
 </div>
