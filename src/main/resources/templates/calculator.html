@@ -1,0 +1,41 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+    <div class="container mt-4">
+        <div>
+            <div class="p-3 mb-2 bg-secondary text-white fs-4">수익률 계산기</div>
+            <div class="p-3 border">
+                <form th:action="@{/calculator/ror}">
+                    <label for="buyPrice" class="form-label fs-7 fw-bold">매수 금액</label>
+                    <input type="text" class="form-control" name="buyPrice" th:value="${buyPrice}">
+                    <label for="quantity" class="form-label fs-7 fw-bold">매수 수량</label>
+                    <input type="text" class="form-control" name="quantity" th:value="${quantity}">
+                    <label for="sellPrice" class="form-label fs-7 fw-bold">매도 금액</label>
+                    <input type="text" class="form-control" name="sellPrice" th:value="${sellPrice}">
+                    <div class="col text-center my-3">
+                        <button type="submit" class="btn btn-dark">Submit</button>
+                    </div>
+                </form>
+            </div>
+
+            <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
+            <div class="p-3 border">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">수익률</th>
+                        <th scope="col">수익금</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td th:text="${ror!= null} ? ${ror} : 0"></td>
+                        <td th:text="${profit!= null} ? ${profit} : 0"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+</html>
