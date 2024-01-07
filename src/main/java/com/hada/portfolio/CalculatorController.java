@@ -1,10 +1,14 @@
 package com.hada.portfolio;
 
+import com.hada.portfolio.utils.RorCalculator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/calculator")
@@ -52,6 +56,9 @@ public class CalculatorController {
             model.addAttribute("price", price);
             model.addAttribute("term", term);
             model.addAttribute("welfareRor", welfareRor);
+
+            List<Double> rorList = RorCalculator.getWelfareRorList(welfareRorDouble, termLong);
+            System.out.println(rorList);
 
         } catch (NumberFormatException e) {
             // 잘못된 입력 형식에 대한 처리

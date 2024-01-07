@@ -69,4 +69,14 @@ public final class RorCalculator {
         }
     	return (totalRor - 1) * 100;
     }
+
+    public static List<Double> getWelfareRorList(double welfareRor, long term){
+        List<Double> welfareRorList = new ArrayList<>();
+        welfareRorList.add(welfareRor);
+        for(int i = 1; i < term; i++){
+            double calWelfare = (welfareRorList.get(i - 1) / 100 + 1) * (1 + welfareRor / 100) - 1;
+            welfareRorList.add(calWelfare * 100);
+        }
+        return welfareRorList;
+    }
 }
