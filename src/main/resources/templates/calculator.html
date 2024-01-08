@@ -71,27 +71,28 @@
                     </div>
                 </div>
                 <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>횟수</th>
-                        <th>수익</th>
-                        <th>총액</th>
-                        <th>수익률</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <!-- 여기에 각 행을 추가 -->
-<!--                        <tr th:each="result : ${backtestResults}">-->
-<!--                            <td th:text="${result.count}"></td>-->
-<!--                            <td th:text="${result.profit}"></td>-->
-<!--                            <td th:text="${result.totalAmount}"></td>-->
-<!--                            <td th:text="${result.profitPercentage}"></td>-->
-<!--                        </tr>-->
-                    </tbody>
-                </table>
+                <div th:if="${rorList != null}">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>횟수</th>
+                            <th>수익</th>
+                            <th>총액</th>
+                            <th>수익률</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- 여기에 각 행을 추가 -->
+                            <tr th:each="index : ${#numbers.sequence(0, rorList.size()-1)}">
+                                <td th:text="${index+1}"></td>
+                                <td th:text="${revenueList.get(index)}"></td>
+                                <td th:text="${priceList.get(index)}"></td>
+                                <td th:text="${rorList.get(index)}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
         </div>
 
     </div>

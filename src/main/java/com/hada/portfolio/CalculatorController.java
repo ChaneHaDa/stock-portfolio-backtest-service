@@ -45,9 +45,9 @@ public class CalculatorController {
 
     @GetMapping("/welfare")
     public String getWelfare(Model model,
-                         @RequestParam(defaultValue = "0.0") String price,
-                         @RequestParam(defaultValue = "0") String term,
-                         @RequestParam(defaultValue = "0.0") String welfareRor) {
+                             @RequestParam(defaultValue = "0.0") String price,
+                             @RequestParam(defaultValue = "0") String term,
+                             @RequestParam(defaultValue = "0.0") String welfareRor) {
         try {
             double priceDouble = Double.parseDouble(price);
             long termLong = Long.parseLong(term);
@@ -58,7 +58,23 @@ public class CalculatorController {
             model.addAttribute("welfareRor", welfareRor);
 
             List<Double> rorList = RorCalculator.getWelfareRorList(welfareRorDouble, termLong);
-            System.out.println(rorList);
+            List<Double> revenueList = new ArrayList<>();
+            List<Double> priceList = new ArrayList<>();
+
+            revenueList.add(priceDouble * (rorList.get(0) / 100));
+            priceList.add(priceDouble + revenueList.get(0));
+
+            for(int i = 1 ; i < rorList.size() ; i++){
+                revenueList.add((priceDouble * (rorList.get(i) / 100)) - (priceDouble * (rorList.get(i - 1) / 100)));
+                priceList.add(priceList.get(i - 1) + revenueList.get(i));
+            }
+
+            model.addAttribute("totalProfit", (long) (priceDouble * (rorList.get(rorList.size() - 1) / 100)));
+            model.addAttribute("finalAmount", (long) (priceDouble * (1 + rorList.get(rorList.size() - 1) / 100)));
+
+            model.addAttribute("rorList", rorList);
+            model.addAttribute("revenueList", revenueList);
+            model.addAttribute("priceList", priceList);
 
         } catch (NumberFormatException e) {
             // 잘못된 입력 형식에 대한 처리
