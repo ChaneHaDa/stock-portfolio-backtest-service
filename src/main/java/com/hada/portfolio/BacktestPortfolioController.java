@@ -40,6 +40,9 @@ public class BacktestPortfolioController {
             model.addAttribute(key, value);
         }
 
+        int startYear = Integer.parseInt(params.get("startYear"));
+        int endYear = Integer.parseInt(params.get("endYear"));
+
         List<String> stockNames = new ArrayList<>();
         List<Double> weights = new ArrayList<>();
 
@@ -50,8 +53,9 @@ public class BacktestPortfolioController {
         }
 
         List<List<Double>> rorList = new ArrayList<>();
+        HashMap<Integer, List<List<Double>>> rorListMap = new HashMap<>();
         for(String stockName : stockNames){
-            rorList.add(RorCalculator.getRorList(stockPriceService.getPricesByItmsNmAndYear(stockName, 2023), true));
+            rorList.add(RorCalculator.getRorList(stockPriceService.getPricesByItmsNmAndYear(stockName, startYear), true));
         }
 
         List<Double> portfolioRorList = RorCalculator.getPortfolioRorList(rorList, weights);
@@ -59,7 +63,7 @@ public class BacktestPortfolioController {
         Map<String, Object> backtestResult = new HashMap<>();
         backtestResult.put("startAmount", params.get("startAmount"));
         backtestResult.put("totalRor", RorCalculator.getTotalRor(portfolioRorList));
-        backtestResult.put("endAmount", Double.valueOf(params.get("startAmount")) * (1 + RorCalculator.getTotalRor(portfolioRorList)) / 100);
+        backtestResult.put("endAmount", Double.valueOf(params.get("startAmount")) * (1 + RorCalculator.getTotalRor(portfolioRorList) / 100));
 
         model.addAttribute("backtestResult", backtestResult);
 
