@@ -20,7 +20,7 @@
 
                     <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
                     <div class="mx-2">
-                        <div class="p-3 mb-2 bg-secondary text-white fs-5 bg-opacity-50">포트폴리오 구성</div>
+                        <div class="p-3 mb-2 bg-secondary text-white fs-5 bg-opacity-75">포트폴리오 구성</div>
                         <div id="inputFields">
                             <div class="row m-2" th:each="i : ${#numbers.sequence(1, count)}" th:id="'input' + ${i}">
                                 <div class="col-3">
@@ -53,12 +53,14 @@
         <div class="my-3" th:if="${backtestResult != null}">
             <div class="p-3 mb-2 bg-secondary text-white fs-4">결과</div>
             <div class="p-3 border">
-                <div class="p-3 mb-2 bg-secondary text-white fs-5 bg-opacity-50">결과 요약</div>
+                <div class="p-3 mb-2 bg-secondary text-white fs-5 bg-opacity-75">결과 요약</div>
                 <table class="table">
                     <thead>
                     <tr>
                         <th>시작금액</th>
-                        <th>수익률</th>
+                        <th>총 수익률</th>
+                        <th>최고 수익률</th>
+                        <th>최저 수익률</th>
                         <th>최종금액</th>
                     </tr>
                     </thead>
@@ -66,10 +68,64 @@
                     <tr>
                         <td th:text="${backtestResult.startAmount}"></td>
                         <td th:text="${backtestResult.totalRor}"></td>
+                        <td th:text="${backtestResult.maxRor}"></td>
+                        <td th:text="${backtestResult.minRor}"></td>
                         <td th:text="${backtestResult.endAmount}"></td>
                     </tr>
                     </tbody>
                 </table>
+                <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
+                <div class="p-3 mb-2 bg-secondary text-white fs-5 bg-opacity-75">년도별 요약</div>
+                <div class="p-3" th:each="yearResult : ${backtestResultByYear}">
+                    <div class="p-2 mb-2 bg-secondary text-white fs-7 bg-opacity-50" th:text="${yearResult.key}"></div>
+                    <div class="p-2 m-1 border">
+                        <h3>종합</h3>
+                        <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>총 수익률</th>
+                                <th>월 최고 수익률</th>
+                                <th>월 최저 수익률</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td th:text="${yearResult.value.totalRor}"></td>
+                                <td th:text="${yearResult.value.maxRor}"></td>
+                                <td th:text="${yearResult.value.minRor}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="p-2 m-1 border">
+                        <h3>종목별</h3>
+                        <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
+                        <div th:each="stockName : ${stockNames}">
+                            <h5 th:text="${stockName}"></h5>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>총 수익률</th>
+                                    <th>월 최고 수익률</th>
+                                    <th>월 최저 수익률</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${yearResult.value[stockName.toString()].totalRorByStock}"></td>
+                                    <td th:text="${yearResult.value[stockName.toString()].maxRorByStock}"></td>
+                                    <td th:text="${yearResult.value[stockName.toString()].minRorByStock}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
+                        </div>
+                    </div>
+
+
+                </div>
             </div>
         </div>
     </div>

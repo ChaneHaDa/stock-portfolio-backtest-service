@@ -6,7 +6,8 @@ import java.util.List;
 public final class RorCalculator {
 
     public static double getRor(double buyPrice, double sellPrice){
-        return (sellPrice - buyPrice) / buyPrice * 100;
+        Double ror = (sellPrice - buyPrice) / buyPrice * 100;
+        return Math.round(ror * 100) / 100.0;
     }
 
     public static double getRor(long buyPrice, long sellPrice) {
@@ -67,7 +68,8 @@ public final class RorCalculator {
     	for(int i = 0; i < rorList.size(); i++){
     		totalRor *= (1 + rorList.get(i) / 100);
         }
-    	return (totalRor - 1) * 100;
+
+        return Math.round((totalRor - 1) * 10000) / 100.0;
     }
 
     public static List<Double> getWelfareRorList(double welfareRor, long term){
