@@ -120,8 +120,6 @@
             }
 
             model.addAttribute("stockNames", stockNames);
-            System.out.println(backtestResultByYear);
-            System.out.println(stockNames);
             model.addAttribute("backtestResultByYear", backtestResultByYear);
 
 
