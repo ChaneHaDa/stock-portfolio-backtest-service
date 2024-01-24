@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,5 +42,21 @@ public class StockInfoService {
     public Page<StockInfo> findAllByMrktCtg(String filter, int page) {
         Pageable pageable = PageRequest.of(page, 20);
         return stockInfoRepository.findAllByMrktCtg(filter, pageable);
+    }
+
+    public List<String> findAllByQuery(String query) {
+        List<StockInfo> stockInfos;
+        if(query.charAt(0) <= '9' && query.charAt(0) >= '0') {
+            stockInfos = stockInfoRepository.findBySrtnCdContaining(query);
+        }else{
+            stockInfos = stockInfoRepository.findByItmsNmContaining(query);
+        }
+
+        List<String> result = new ArrayList<>();
+        for(StockInfo stockInfo : stockInfos) {
+            result.add(stockInfo.getItmsNm() +" (" + stockInfo.getSrtnCd() + ")");
+        }
+
+        return result;
     }
 }

@@ -1,4 +1,4 @@
-    package com.hada.portfolio;
+    package com.hada.portfolio.controller;
 
 
     import com.hada.portfolio.stock.price.StockPriceService;
@@ -48,7 +48,9 @@
             List<Double> weights = new ArrayList<>();
 
             for(int i = 1 ; i <= Integer.parseInt(params.get("count")) ; i++){
-                stockNames.add(params.get("stock" + i));
+                String stockName = params.get("stock" + i);
+                int indexOfParenthesis = stockName.indexOf('(');
+                stockNames.add(stockName.substring(0, indexOfParenthesis - 1).trim());
                 weights.add(Double.parseDouble(params.get("weight" + i)));
             }
 

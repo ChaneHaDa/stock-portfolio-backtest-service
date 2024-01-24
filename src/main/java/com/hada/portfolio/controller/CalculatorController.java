@@ -1,4 +1,4 @@
-package com.hada.portfolio;
+package com.hada.portfolio.controller;
 
 import com.hada.portfolio.utils.RorCalculator;
 import org.springframework.stereotype.Controller;
@@ -31,7 +31,7 @@ public class CalculatorController {
             // 사용자가 제대로된 숫자값을 입력하지 않았을 경우를 처리할 수 있습니다.
             // buyPriceDouble, sellPriceDouble, quantityLong를 사용하여 작업을 수행합니다.
 
-            model.addAttribute("ror", (sellPriceDouble - buyPriceDouble) / buyPriceDouble * 100);
+            model.addAttribute("ror", RorCalculator.getRor(buyPriceDouble, sellPriceDouble));
             model.addAttribute("profit", (long) ((sellPriceDouble - buyPriceDouble) * quantityLong));
             model.addAttribute("buyPrice", buyPriceDouble);
             model.addAttribute("sellPrice", sellPriceDouble);
@@ -61,12 +61,13 @@ public class CalculatorController {
             List<Double> revenueList = new ArrayList<>();
             List<Double> priceList = new ArrayList<>();
 
-            revenueList.add(priceDouble * (rorList.get(0) / 100));
-            priceList.add(priceDouble + revenueList.get(0));
+            revenueList.add(Math.round(priceDouble * (rorList.get(0) / 100) * 100) / 100.0);
+            priceList.add(Math.round((priceDouble + revenueList.get(0)) * 100) / 100.0);
 
             for(int i = 1 ; i < rorList.size() ; i++){
-                revenueList.add((priceDouble * (rorList.get(i) / 100)) - (priceDouble * (rorList.get(i - 1) / 100)));
-                priceList.add(priceList.get(i - 1) + revenueList.get(i));
+                Double revenue = (priceDouble * (rorList.get(i) / 100)) - (priceDouble * (rorList.get(i - 1) / 100));
+                revenueList.add(Math.round(revenue * 100) / 100.0);
+                priceList.add(Math.round((priceList.get(i - 1) + revenueList.get(i)) * 100) / 100.0);
             }
 
             model.addAttribute("totalProfit", (long) (priceDouble * (rorList.get(rorList.size() - 1) / 100)));

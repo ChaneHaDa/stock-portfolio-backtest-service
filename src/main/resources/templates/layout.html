@@ -19,17 +19,10 @@
                 </a>
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="#" class="nav-link px-2 text-white">주식조회</a></li>
                     <li><a href="/backtest-portfolio" class="nav-link px-2 text-white">포트폴리오 백테스트</a></li>
                     <li><a href="/calculator" class="nav-link px-2 text-white">계산기</a></li>
                     <li><a href="/admin" sec:authorize="hasRole('ADMIN')" class="nav-link px-2 text-white">관리자 메뉴</a></li>
-
-                    <!--                    <li><a href="#" class="nav-link px-2 text-secondary">Features</a></li>-->
                 </ul>
-
-                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                    <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
-                </form>
 
                 <div class="text-end">
                     <a th:href="@{/user/login}" sec:authorize="isAnonymous()" class="btn btn-outline-light me-2">로그인</a>
@@ -39,8 +32,11 @@
             </div>
         </div>
     </header>
-<!-- 기본 템플릿 안에 삽입될 내용 Start -->
-<th:block layout:fragment="content"></th:block>
-<!-- 기본 템플릿 안에 삽입될 내용 End -->
+    <!-- 기본 템플릿 안에 삽입될 내용 Start -->
+    <th:block layout:fragment="content"></th:block>
+    <!-- 기본 템플릿 안에 삽입될 내용 End -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

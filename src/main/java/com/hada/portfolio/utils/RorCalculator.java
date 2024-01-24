@@ -39,7 +39,7 @@ public final class RorCalculator {
         for(int i = 0; i < rorList.size(); i++){
             portfolioRor += rorList.get(i) * weightList.get(i);
         }
-        return portfolioRor;
+        return Math.round(portfolioRor * 100) / 100.0;
     }
 
     public static List<Double> getPortfolioRorList(List<List<Double>> rorList, List<Double> weightList){
@@ -49,7 +49,7 @@ public final class RorCalculator {
             for(int j = 0; j < rorList.size(); j++){
                 portfolioRor += rorList.get(j).get(i) * weightList.get(j);
             }
-            portfolioRorList.add(portfolioRor);
+            portfolioRorList.add(Math.round(portfolioRor * 100) / 100.0);
         }
         return portfolioRorList;
     }
@@ -77,7 +77,7 @@ public final class RorCalculator {
         welfareRorList.add(welfareRor);
         for(int i = 1; i < term; i++){
             double calWelfare = (welfareRorList.get(i - 1) / 100 + 1) * (1 + welfareRor / 100) - 1;
-            welfareRorList.add(calWelfare * 100);
+            welfareRorList.add(Math.round((calWelfare * 100) * 100) / 100.0);
         }
         return welfareRorList;
     }
