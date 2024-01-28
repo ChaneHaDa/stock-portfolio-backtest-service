@@ -19,7 +19,6 @@ https://github.com/ChaneHaDa/krx-json-data
 
 ## 추가예정
 * 포트폴리오 리밸런싱
-* 
 
 # 환경
 ## 개발언어 
