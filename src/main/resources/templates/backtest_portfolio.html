@@ -30,11 +30,11 @@
                     <div>
                         <label for="startYear" class="form-label fs-5 fw-bold">시작 년도</label>
                         <select class="form-select" name="startYear">
-                            <option th:each="year : ${#numbers.sequence(2022, 2023)}" th:text="${year}" th:value="${year}" th:selected="${year} == ${startYear}"></option>
+                            <option th:each="year : ${#numbers.sequence(2020, 2023)}" th:text="${year}" th:value="${year}" th:selected="${year} == ${startYear}"></option>
                         </select>
                         <label for="endYear" class="form-label fs-5 fw-bold">끝 년도</label>
                         <select class="form-select" name="endYear">
-                            <option th:each="year : ${#numbers.sequence(2022, 2023)}" th:text="${year}" th:value="${year}" th:selected="${year} == ${endYear}"></option>
+                            <option th:each="year : ${#numbers.sequence(2020, 2023)}" th:text="${year}" th:value="${year}" th:selected="${year} == ${endYear}"></option>
                         </select>
                         <label for="startAmount" class="form-label fs-5 fw-bold">시작 금액</label>
                         <input type="text" class="form-control" name="startAmount" th:value="${startAmount}">

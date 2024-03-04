@@ -11,5 +11,5 @@ public interface StockInfoRepository extends JpaRepository<StockInfo, Long> {
     StockInfo findBySrtnCd(String srtnCd);
     List<StockInfo> findByItmsNmContaining(String keyword);
     List<StockInfo> findBySrtnCdContaining(String keyword);
-    Page<StockInfo> findAllByMrktCtg(String filter, Pageable pageable);
+//    Page<StockInfo> findAllByMrktCtg(String filter, Pageable pageable);
 }

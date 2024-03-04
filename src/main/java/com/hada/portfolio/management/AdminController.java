@@ -53,30 +53,30 @@ public class AdminController {
         return "search_stockinfo";
     }
 
-    @GetMapping("/update/stockinfo")
-    public String updateStockInfoPage() {
-        return "update_stockinfo";
-    }
+//    @GetMapping("/update/stockinfo")
+//    public String updateStockInfoPage() {
+//        return "update_stockinfo";
+//    }
 
-    @PostMapping("/update/stockinfo")
-    public String updateStockInfoPage(@RequestParam(name = "baseDate") String baseDate, Model model) {
-        if(baseDate == null || baseDate.equals("")) {
-            model.addAttribute("error", "날짜를 입력하세요.");
-            return "update_stockinfo";
-        }
-
-        System.out.println(baseDate);
-
-        LocalDate baseDates = LocalDate.parse(baseDate, java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        LocalDate today = LocalDate.now();
-        if (baseDates.isAfter(today)) {
-            model.addAttribute("error", baseDate + "는 미래의 날짜입니다.");
-            return "update_stockinfo";
-        }
-
-        stockDataLoader.loadStockInfoByBaseDate(baseDate.replaceAll("-", ""));
-        return "redirect:/admin/stockinfo";
-    }
+//    @PostMapping("/update/stockinfo")
+//    public String updateStockInfoPage(@RequestParam(name = "baseDate") String baseDate, Model model) {
+//        if(baseDate == null || baseDate.equals("")) {
+//            model.addAttribute("error", "날짜를 입력하세요.");
+//            return "update_stockinfo";
+//        }
+//
+//        System.out.println(baseDate);
+//
+//        LocalDate baseDates = LocalDate.parse(baseDate, java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+//        LocalDate today = LocalDate.now();
+//        if (baseDates.isAfter(today)) {
+//            model.addAttribute("error", baseDate + "는 미래의 날짜입니다.");
+//            return "update_stockinfo";
+//        }
+//
+//        stockDataLoader.loadStockInfoByBaseDate(baseDate.replaceAll("-", ""));
+//        return "redirect:/admin/stockinfo";
+//    }
 
     // stock price
 
@@ -117,6 +117,9 @@ public class AdminController {
             return "update_stockprice";
         }
 
+        startDate += "-01";
+        endDate += "-01";
+
         LocalDate startDates = LocalDate.parse(startDate, java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         LocalDate endDates = LocalDate.parse(endDate, java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         LocalDate today = LocalDate.now();
@@ -131,7 +134,7 @@ public class AdminController {
         }
 
         stockDataLoader.loadStockPriceByTerm(startDate.replaceAll("-", ""), endDate.replaceAll("-", ""));
-
+        stockDataLoader.loadETFPriceByTerm(startDate.replaceAll("-", ""), endDate.replaceAll("-", ""));
         return "redirect:/admin/stockprice";
     }
 
