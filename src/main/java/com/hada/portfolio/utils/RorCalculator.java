@@ -6,6 +6,9 @@ import java.util.List;
 public final class RorCalculator {
 
     public static double getRor(double buyPrice, double sellPrice){
+        if(buyPrice == 0){
+            return 0;
+        }
         Double ror = (sellPrice - buyPrice) / buyPrice * 100;
         return Math.round(ror * 100) / 100.0;
     }

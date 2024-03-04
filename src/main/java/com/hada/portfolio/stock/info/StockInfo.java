@@ -16,10 +16,10 @@ public class StockInfo {
     @Column(unique = true)
     private String itmsNm;
     // 시장구분
-    private String mrktCtg;
+//    private String mrktCtg;
     // 종목명
     private String srtnCd;
     // 고유번호
-    private String isinCd;
+//    private String isinCd;
 
 }

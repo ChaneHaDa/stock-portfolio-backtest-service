@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class StockInfoService {
@@ -20,6 +21,19 @@ public class StockInfoService {
             return stockInfoRepository.save(stockInfo);
         }
         return null;
+    }
+
+    public List<StockInfo> saveAll(Set<StockInfo> stockInfos) {
+        List<StockInfo> saveStockInfos = new ArrayList<>();
+        List<StockInfo> savedStockInfos = stockInfoRepository.findAll();
+        List<String> savedItmsNm = savedStockInfos.stream().map(StockInfo::getItmsNm).toList();
+
+        for(StockInfo stockInfo : stockInfos) {
+            if(!savedItmsNm.contains(stockInfo.getItmsNm())) {
+                saveStockInfos.add(stockInfo);
+            }
+        }
+        return stockInfoRepository.saveAll(saveStockInfos);
     }
 
     public List<StockInfo> findAll() {
@@ -39,10 +53,10 @@ public class StockInfoService {
         }
     }
 
-    public Page<StockInfo> findAllByMrktCtg(String filter, int page) {
-        Pageable pageable = PageRequest.of(page, 20);
-        return stockInfoRepository.findAllByMrktCtg(filter, pageable);
-    }
+//    public Page<StockInfo> findAllByMrktCtg(String filter, int page) {
+//        Pageable pageable = PageRequest.of(page, 20);
+//        return stockInfoRepository.findAllByMrktCtg(filter, pageable);
+//    }
 
     public List<String> findAllByQuery(String query) {
         List<StockInfo> stockInfos;

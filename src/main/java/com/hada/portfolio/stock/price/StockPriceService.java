@@ -72,26 +72,13 @@ public class StockPriceService {
 
         List<Long> clprs = new ArrayList<>();
 
-        if (stockPrices != null && !stockPrices.isEmpty()) {
-            Map<Integer, Long> firstMonthPrices = new HashMap<>();
-
-            for (StockPrice stockPrice : stockPrices) {
-                LocalDate basDt = stockPrice.getBasDt();
-                int month = basDt.getMonthValue();
-
-                if (!firstMonthPrices.containsKey(month)) {
-                    firstMonthPrices.put(month, stockPrice.getClpr());
-                }
-            }
-
-            for (int i = 1; i <= 12; i++) {
-                Long clpr = firstMonthPrices.get(i);
-                if (clpr != null) {
-                    clprs.add(clpr);
-                }
-            }
+        for(int i = 0 ; i < 12 ; i++) {
+            clprs.add(0L);
         }
 
+        stockPrices.forEach(stockPrice -> {
+            clprs.set(stockPrice.getBasDt().getMonthValue() - 1, stockPrice.getClpr());
+        });
         return clprs;
     }
 

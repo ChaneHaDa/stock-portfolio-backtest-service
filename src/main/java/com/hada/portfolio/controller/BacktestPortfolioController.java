@@ -49,7 +49,7 @@
 
             for(int i = 1 ; i <= Integer.parseInt(params.get("count")) ; i++){
                 String stockName = params.get("stock" + i);
-                int indexOfParenthesis = stockName.indexOf('(');
+                int indexOfParenthesis = stockName.lastIndexOf('(');
                 stockNames.add(stockName.substring(0, indexOfParenthesis - 1).trim());
                 weights.add(Double.parseDouble(params.get("weight" + i)));
             }
@@ -114,7 +114,6 @@
                     backtestResultByYearMap.put(stockNames.get(j), backtestResultByStockMap);
                 }
 
-
                 backtestResultByYearMap.put("maxRor", MaxRor);
                 backtestResultByYearMap.put("minRor", MinRor);
                 backtestResultByYearMap.put("totalRor", totalRorMap.get(i));
@@ -123,7 +122,6 @@
 
             model.addAttribute("stockNames", stockNames);
             model.addAttribute("backtestResultByYear", backtestResultByYear);
-
 
             return "backtest_portfolio";
         }
