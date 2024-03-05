@@ -21,6 +21,7 @@
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="/backtest-portfolio" class="nav-link px-2 text-white">포트폴리오 백테스트</a></li>
                     <li><a href="/calculator" class="nav-link px-2 text-white">계산기</a></li>
+                    <li><a href="/" sec:authorize="isAuthenticated()" class="nav-link px-2 text-white">내 포트폴리오</a></li>
                     <li><a href="/admin" sec:authorize="hasRole('ADMIN')" class="nav-link px-2 text-white">관리자 메뉴</a></li>
                 </ul>
 
