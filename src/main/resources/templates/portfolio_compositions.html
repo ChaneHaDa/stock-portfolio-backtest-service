@@ -1,0 +1,188 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+    <!-- 주식 검색 모달창 -->
+    <div class="modal fade" id="stockSearchModal" tabindex="-1" role="dialog" aria-labelledby="stockSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <!-- 주식 검색 폼 -->
+                    <form id="stockSearchForm">
+                        <div class="row my-1">
+                            <input type="text" class="form-control" id="stockSearchInput" name="searchTerm" placeholder="종목명 혹은 종목코드" onkeydown="handleEnterKey(event)" />
+                        </div>
+                        <div class="row my-1">
+                            <button type="button" id="searchButton" class="btn btn-secondary" onclick="searchStock()">검색</button>
+                        </div>
+                    </form>
+                    <!-- 검색 결과 표시 영역 -->
+                    <div id="searchResults" style="max-height: 300px; overflow-y: auto;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 포트폴리오 영역 -->
+    <div class="container mt-4">
+        <div>
+            <div class="p-3 mb-2 bg-secondary text-white fs-4" th:text="${portfolio.portfolioName}"></div>
+            <div class="p-3 border">
+                <form th:action="@{/portfolio/backtest}" method="post">
+                    <input type="hidden" th:name="portfolioId" th:value="${portfolio.id}">
+                    <div class="mx-2">
+                        <div class="p-3 mb-2 bg-secondary text-white fs-5 bg-opacity-75">포트폴리오 설명</div>
+                        <div class="row m-2">
+                            <div class="my-2">
+                                <div class="col-3">
+                                    <label>포트폴리오 이름</label>
+                                </div>
+                                <div class="
+                                col-9">
+                                    <input type="text" class="form-control" th:value="${portfolio.portfolioName}" th:name="portfolioName">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="col-3">
+                                    <label>포트폴리오 설명</label>
+                                </div>
+                                <div class="col-9">
+                                    <input type="text" class="form-control" th:value="${portfolio.description}" th:name="description">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="p-3 mb-2 bg-secondary text-white fs-5 bg-opacity-75">포트폴리오 구성</div>
+                        <div id="inputFields">
+                            <div class="row m-2" th:each="i : ${#numbers.sequence(1, count)}" th:id="'input' + ${i}">
+                                <div class="col-3">
+                                    <label th:text="'종목 ' + ${i}">종목</label>
+                                </div>
+                                <div class="col-5" data-toggle="modal" data-target="#stockSearchModal">
+                                    <input type="text" class="form-control" th:id="'stock' + ${i}"  th:value="${#strings.isEmpty(#vars['stock' + i]) ? '' : #vars['stock' + i]}"  th:name="'stock' + ${i}" th:placeholder="'종목 ' + ${i}" readonly>
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control" th:value="${#strings.isEmpty(#vars['weight' + i]) ? '' : #vars['weight' + i]}" th:name="'weight' + ${i}" th:placeholder="'비중 ' + ${i}">
+                                </div>
+                                <input type="hidden" class="form-control" th:value="${#strings.isEmpty(#vars['id' + i]) ? '' : #vars['id' + i]}" th:name="'id' + ${i}">
+                            </div>
+                        </div>
+                    </div>
+<!--                    <div class="col text-center">-->
+<!--                        <button type="button" id="addInput" class="btn btn-secondary">+</button>-->
+<!--                        <button type="button" class="btn btn-secondary" onclick="removeInput()">-</button>-->
+<!--                    </div>-->
+                    <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
+                    <div class="col text-center">
+                        <input type="submit" value="수정하기" class="btn btn-dark" onclick="javascript: form.action='/portfolio/update';"/>
+                        <input type="submit" value="백테스트" class="btn btn-dark" onclick="javascript: form.action='/portfolio/backtest';"/>
+                    </div>
+                    <input type="hidden" name="count" th:value="${count != null} ? ${count} : 1">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var countInput = document.querySelector('input[name="count"]');
+        var x = parseInt(countInput.value);
+        var stockInput;
+
+        document.addEventListener('DOMContentLoaded', function () {
+          var maxFields = 10;
+          var addButton = document.getElementById('addInput');
+          var inputFields = document.getElementById('inputFields');
+          var countField = document.querySelector('input[name="count"]');
+
+          $('.col-5[data-toggle="modal"]').on('click', function() {
+            var stockDiv = $(this);
+            stockInput = stockDiv.find('input');
+          });
+
+          addButton.addEventListener('click', function () {
+              if (x < maxFields) {
+                  x++;
+                  countField.value = x;
+                  var newField = document.createElement('div');
+                  newField.classList.add('row', 'm-2');
+                  newField.id = 'input' + x;
+                  newField.innerHTML = `
+                      <div class="col-3">
+                          종목 ${x}
+                      </div>
+                      <div class="col-5" data-toggle="modal" data-target="#stockSearchModal">
+                          <input type="text" class="form-control" name="stock${x}" placeholder="종목 ${x}" readonly>
+                      </div>
+                      <div class="col-4">
+                          <input type="text" class="form-control" name="weight${x}" placeholder="비중 ${x}">
+                      </div>
+                  `;
+                  inputFields.appendChild(newField);
+                  $('.col-5[data-toggle="modal"]').on('click', function() {
+                    var stockDiv = $(this);
+                    stockInput = stockDiv.find('input');
+                  });
+              } else {
+                  alert('더 이상 추가할 수 없습니다.');
+              }
+          });
+        });
+
+        function removeInput() {
+          var countInput = document.querySelector('input[name="count"]');
+          var elemToRemove = document.getElementById('input' + x);
+          elemToRemove.parentNode.removeChild(elemToRemove);
+          x--;
+          countInput.value = x;
+        }
+
+        function handleEnterKey(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                document.getElementById("searchButton").click();
+            }
+        }
+
+        function searchStock() {
+            var form = document.getElementById('stockSearchForm');
+            var formData = new FormData(form);
+
+            fetch('/searchStock?searchTerm=' + formData.get('searchTerm'), {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            })
+            .then(response => response.text())
+            .then(data => {
+                data = JSON.parse(data);
+                displaySearchResults(data);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+
+        function displaySearchResults(searchResults) {
+            var searchResultsContainer = document.getElementById('searchResults');
+            // 기존에 표시된 내용 초기화
+            searchResultsContainer.innerHTML = '';
+
+            // 각 주식에 대한 div 생성 및 추가
+            searchResults.forEach(function (stock) {
+                var stockDiv = document.createElement('div');
+                stockDiv.classList.add('search-result-item');
+                stockDiv.textContent = stock;
+                stockDiv.addEventListener('click', function () {
+                    stockInput.val(stock);
+                    document.getElementById('stockSearchInput').value = '';
+                    searchResultsContainer.innerHTML = '';
+                    $('#stockSearchModal').modal('hide');
+                });
+
+                // 검색 결과 영역에 추가
+                searchResultsContainer.appendChild(stockDiv);
+            });
+        }
+
+    </script>
+</div>
+</html>
