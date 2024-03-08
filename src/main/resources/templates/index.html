@@ -1,5 +1,16 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
-
+    <div class="px-4 py-5 my-5 text-center">
+        <h1 class="display-5 fw-bold text-body-emphasis">Let's go Domino!</h1>
+        <div class="col-lg-6 mx-auto mb-4">
+            <p class="lead">2020년 ~ 현재까지의 데이터를 바탕으로 포트폴리오 백테스트를 제공합니다.</p>
+            <p class="lead">코스피, 코스닥, ETF의 데이터를 사용 가능합니다.</p>
+            <p class="lead">복리 계산기, 수익률 계산기 기능이 있습니다.</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <button type="button" class="btn btn-primary btn-lg px-4 gap-3" onclick="location.href = '/backtest-portfolio'">백테스트</button>
+                <button type="button" class="btn btn-outline-secondary btn-lg px-4" onclick="location.href = '/calculator'">계산기</button>
+            </div>
+        </div>
+    </div>
 </div>
 </html>
