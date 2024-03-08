@@ -1,11 +1,14 @@
 package com.hada.backtest.user;
 
+import com.hada.backtest.config.DataNotFoundException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class SiteUserService implements UserDetailsService {
@@ -35,6 +38,14 @@ public class SiteUserService implements UserDetailsService {
         else
         	siteUser.setAuthorities(UserRole.USER.getValue());
     	return siteUserRepository.save(siteUser);
+    }
+    public SiteUser getUser(String username) {
+        Optional<SiteUser> siteUser = this.siteUserRepository.findByusername(username);
+        if (siteUser.isPresent()) {
+            return siteUser.get();
+        } else {
+            throw new DataNotFoundException("siteuser not found");
+        }
     }
 
     public boolean findByUsername(String username) {

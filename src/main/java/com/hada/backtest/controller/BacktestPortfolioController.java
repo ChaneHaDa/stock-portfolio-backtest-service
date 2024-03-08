@@ -29,6 +29,7 @@
         public String index(Model model) {
             model.addAttribute("count", 1);
             model.addAttribute("startAmount", 10000000);
+            model.addAttribute("totalRor", 0.0);
             return "backtest_portfolio";
         }
 
@@ -121,6 +122,7 @@
 
             model.addAttribute("stockNames", stockNames);
             model.addAttribute("backtestResultByYear", backtestResultByYear);
+            model.addAttribute("totalRor", totalRor);
 
             return "backtest_portfolio";
         }
