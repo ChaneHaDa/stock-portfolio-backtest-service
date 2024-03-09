@@ -21,6 +21,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/h2-console/**").hasRole("ADMIN")
                                 .requestMatchers("/**").permitAll()
                 )
                 .csrf((csrf) -> csrf
