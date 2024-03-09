@@ -1,0 +1,36 @@
+<html layout:decorate="~{layout_admin}">
+<div layout:fragment="content">
+    <h1>주식 가격 업데이트</h1>
+    <form th:action="@{/admin/update/stockprice}" method="post">
+        <div class="mb-3">
+            <label for="dateInput" class="form-label">시작 날짜 입력:</label>
+            <input type="month" class="form-control" id="startDate" name="startDate">
+            <label for="dateInput" class="form-label">끝 날짜 입력:</label>
+            <input type="month" class="form-control" id="endDate" name="endDate">
+            <p class="text-danger" th:if="${error}" th:text="${error}"></p>
+        </div>
+        <button type="submit" class="btn btn-dark">주식 정보 업데이트</button>
+    </form>
+    <script>
+        // JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            var startDate = document.getElementById('startDate');
+            var endDate = document.getElementById('endDate');
+
+            // 이벤트 리스너 등록
+            startDate.addEventListener('change', function() {
+                var selectedDate = new Date(monthInput.value);
+                var selectedYear = selectedDate.getFullYear();
+                var selectedMonth = selectedDate.getMonth() + 1; // JavaScript에서 월은 0부터 시작하므로 +1
+            });
+
+            endDate.addEventListener('change', function() {
+                var selectedDate = new Date(monthInput.value);
+                var selectedYear = selectedDate.getFullYear();
+                var selectedMonth = selectedDate.getMonth() + 1; // JavaScript에서 월은 0부터 시작하므로 +1
+            });
+        });
+
+    </script>
+</div>
+</html>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+    <!-- sbb CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+    <title>Domino</title>
+</head>
+<body>
+    <header class="p-3 text-bg-dark">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                    <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+                </a>
+
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="/backtest-portfolio" class="nav-link px-2 text-white">포트폴리오 백테스트</a></li>
+                    <li><a href="/calculator" class="nav-link px-2 text-white">계산기</a></li>
+                    <li><a href="/portfolio" sec:authorize="isAuthenticated()" class="nav-link px-2 text-white">내 포트폴리오</a></li>
+                    <li><a href="/admin" sec:authorize="hasRole('ADMIN')" class="nav-link px-2 text-white">관리자 메뉴</a></li>
+                </ul>
+
+                <div class="text-end">
+                    <a th:href="@{/user/login}" sec:authorize="isAnonymous()" class="btn btn-outline-light me-2">로그인</a>
+                    <a th:href="@{/user/signup}" sec:authorize="isAnonymous()" class="btn btn-light">회원가입</a>
+                    <a th:href="@{/user/logout}" sec:authorize="isAuthenticated()" class="btn btn-outline-light me-2">로그아웃</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- 기본 템플릿 안에 삽입될 내용 Start -->
+    <th:block layout:fragment="content"></th:block>
+    <!-- 기본 템플릿 안에 삽입될 내용 End -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

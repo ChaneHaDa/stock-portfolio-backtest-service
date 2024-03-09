@@ -1,0 +1,284 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+    <!-- 주식 검색 모달창 -->
+    <div class="modal fade" id="stockSearchModal" tabindex="-1" role="dialog" aria-labelledby="stockSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <!-- 주식 검색 폼 -->
+                    <form id="stockSearchForm">
+                        <div class="row my-1">
+                            <input type="text" class="form-control" id="stockSearchInput" name="searchTerm" placeholder="종목명 혹은 종목코드" onkeydown="handleEnterKey(event)" />
+                        </div>
+                        <div class="row my-1">
+                            <button type="button" id="searchButton" class="btn btn-secondary" onclick="searchStock()">검색</button>
+                        </div>
+                    </form>
+                    <!-- 검색 결과 표시 영역 -->
+                    <div id="searchResults" style="max-height: 300px; overflow-y: auto;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 포트폴리오저장 모달창 -->
+    <div class="modal fade" id="portfolioSaveModal" tabindex="-1" role="dialog" aria-labelledby="portfolioSaveModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form id="portfolioSaveForm" th:action="@{/portfolio/save}" method="post">
+                        <div class="row my-1">
+                            <input type="text" class="form-control" id="portfolioSaveInput" name="portfolioName" placeholder="포트폴리오 이름을 입력하세요!" />
+                        </div>
+                        <div class="row my-1">
+                            <input type="text" class="form-control" id="description" name="description" placeholder="설명을 입력하세요!" />
+                        </div>
+                        <div class="row my-1">
+                            <button type="submit" id="portfolioSaveButton" class="btn btn-secondary">저장</button>
+                        </div>
+                        <div th:each="i : ${#numbers.sequence(1, count)}">
+                            <input type="hidden" class="form-control"  th:value="${#strings.isEmpty(#vars['stock' + i]) ? '' : #vars['stock' + i]}"  th:name="'stock' + ${i}">
+                            <input type="hidden" class="form-control" th:value="${#strings.isEmpty(#vars['weight' + i]) ? '' : #vars['weight' + i]}" th:name="'weight' + ${i}">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 포트폴리오 영역 -->
+    <div class="container mt-4">
+        <div>
+            <div class="p-3 mb-2 bg-secondary text-white fs-4">포트폴리오 백테스트</div>
+            <div class="p-3 border">
+                <form th:action="@{/backtest-portfolio}" method="post">
+                    <div>
+                        <label for="startYear" class="form-label fs-5 fw-bold">시작 년도</label>
+                        <select class="form-select" name="startYear">
+                            <option th:each="year : ${#numbers.sequence(2020, 2023)}" th:text="${year}" th:value="${year}" th:selected="${year} == ${startYear}"></option>
+                        </select>
+                        <label for="endYear" class="form-label fs-5 fw-bold">끝 년도</label>
+                        <select class="form-select" name="endYear">
+                            <option th:each="year : ${#numbers.sequence(2020, 2023)}" th:text="${year}" th:value="${year}" th:selected="${year} == ${endYear}"></option>
+                        </select>
+                        <label for="startAmount" class="form-label fs-5 fw-bold">시작 금액</label>
+                        <input type="text" class="form-control" name="startAmount" th:value="${startAmount}">
+                    </div>
+
+                    <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
+                    <div class="mx-2">
+                        <div class="p-3 mb-2 bg-secondary text-white fs-5 bg-opacity-75">포트폴리오 구성</div>
+                        <div id="inputFields">
+                            <div class="row m-2" th:each="i : ${#numbers.sequence(1, count)}" th:id="'input' + ${i}">
+                                <div class="col-3">
+                                    <label th:text="'종목 ' + ${i}">종목</label>
+                                </div>
+                                <div class="col-5" data-toggle="modal" data-target="#stockSearchModal">
+                                    <input type="text" class="form-control" th:id="'stock' + ${i}"  th:value="${#strings.isEmpty(#vars['stock' + i]) ? '' : #vars['stock' + i]}"  th:name="'stock' + ${i}" th:placeholder="'종목 ' + ${i}" readonly>
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control" th:value="${#strings.isEmpty(#vars['weight' + i]) ? '' : #vars['weight' + i]}" th:name="'weight' + ${i}" th:placeholder="'비중 ' + ${i}">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col text-center">
+                        <button type="button" id="addInput" class="btn btn-secondary">+</button>
+                        <button type="button" class="btn btn-secondary" onclick="removeInput()">-</button>
+                    </div>
+                    <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
+                    <div class="col text-center">
+                        <button type="submit" class="btn btn-dark">분석하기</button>
+                    </div>
+                    <input type="hidden" name="count" th:value="${count != null} ? ${count} : 1">
+                </form>
+            </div>
+        </div>
+
+        <div class="my-3" th:if="${backtestResult != null}">
+            <div class="p-3 mb-2 bg-secondary text-white fs-4">결과</div>
+            <div class="p-3 border">
+                <div class="p-3 mb-2 bg-secondary text-white fs-5 bg-opacity-75">결과 요약</div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>시작금액</th>
+                        <th>총 수익률</th>
+                        <th>최고 수익률</th>
+                        <th>최저 수익률</th>
+                        <th>최종금액</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td th:text="${backtestResult.startAmount}"></td>
+                        <td th:text="${backtestResult.totalRor}"></td>
+                        <td th:text="${backtestResult.maxRor}"></td>
+                        <td th:text="${backtestResult.minRor}"></td>
+                        <td th:text="${backtestResult.endAmount}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="col text-center">
+                    <button type="submit" sec:authorize="isAuthenticated()" data-toggle="modal" data-target="#portfolioSaveModal" class="btn btn-dark">저장하기</button>
+                </div>
+
+                <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
+                <div class="p-3 mb-2 bg-secondary text-white fs-5 bg-opacity-75">년도별 요약</div>
+                <div class="p-3" th:each="yearResult : ${backtestResultByYear}">
+                    <div class="p-2 mb-2 bg-secondary text-white fs-7 bg-opacity-50" th:text="${yearResult.key}"></div>
+                    <div class="p-2 m-1 border">
+                        <h3>종합</h3>
+                        <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>총 수익률</th>
+                                <th>월 최고 수익률</th>
+                                <th>월 최저 수익률</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td th:text="${yearResult.value.totalRor}"></td>
+                                <td th:text="${yearResult.value.maxRor}"></td>
+                                <td th:text="${yearResult.value.minRor}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="p-2 m-1 border">
+                        <h3>종목별</h3>
+                        <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
+                        <div th:each="stockName : ${stockNames}">
+                            <h5 th:text="${stockName}"></h5>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>총 수익률</th>
+                                    <th>월 최고 수익률</th>
+                                    <th>월 최저 수익률</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${yearResult.value[stockName.toString()].totalRorByStock}"></td>
+                                    <td th:text="${yearResult.value[stockName.toString()].maxRorByStock}"></td>
+                                    <td th:text="${yearResult.value[stockName.toString()].minRorByStock}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var countInput = document.querySelector('input[name="count"]');
+        var x = parseInt(countInput.value);
+        var stockInput;
+
+        document.addEventListener('DOMContentLoaded', function () {
+          var maxFields = 10;
+          var addButton = document.getElementById('addInput');
+          var inputFields = document.getElementById('inputFields');
+          var countField = document.querySelector('input[name="count"]');
+
+          $('.col-5[data-toggle="modal"]').on('click', function() {
+            var stockDiv = $(this);
+            stockInput = stockDiv.find('input');
+          });
+
+          addButton.addEventListener('click', function () {
+              if (x < maxFields) {
+                  x++;
+                  countField.value = x;
+                  var newField = document.createElement('div');
+                  newField.classList.add('row', 'm-2');
+                  newField.id = 'input' + x;
+                  newField.innerHTML = `
+                      <div class="col-3">
+                          종목 ${x}
+                      </div>
+                      <div class="col-5" data-toggle="modal" data-target="#stockSearchModal">
+                          <input type="text" class="form-control" name="stock${x}" placeholder="종목 ${x}" readonly>
+                      </div>
+                      <div class="col-4">
+                          <input type="text" class="form-control" name="weight${x}" placeholder="비중 ${x}">
+                      </div>
+                  `;
+                  inputFields.appendChild(newField);
+                  $('.col-5[data-toggle="modal"]').on('click', function() {
+                    var stockDiv = $(this);
+                    stockInput = stockDiv.find('input');
+                  });
+              } else {
+                  alert('더 이상 추가할 수 없습니다.');
+              }
+          });
+        });
+
+        function removeInput() {
+          var countInput = document.querySelector('input[name="count"]');
+          var elemToRemove = document.getElementById('input' + x);
+          elemToRemove.parentNode.removeChild(elemToRemove);
+          x--;
+          countInput.value = x;
+        }
+
+        function handleEnterKey(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                document.getElementById("searchButton").click();
+            }
+        }
+
+        function searchStock() {
+            var form = document.getElementById('stockSearchForm');
+            var formData = new FormData(form);
+
+            fetch('/searchStock?searchTerm=' + formData.get('searchTerm'), {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            })
+            .then(response => response.text())
+            .then(data => {
+                data = JSON.parse(data);
+                displaySearchResults(data);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+
+        function displaySearchResults(searchResults) {
+            var searchResultsContainer = document.getElementById('searchResults');
+            // 기존에 표시된 내용 초기화
+            searchResultsContainer.innerHTML = '';
+
+            // 각 주식에 대한 div 생성 및 추가
+            searchResults.forEach(function (stock) {
+                var stockDiv = document.createElement('div');
+                stockDiv.classList.add('search-result-item');
+                stockDiv.textContent = stock;
+                stockDiv.addEventListener('click', function () {
+                    stockInput.val(stock);
+                    document.getElementById('stockSearchInput').value = '';
+                    searchResultsContainer.innerHTML = '';
+                    $('#stockSearchModal').modal('hide');
+                });
+
+                // 검색 결과 영역에 추가
+                searchResultsContainer.appendChild(stockDiv);
+            });
+        }
+
+    </script>
+</div>
+</html>

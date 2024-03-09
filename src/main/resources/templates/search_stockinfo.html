@@ -1,0 +1,37 @@
+<html layout:decorate="~{layout_admin}">
+<div layout:fragment="content">
+    <h1 class="mt-4">주식 정보 페이지</h1>
+    <div class="row mt-4 mb-3">
+        <form action="/admin/stockinfo/search" method="get" class="row g-3 align-items-center">
+            <div class="col-md-4">
+                <input name="query" class="form-control" type="text" th:value="${query}" placeholder="검색어 입력">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-dark">검색</button>
+            </div>
+        </form>
+    </div>
+    <div class="row mt-4">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">종목명</th>
+<!--                <th scope="col">시장분류</th>-->
+                <th scope="col">종목 코드</th>
+<!--                <th scope="col">ISIN 코드</th>-->
+            </tr>
+            </thead>
+            <tbody>
+            <!-- 여기에 DB에서 가져온 정보를 출력하는 부분 -->
+            <tr th:each="stock : ${stock}">
+                <td th:text="${stock.itmsNm}">itmsNm Name</td>
+<!--                <td th:text="${stock.mrktCtg}">Market Category</td>-->
+                <td th:text="${stock.srtnCd}">Sorting Code</td>
+<!--                <td th:text="${stock.isinCd}">ISIN Code</td>-->
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+</html>
