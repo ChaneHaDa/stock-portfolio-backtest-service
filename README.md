@@ -28,3 +28,7 @@ https://github.com/ChaneHaDa/krx-json-data
 ## 개발환경
 * IntellJ
 * wsl2(22.04.03 LTS)
+
+# 추가 설명
+## velog
+[증권 포트폴리오 백테스트 개발 과정](https://velog.io/@chane_ha_da/series/%EC%A6%9D%EA%B6%8C-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4-%EB%B0%B1%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%84%9C%EB%B9%84%EC%8A%A4)
