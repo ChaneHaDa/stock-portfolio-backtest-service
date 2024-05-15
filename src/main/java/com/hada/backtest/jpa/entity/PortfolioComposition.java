@@ -1,5 +1,6 @@
-package com.hada.backtest.portfolio;
+package com.hada.backtest.jpa.entity;
 
+import com.hada.backtest.jpa.entity.Portfolio;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

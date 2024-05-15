@@ -1,11 +1,12 @@
-package com.hada.backtest.stock;
+package com.hada.backtest.utils;
 
 import com.google.gson.JsonArray;
-import com.hada.backtest.api.DataPortalApi;
-import com.hada.backtest.stock.info.StockInfo;
-import com.hada.backtest.stock.info.StockInfoService;
-import com.hada.backtest.stock.price.StockPrice;
-import com.hada.backtest.stock.price.StockPriceService;
+
+import com.hada.backtest.jpa.entity.StockInfo;
+import com.hada.backtest.jpa.entity.StockPrice;
+import com.hada.backtest.jpa.service.StockInfoService;
+import com.hada.backtest.jpa.service.StockPriceService;
+import com.hada.backtest.utils.DataPortalApi;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;

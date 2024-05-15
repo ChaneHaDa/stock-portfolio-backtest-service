@@ -1,7 +1,7 @@
     package com.hada.backtest.controller;
 
 
-    import com.hada.backtest.stock.price.StockPriceService;
+    import com.hada.backtest.jpa.service.StockPriceService;
     import com.hada.backtest.utils.RorCalculator;
     import org.springframework.stereotype.Controller;
     import org.springframework.ui.Model;

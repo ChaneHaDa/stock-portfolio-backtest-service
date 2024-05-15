@@ -1,4 +1,4 @@
-package com.hada.backtest.user;
+package com.hada.backtest.jpa.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

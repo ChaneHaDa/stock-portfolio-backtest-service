@@ -1,5 +1,6 @@
-package com.hada.backtest.stock.price;
+package com.hada.backtest.jpa.repository;
 
+import com.hada.backtest.jpa.entity.StockPrice;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

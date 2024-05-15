@@ -1,6 +1,7 @@
-package com.hada.backtest.portfolio;
+package com.hada.backtest.jpa.repository;
 
-import com.hada.backtest.user.SiteUser;
+import com.hada.backtest.jpa.entity.Portfolio;
+import com.hada.backtest.jpa.entity.SiteUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

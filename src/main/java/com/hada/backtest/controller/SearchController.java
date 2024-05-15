@@ -1,6 +1,6 @@
 package com.hada.backtest.controller;
 
-import com.hada.backtest.stock.info.StockInfoService;
+import com.hada.backtest.jpa.service.StockInfoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +14,7 @@ public class SearchController {
     public SearchController(StockInfoService stockInfoService) {
         this.stockInfoService = stockInfoService;
     }
+
     @GetMapping("/searchStock")
     public ResponseEntity<List<String>> searchStock(@RequestParam String searchTerm) {
         List<String> searchResult = stockInfoService.findAllByQuery(searchTerm);

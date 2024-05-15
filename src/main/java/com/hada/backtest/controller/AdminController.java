@@ -1,10 +1,10 @@
-package com.hada.backtest.management;
+package com.hada.backtest.controller;
 
-import com.hada.backtest.stock.StockDataLoader;
-import com.hada.backtest.stock.info.StockInfo;
-import com.hada.backtest.stock.info.StockInfoService;
-import com.hada.backtest.stock.price.StockPrice;
-import com.hada.backtest.stock.price.StockPriceService;
+import com.hada.backtest.utils.StockDataLoader;
+import com.hada.backtest.jpa.entity.StockInfo;
+import com.hada.backtest.jpa.service.StockInfoService;
+import com.hada.backtest.jpa.entity.StockPrice;
+import com.hada.backtest.jpa.service.StockPriceService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

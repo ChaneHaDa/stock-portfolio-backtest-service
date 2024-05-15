@@ -1,5 +1,6 @@
-package com.hada.backtest.user;
+package com.hada.backtest.jpa.repository;
 
+import com.hada.backtest.jpa.entity.SiteUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 

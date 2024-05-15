@@ -1,4 +1,4 @@
-package com.hada.backtest.user;
+package com.hada.backtest.jpa.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;

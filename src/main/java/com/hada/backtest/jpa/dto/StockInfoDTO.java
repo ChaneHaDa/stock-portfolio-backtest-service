@@ -1,4 +1,4 @@
-package com.hada.backtest.stock.info;
+package com.hada.backtest.jpa.dto;
 
 import lombok.Getter;
 import lombok.Setter;

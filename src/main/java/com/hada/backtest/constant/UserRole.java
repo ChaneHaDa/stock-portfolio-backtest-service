@@ -1,4 +1,4 @@
-package com.hada.backtest.user;
+package com.hada.backtest.constant;
 
 import lombok.Getter;
 

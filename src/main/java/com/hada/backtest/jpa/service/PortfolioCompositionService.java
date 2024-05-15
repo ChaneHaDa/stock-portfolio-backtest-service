@@ -1,5 +1,8 @@
-package com.hada.backtest.portfolio;
+package com.hada.backtest.jpa.service;
 
+import com.hada.backtest.jpa.entity.Portfolio;
+import com.hada.backtest.jpa.entity.PortfolioComposition;
+import com.hada.backtest.jpa.repository.PortfolioCompositionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
