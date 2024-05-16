@@ -1,7 +1,7 @@
 package com.hada.backtest.jpa.service;
 
 import com.hada.backtest.jpa.entity.Portfolio;
-import com.hada.backtest.jpa.entity.PortfolioComposition;
+import com.hada.backtest.jpa.entity.PortfolioItem;
 import com.hada.backtest.jpa.repository.PortfolioCompositionRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,16 +15,16 @@ public class PortfolioCompositionService {
         this.portfolioCompositionRepository = portfolioCompositionRepository;
     }
 
-    public void saveAll(List<PortfolioComposition> portfolioCompositionList) {
-        portfolioCompositionRepository.saveAll(portfolioCompositionList);
+    public void saveAll(List<PortfolioItem> portfolioItemList) {
+        portfolioCompositionRepository.saveAll(portfolioItemList);
     }
 
-    public List<PortfolioComposition> getPortfolioCompositions(Portfolio portfolio) {
+    public List<PortfolioItem> getPortfolioCompositions(Portfolio portfolio) {
         return portfolioCompositionRepository.findByPortfolio(portfolio);
     }
 
     public void deleteAll(Portfolio portfolio) {
-        List<PortfolioComposition> portfolioCompositionList = portfolioCompositionRepository.findByPortfolio(portfolio);
-        portfolioCompositionRepository.deleteAll(portfolioCompositionList);
+        List<PortfolioItem> portfolioItemList = portfolioCompositionRepository.findByPortfolio(portfolio);
+        portfolioCompositionRepository.deleteAll(portfolioItemList);
     }
 }

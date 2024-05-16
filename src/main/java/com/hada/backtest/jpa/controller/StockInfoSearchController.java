@@ -16,7 +16,7 @@ public class StockInfoSearchController {
     }
 
     @GetMapping("/search-stock")
-    public ResponseEntity<List<String>> searchStock(@RequestParam String searchTerm) {
+    public ResponseEntity<List<String>> searchStock(@RequestParam("searchTerm") String searchTerm) {
         List<String> searchResult = stockInfoService.getStockByQuery(searchTerm);
         return ResponseEntity.ok(searchResult);
     }

@@ -1,11 +1,11 @@
 package com.hada.backtest.jpa.repository;
 
 import com.hada.backtest.jpa.entity.Portfolio;
-import com.hada.backtest.jpa.entity.PortfolioComposition;
+import com.hada.backtest.jpa.entity.PortfolioItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface PortfolioCompositionRepository extends JpaRepository<PortfolioComposition, Long> {
-    List<PortfolioComposition> findByPortfolio(Portfolio portfolio);
+public interface PortfolioCompositionRepository extends JpaRepository<PortfolioItem, Long> {
+    List<PortfolioItem> findByPortfolio(Portfolio portfolio);
 }

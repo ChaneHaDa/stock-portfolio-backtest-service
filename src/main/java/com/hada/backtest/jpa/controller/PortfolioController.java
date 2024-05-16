@@ -1,7 +1,7 @@
 package com.hada.backtest.jpa.controller;
 
 import com.hada.backtest.jpa.entity.Portfolio;
-import com.hada.backtest.jpa.entity.PortfolioComposition;
+import com.hada.backtest.jpa.entity.PortfolioItem;
 import com.hada.backtest.jpa.service.PortfolioService;
 import com.hada.backtest.jpa.service.PortfolioCompositionService;
 import com.hada.backtest.jpa.entity.SiteUser;
@@ -58,22 +58,22 @@ public class PortfolioController {
         SiteUser siteUser = siteUserService.getUser(username);
 
         Portfolio portfolio1 = new Portfolio();
-        portfolio1.setPortfolioName(portfolioName);
+        portfolio1.setName(portfolioName);
         portfolio1.setDescription(description);
         portfolio1.setUsername(siteUser);
 
-        List<PortfolioComposition> portfolioCompositionList = new ArrayList<>();
+        List<PortfolioItem> portfolioItemList = new ArrayList<>();
         for(int i = 0 ; i < itmsNmList.size() ; i++) {
-            PortfolioComposition portfolioComposition = new PortfolioComposition();
-            portfolioComposition.setItmsNm(itmsNmList.get(i));
-            portfolioComposition.setSrtnCd(srtnCdList.get(i));
-            portfolioComposition.setAllocation(Double.parseDouble(stockWeightList.get(i)));
-            portfolioComposition.setPortfolio(portfolio1);
-            portfolioCompositionList.add(portfolioComposition);
+            PortfolioItem portfolioItem = new PortfolioItem();
+            portfolioItem.setCode(itmsNmList.get(i));
+            portfolioItem.setName(srtnCdList.get(i));
+            portfolioItem.setAllocation(Double.parseDouble(stockWeightList.get(i)));
+            portfolioItem.setPortfolio(portfolio1);
+            portfolioItemList.add(portfolioItem);
         }
 
         portfolioService.save(portfolio1);
-        portfolioCompositionService.saveAll(portfolioCompositionList);
+        portfolioCompositionService.saveAll(portfolioItemList);
 
         return "redirect:/portfolio_index";
     }
@@ -91,15 +91,15 @@ public class PortfolioController {
     @PostMapping("/compositions")
     public String getPortfolio(@RequestParam Long portfolioId, @RequestParam String portfolioName, Model model) {
         Portfolio portfolio = portfolioService.getPortfolio(portfolioId);
-        List<PortfolioComposition> portfolioCompositions = portfolioCompositionService.getPortfolioCompositions(portfolio);
-        model.addAttribute("count", portfolioCompositions.size());
+        List<PortfolioItem> portfolioItems = portfolioCompositionService.getPortfolioCompositions(portfolio);
+        model.addAttribute("count", portfolioItems.size());
         model.addAttribute("portfolio", portfolio);
         model.addAttribute("portfolioId", portfolioId);
 
-        for(int i = 0 ; i < portfolioCompositions.size() ; i++) {
-            model.addAttribute("stock" + (i + 1), portfolioCompositions.get(i).getItmsNm() + " (" + portfolioCompositions.get(i).getSrtnCd() + ")");
-            model.addAttribute("weight" + (i + 1), portfolioCompositions.get(i).getAllocation());
-            model.addAttribute("id" + (i + 1), portfolioCompositions.get(i).getId());
+        for(int i = 0; i < portfolioItems.size() ; i++) {
+            model.addAttribute("stock" + (i + 1), portfolioItems.get(i).getCode() + " (" + portfolioItems.get(i).getName() + ")");
+            model.addAttribute("weight" + (i + 1), portfolioItems.get(i).getAllocation());
+            model.addAttribute("id" + (i + 1), portfolioItems.get(i).getId());
         }
 
         return "portfolio_compositions";
@@ -108,14 +108,14 @@ public class PortfolioController {
     @PostMapping("/backtest")
     public String backtest(@RequestParam Long portfolioId, Model model) {
         Portfolio portfolio = portfolioService.getPortfolio(portfolioId);
-        List<PortfolioComposition> portfolioCompositions = portfolioCompositionService.getPortfolioCompositions(portfolio);
-        model.addAttribute("count", portfolioCompositions.size());
+        List<PortfolioItem> portfolioItems = portfolioCompositionService.getPortfolioCompositions(portfolio);
+        model.addAttribute("count", portfolioItems.size());
         model.addAttribute("startAmount", 10000000);
         model.addAttribute("totalRor", 0.0);
 
-        for(int i = 0 ; i < portfolioCompositions.size() ; i++) {
-            model.addAttribute("stock" + (i + 1), portfolioCompositions.get(i).getItmsNm() + " (" + portfolioCompositions.get(i).getSrtnCd() + ")");
-            model.addAttribute("weight" + (i + 1), portfolioCompositions.get(i).getAllocation());
+        for(int i = 0; i < portfolioItems.size() ; i++) {
+            model.addAttribute("stock" + (i + 1), portfolioItems.get(i).getCode() + " (" + portfolioItems.get(i).getName() + ")");
+            model.addAttribute("weight" + (i + 1), portfolioItems.get(i).getAllocation());
         }
 
         return "backtest_portfolio";
@@ -151,25 +151,25 @@ public class PortfolioController {
         SiteUser siteUser = siteUserService.getUser(username);
 
         Portfolio portfolio1 = new Portfolio();
-        portfolio1.setPortfolioName(portfolioName);
+        portfolio1.setName(portfolioName);
         portfolio1.setDescription(description);
         portfolio1.setUsername(siteUser);
         portfolio1.setId(Long.parseLong((String) portfolio.get("portfolioId")));
 
-        List<PortfolioComposition> portfolioCompositionList = new ArrayList<>();
+        List<PortfolioItem> portfolioItemList = new ArrayList<>();
         for(int i = 0 ; i < itmsNmList.size() ; i++) {
-            PortfolioComposition portfolioComposition = new PortfolioComposition();
-            portfolioComposition.setItmsNm(itmsNmList.get(i));
-            portfolioComposition.setSrtnCd(srtnCdList.get(i));
-            portfolioComposition.setAllocation(Double.parseDouble(stockWeightList.get(i)));
-            portfolioComposition.setId(idList.get(i));
-            portfolioComposition.setPortfolio(portfolio1);
-            portfolioComposition.setId(idList.get(i));
-            portfolioCompositionList.add(portfolioComposition);
+            PortfolioItem portfolioItem = new PortfolioItem();
+            portfolioItem.setCode(itmsNmList.get(i));
+            portfolioItem.setName(srtnCdList.get(i));
+            portfolioItem.setAllocation(Double.parseDouble(stockWeightList.get(i)));
+            portfolioItem.setId(idList.get(i));
+            portfolioItem.setPortfolio(portfolio1);
+            portfolioItem.setId(idList.get(i));
+            portfolioItemList.add(portfolioItem);
         }
 
         portfolioService.save(portfolio1);
-        portfolioCompositionService.saveAll(portfolioCompositionList);
+        portfolioCompositionService.saveAll(portfolioItemList);
 
         return "redirect:/portfolio";
     }
