@@ -26,12 +26,12 @@ public class CalculatorService {
         List<Double> amountList = new ArrayList<>();
         double price = calculatorWelfareInputDTO.getPrice();
 
-        revenueList.add(Math.round(price * (rorList.get(0) / 100) * 100) / 100.0);
-        amountList.add(Math.round((price + revenueList.get(0)) * 100) / 100.0);
+        revenueList.add(RorCalculator.setFormat(price * (rorList.get(0) / 100)));
+        amountList.add(RorCalculator.setFormat(price + revenueList.get(0)));
         for(int i = 1 ; i < rorList.size() ; i++){
-            Double revenue = (price * (rorList.get(i) / 100)) - (price * (rorList.get(i - 1) / 100));
-            revenueList.add(Math.round(revenue * 100) / 100.0);
-            amountList.add(Math.round((amountList.get(i - 1) + revenueList.get(i)) * 100) / 100.0);
+            double revenue = (price * (rorList.get(i) / 100)) - (price * (rorList.get(i - 1) / 100));
+            revenueList.add(RorCalculator.setFormat(revenue));
+            amountList.add(RorCalculator.setFormat(amountList.get(i - 1) + revenueList.get(i)));
         }
 
         double totalProfit = (long) (price * (rorList.get(rorList.size() - 1) / 100));

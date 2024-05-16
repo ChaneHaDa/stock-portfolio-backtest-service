@@ -5,6 +5,10 @@ import java.util.List;
 
 public final class RorCalculator {
 
+    public static double setFormat(double value){
+        return Math.round(value * 100) / 100.0;
+    }
+
     public static double getRor(double buyPrice, double sellPrice){
         if(buyPrice == 0){
             return 0;
