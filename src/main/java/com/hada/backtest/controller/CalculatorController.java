@@ -35,7 +35,6 @@ public class CalculatorController {
             model.addAttribute("sellPrice", sellPriceDouble);
             model.addAttribute("quantity", quantityLong);
         } catch (NumberFormatException e) {
-            // 잘못된 입력 형식에 대한 처리
             return "calculator";
         }
         return "calculator";

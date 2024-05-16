@@ -1,6 +1,6 @@
 package com.hada.backtest.jpa.service;
 
-import com.hada.backtest.config.DataNotFoundException;
+import com.hada.backtest.exception.DataNotFoundException;
 import com.hada.backtest.constant.UserRole;
 import com.hada.backtest.jpa.entity.SiteUser;
 import com.hada.backtest.jpa.repository.SiteUserRepository;

@@ -1,4 +1,4 @@
-package com.hada.backtest.config;
+package com.hada.backtest.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
