@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface StockPriceRepository extends JpaRepository<StockPrice, Long> {
-    List<StockPrice> findByItmsNmAndBasDtBetween(String itmsNm, LocalDate startDate, LocalDate endDate);
-    Page<StockPrice> findAllBySrtnCd(String query, Pageable pageable);
-    Page<StockPrice> findAllByItmsNm(String query, Pageable pageable);
+    List<StockPrice> findByCodeAndDateBetween(String itmsNm, LocalDate startDate, LocalDate endDate);
+    List<StockPrice> findAllByCode(String code);
 }

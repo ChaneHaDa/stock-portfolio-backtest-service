@@ -19,56 +19,37 @@ public class StockPriceService {
         this.stockPriceRepository = stockPriceRepository;
     }
 
-    public List<StockPrice> saveAll(List<StockPrice> stockPrices) {
-        return stockPriceRepository.saveAll(stockPrices);
+    public List<StockPrice> getStockPriceByCode(String code) {
+        return stockPriceRepository.findAllByCode(code);
     }
 
-    public Page<StockPrice> findAll(int page, boolean isDesc) {
-        List<Sort.Order> sorts = new ArrayList<>();
-        if(isDesc) {
-            sorts.add(Sort.Order.desc("basDt"));
-        }else {
-            sorts.add(Sort.Order.asc("basDt"));
+    public List<List<Long>> getPriceByYears(String code, int startYear, int endYear) {
+        List<List<Long>> priceByYearsList = new ArrayList<>();
+        List<StockPrice> stockPriceList = stockPriceRepository.findAllByCode(code);
+
+        for (int i = 0; i <= endYear - startYear; i++) {
+            List<Long> monthList = new ArrayList<>();
+            for (int j = 0; j < 12; j++) {
+                monthList.add(0L);
+            }
+            priceByYearsList.add(monthList);
         }
-        Pageable pageable = PageRequest.of(page, 20, Sort.by(sorts));
-        return stockPriceRepository.findAll(pageable);
+
+        stockPriceList.forEach(stockPrice -> {
+            priceByYearsList.get(stockPrice.getDate().getYear() - startYear).set(stockPrice.getDate().getMonthValue() - 1, stockPrice.getPrice());
+        });
+
+        return priceByYearsList;
     }
 
-    public Page<StockPrice> findAllByItmsNmOrSrtnCd(String query, int page, boolean isDesc) {
-        List<Sort.Order> sorts = new ArrayList<>();
-        if (isDesc) {
-            sorts.add(Sort.Order.desc("basDt"));
-        } else {
-            sorts.add(Sort.Order.asc("basDt"));
-        }
-
-        Pageable pageable = PageRequest.of(page, 20, Sort.by(sorts));
-
-        if (query.charAt(0) <= '9' && query.charAt(0) >= '0') {
-            return stockPriceRepository.findAllBySrtnCd(query, pageable);
-        } else {
-            return stockPriceRepository.findAllByItmsNm(query, pageable);
-        }
-    }
-
-    public Long getPriceByItmsNmAndMonth(String itmsNm, int year, int month) {
-        LocalDate startDate = LocalDate.of(year, month, 1);
-        LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
-        List<StockPrice> stockPrices = stockPriceRepository.findByItmsNmAndBasDtBetween(itmsNm, startDate, endDate);
-        if(stockPrices.size() > 0) {
-            return stockPrices.get(0).getClpr();
-        }
-        return 0L;
-    }
-
-    public List<StockPrice> findAllByItmsNmAndYear(String itmsNm, int year) {
+    public List<StockPrice> findAllByCodeAndYear(String code, int year) {
         LocalDate startDate = LocalDate.of(year, 1, 1);
         LocalDate endDate = LocalDate.of(year, 12, 31);
-        return stockPriceRepository.findByItmsNmAndBasDtBetween(itmsNm, startDate, endDate);
+        return stockPriceRepository.findByCodeAndDateBetween(code, startDate, endDate);
     }
 
     public List<Long> getPricesByItmsNmAndYear(String itmsNm, int year) {
-        List<StockPrice> stockPrices = findAllByItmsNmAndYear(itmsNm, year);
+        List<StockPrice> stockPrices = findAllByCodeAndYear(itmsNm, year);
 
         List<Long> clprs = new ArrayList<>();
 
@@ -77,7 +58,7 @@ public class StockPriceService {
         }
 
         stockPrices.forEach(stockPrice -> {
-            clprs.set(stockPrice.getBasDt().getMonthValue() - 1, stockPrice.getClpr());
+            clprs.set(stockPrice.getDate().getMonthValue() - 1, stockPrice.getPrice());
         });
         return clprs;
     }

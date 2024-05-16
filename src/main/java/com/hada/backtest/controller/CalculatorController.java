@@ -28,8 +28,6 @@ public class CalculatorController {
             double sellPriceDouble = Double.parseDouble(sellPrice);
             long quantityLong = Long.parseLong(quantity);
 
-            // 사용자가 제대로된 숫자값을 입력하지 않았을 경우를 처리할 수 있습니다.
-            // buyPriceDouble, sellPriceDouble, quantityLong를 사용하여 작업을 수행합니다.
 
             model.addAttribute("ror", RorCalculator.getRor(buyPriceDouble, sellPriceDouble));
             model.addAttribute("profit", (long) ((sellPriceDouble - buyPriceDouble) * quantityLong));

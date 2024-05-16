@@ -242,7 +242,7 @@
             var form = document.getElementById('stockSearchForm');
             var formData = new FormData(form);
 
-            fetch('/searchStock?searchTerm=' + formData.get('searchTerm'), {
+            fetch('/search-stock?searchTerm=' + formData.get('searchTerm'), {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',

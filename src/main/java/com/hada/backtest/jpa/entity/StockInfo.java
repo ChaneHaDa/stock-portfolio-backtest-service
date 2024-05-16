@@ -7,19 +7,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Table(name = "stock_info", uniqueConstraints = {@UniqueConstraint(columnNames = {"code", "name"})})
 public class StockInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    // 종목코드
-    @Column(unique = true)
-    private String itmsNm;
-    // 시장구분
-//    private String mrktCtg;
-    // 종목명
-    private String srtnCd;
-    // 고유번호
-//    private String isinCd;
-
+    private String name;
+    private String code;
 }
