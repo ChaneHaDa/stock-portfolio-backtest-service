@@ -24,5 +24,14 @@ public class Portfolio {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private SiteUser username;
+    private SiteUser siteUser;
+
+    public Portfolio() {
+    }
+
+    public Portfolio(String name, String description, SiteUser siteUser) {
+        this.name = name;
+        this.description = description;
+        this.siteUser = siteUser;
+    }
 }

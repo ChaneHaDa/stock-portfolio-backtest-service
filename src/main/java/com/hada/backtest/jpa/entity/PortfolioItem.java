@@ -13,10 +13,20 @@ public class PortfolioItem {
     private Long id;
     private String code;
     private String name;
-    private double allocation;
+    private double weight;
 
     @ManyToOne
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
+
+    public PortfolioItem() {
+    }
+
+    public PortfolioItem(String code, String name, double weight, Portfolio portfolio) {
+        this.code = code;
+        this.name = name;
+        this.weight = weight;
+        this.portfolio = portfolio;
+    }
 
 }

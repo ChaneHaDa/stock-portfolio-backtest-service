@@ -3,7 +3,7 @@ package com.hada.backtest.jpa.controller;
 import com.hada.backtest.jpa.entity.Portfolio;
 import com.hada.backtest.jpa.entity.PortfolioItem;
 import com.hada.backtest.jpa.service.PortfolioService;
-import com.hada.backtest.jpa.service.PortfolioCompositionService;
+import com.hada.backtest.jpa.service.PortfolioItemService;
 import com.hada.backtest.jpa.entity.SiteUser;
 import com.hada.backtest.jpa.service.SiteUserService;
 import org.springframework.stereotype.Controller;
@@ -23,11 +23,10 @@ import java.util.Map;
 public class PortfolioController {
 
     private final PortfolioService portfolioService;
-    private final PortfolioCompositionService portfolioCompositionService;
-
+    private final PortfolioItemService portfolioCompositionService;
     private final SiteUserService siteUserService;
 
-    public PortfolioController(PortfolioService portfolioService, PortfolioCompositionService portfolioCompositionService, SiteUserService siteUserService) {
+    public PortfolioController(PortfolioService portfolioService, PortfolioItemService portfolioCompositionService, SiteUserService siteUserService) {
         this.portfolioService = portfolioService;
         this.portfolioCompositionService = portfolioCompositionService;
         this.siteUserService = siteUserService;
@@ -60,14 +59,14 @@ public class PortfolioController {
         Portfolio portfolio1 = new Portfolio();
         portfolio1.setName(portfolioName);
         portfolio1.setDescription(description);
-        portfolio1.setUsername(siteUser);
+        portfolio1.setSiteUser(siteUser);
 
         List<PortfolioItem> portfolioItemList = new ArrayList<>();
         for(int i = 0 ; i < itmsNmList.size() ; i++) {
             PortfolioItem portfolioItem = new PortfolioItem();
             portfolioItem.setCode(itmsNmList.get(i));
             portfolioItem.setName(srtnCdList.get(i));
-            portfolioItem.setAllocation(Double.parseDouble(stockWeightList.get(i)));
+            portfolioItem.setWeight(Double.parseDouble(stockWeightList.get(i)));
             portfolioItem.setPortfolio(portfolio1);
             portfolioItemList.add(portfolioItem);
         }
@@ -98,7 +97,7 @@ public class PortfolioController {
 
         for(int i = 0; i < portfolioItems.size() ; i++) {
             model.addAttribute("stock" + (i + 1), portfolioItems.get(i).getCode() + " (" + portfolioItems.get(i).getName() + ")");
-            model.addAttribute("weight" + (i + 1), portfolioItems.get(i).getAllocation());
+            model.addAttribute("weight" + (i + 1), portfolioItems.get(i).getWeight());
             model.addAttribute("id" + (i + 1), portfolioItems.get(i).getId());
         }
 
@@ -115,7 +114,7 @@ public class PortfolioController {
 
         for(int i = 0; i < portfolioItems.size() ; i++) {
             model.addAttribute("stock" + (i + 1), portfolioItems.get(i).getCode() + " (" + portfolioItems.get(i).getName() + ")");
-            model.addAttribute("weight" + (i + 1), portfolioItems.get(i).getAllocation());
+            model.addAttribute("weight" + (i + 1), portfolioItems.get(i).getWeight());
         }
 
         return "backtest_portfolio";
@@ -153,7 +152,7 @@ public class PortfolioController {
         Portfolio portfolio1 = new Portfolio();
         portfolio1.setName(portfolioName);
         portfolio1.setDescription(description);
-        portfolio1.setUsername(siteUser);
+        portfolio1.setSiteUser(siteUser);
         portfolio1.setId(Long.parseLong((String) portfolio.get("portfolioId")));
 
         List<PortfolioItem> portfolioItemList = new ArrayList<>();
@@ -161,7 +160,7 @@ public class PortfolioController {
             PortfolioItem portfolioItem = new PortfolioItem();
             portfolioItem.setCode(itmsNmList.get(i));
             portfolioItem.setName(srtnCdList.get(i));
-            portfolioItem.setAllocation(Double.parseDouble(stockWeightList.get(i)));
+            portfolioItem.setWeight(Double.parseDouble(stockWeightList.get(i)));
             portfolioItem.setId(idList.get(i));
             portfolioItem.setPortfolio(portfolio1);
             portfolioItem.setId(idList.get(i));

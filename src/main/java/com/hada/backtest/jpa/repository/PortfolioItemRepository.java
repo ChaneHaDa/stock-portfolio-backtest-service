@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface PortfolioCompositionRepository extends JpaRepository<PortfolioItem, Long> {
+public interface PortfolioItemRepository extends JpaRepository<PortfolioItem, Long> {
     List<PortfolioItem> findByPortfolio(Portfolio portfolio);
 }

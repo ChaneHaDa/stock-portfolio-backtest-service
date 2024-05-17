@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
-public class StockInfoSearchController {
+public class StockInfoController {
     private final StockInfoService stockInfoService;
 
-    public StockInfoSearchController(StockInfoService stockInfoService) {
+    public StockInfoController(StockInfoService stockInfoService) {
         this.stockInfoService = stockInfoService;
     }
 

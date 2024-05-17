@@ -28,7 +28,7 @@ public class StockInfoService {
 
         List<String> result = new ArrayList<>();
         for(StockInfo stockInfo : stockInfos) {
-            result.add(stockInfo.getCode() +" (" + stockInfo.getName() + ")");
+            result.add(stockInfo.getName() +" (" + stockInfo.getCode() + ")");
         }
 
         return result;

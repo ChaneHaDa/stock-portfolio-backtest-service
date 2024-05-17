@@ -1,5 +1,6 @@
 package com.hada.backtest.jpa.service;
 
+import com.hada.backtest.jpa.dto.StockPriceDTO;
 import com.hada.backtest.jpa.entity.StockPrice;
 import com.hada.backtest.jpa.repository.StockPriceRepository;
 import org.springframework.data.domain.Page;
@@ -23,23 +24,23 @@ public class StockPriceService {
         return stockPriceRepository.findAllByCode(code);
     }
 
-    public List<List<Long>> getPriceByYears(String code, int startYear, int endYear) {
-        List<List<Long>> priceByYearsList = new ArrayList<>();
-        List<StockPrice> stockPriceList = stockPriceRepository.findAllByCode(code);
+    public List<StockPriceDTO> getStockPriceListByCode(String code) {
+//        List<List<Long>> priceByYearsList = new ArrayList<>();
+        List<StockPriceDTO> stockPriceList = stockPriceRepository.findAllByCode(code).stream().map(StockPriceDTO::fromEntity).toList();
 
-        for (int i = 0; i <= endYear - startYear; i++) {
-            List<Long> monthList = new ArrayList<>();
-            for (int j = 0; j < 12; j++) {
-                monthList.add(0L);
-            }
-            priceByYearsList.add(monthList);
-        }
+//        for (int i = 0; i <= endYear - startYear; i++) {
+//            List<Long> monthList = new ArrayList<>();
+//            for (int j = 0; j < 12; j++) {
+//                monthList.add(0L);
+//            }
+//            priceByYearsList.add(monthList);
+//        }
+//
+//        stockPriceList.forEach(stockPrice -> {
+//            priceByYearsList.get(stockPrice.getDate().getYear() - startYear).set(stockPrice.getDate().getMonthValue() - 1, stockPrice.getPrice());
+//        });
 
-        stockPriceList.forEach(stockPrice -> {
-            priceByYearsList.get(stockPrice.getDate().getYear() - startYear).set(stockPrice.getDate().getMonthValue() - 1, stockPrice.getPrice());
-        });
-
-        return priceByYearsList;
+        return stockPriceList;
     }
 
     public List<StockPrice> findAllByCodeAndYear(String code, int year) {
@@ -48,8 +49,8 @@ public class StockPriceService {
         return stockPriceRepository.findByCodeAndDateBetween(code, startDate, endDate);
     }
 
-    public List<Long> getPricesByItmsNmAndYear(String itmsNm, int year) {
-        List<StockPrice> stockPrices = findAllByCodeAndYear(itmsNm, year);
+    public List<Long> getPricesByItmsNmAndYear(String code, int year) {
+        List<StockPrice> stockPrices = findAllByCodeAndYear(code, year);
 
         List<Long> clprs = new ArrayList<>();
 

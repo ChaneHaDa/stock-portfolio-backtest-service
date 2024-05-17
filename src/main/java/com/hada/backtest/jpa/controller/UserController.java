@@ -44,7 +44,7 @@ public class UserController {
 
         siteUserService.save(userCreateForm.getUsername(), userCreateForm.getPassword1());
 
-        return "redirect:/login";
+        return "redirect:/user/login";
     }
 
     @GetMapping("/login")
