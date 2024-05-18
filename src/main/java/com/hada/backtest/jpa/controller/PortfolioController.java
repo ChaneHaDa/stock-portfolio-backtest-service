@@ -2,7 +2,6 @@ package com.hada.backtest.jpa.controller;
 
 import com.hada.backtest.dto.BacktestInputDTO;
 import com.hada.backtest.dto.BacktestItemDTO;
-import com.hada.backtest.jpa.dto.CompostionDTO;
 import com.hada.backtest.jpa.dto.PortfolioInputDTO;
 import com.hada.backtest.jpa.entity.Portfolio;
 
@@ -13,9 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/portfolio")
@@ -50,25 +47,25 @@ public class PortfolioController {
 
     @PostMapping("/compositions")
     public String getPortfolio(@RequestParam("id") Long id, Model model) {
-        CompostionDTO compostionDTO = portfolioService.getPortfolioComposition(id);
-        model.addAttribute("compostionDTO", compostionDTO);
+        PortfolioInputDTO portfolioInputDTO = portfolioService.getPortfolioComposition(id);
+        model.addAttribute("compostionDTO", portfolioInputDTO);
         return "portfolio_compositions";
     }
 
     @PostMapping("/backtest")
-    public String getBacktest(@ModelAttribute CompostionDTO compostionDTO, Model model) {
-        List<BacktestItemDTO> items = compostionDTO.getItems().stream().map(BacktestItemDTO::fromCompostionItemDTO).toList();
+    public String getBacktest(@ModelAttribute PortfolioInputDTO portfolioInputDTO, Model model) {
+        List<BacktestItemDTO> items = portfolioInputDTO.getItems().stream().map(BacktestItemDTO::fromPortfolioInoutItemDTO).toList();
         BacktestInputDTO backtestInputDTO = new BacktestInputDTO("2020", "2023", 100000, items, items.size());
         model.addAttribute("backtestInputDTO", backtestInputDTO);
         return "backtest_portfolio";
     }
 
     @PostMapping("/update")
-    public String updatePortfolio(@ModelAttribute CompostionDTO compostionDTO, Principal principal) {
+    public String updatePortfolio(@ModelAttribute PortfolioInputDTO portfolioInputDTO, Principal principal) {
         if(principal == null) {
             return "redirect:/user/login";
         }
-        portfolioService.updatePortfolio(compostionDTO);
+        portfolioService.updatePortfolio(portfolioInputDTO);
 
         return "redirect:/portfolio";
     }

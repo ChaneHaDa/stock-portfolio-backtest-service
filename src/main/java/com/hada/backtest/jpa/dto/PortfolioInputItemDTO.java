@@ -1,5 +1,6 @@
 package com.hada.backtest.jpa.dto;
 
+import com.hada.backtest.jpa.entity.PortfolioItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,10 +8,25 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class PortfolioInputItemDTO {
+    private long id;
     private String stock;
     private double weight;
 
+    public PortfolioInputItemDTO() {
+        id = 0;
+        stock = "";
+        weight = 0;
+    }
+
+    public PortfolioInputItemDTO(long id, String stock, double weight) {
+        this.id = id;
+        this.stock = stock;
+        this.weight = weight;
+    }
+
+    public static PortfolioInputItemDTO fromEntity(PortfolioItem entity) {
+        return new PortfolioInputItemDTO(entity.getId(), entity.getName() + ' ' + '(' + entity.getCode() + ')', entity.getWeight());
+    }
 }
