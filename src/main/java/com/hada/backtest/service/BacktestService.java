@@ -3,7 +3,7 @@ package com.hada.backtest.service;
 import com.hada.backtest.dto.BacktestInputDTO;
 import com.hada.backtest.dto.BacktestItemDTO;
 import com.hada.backtest.dto.BacktestReturnDTO;
-import com.hada.backtest.dto.PortfolioStockDTO;
+import com.hada.backtest.jpa.dto.PortfolioStockDTO;
 import com.hada.backtest.jpa.dto.StockPriceDTO;
 import com.hada.backtest.jpa.service.StockPriceService;
 import com.hada.backtest.utils.RorCalculator;

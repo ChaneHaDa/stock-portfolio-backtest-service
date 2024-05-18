@@ -23,4 +23,13 @@ public class PortfolioItemDTO {
     public static PortfolioItem fromDTO(PortfolioItemDTO dto) {
         return new PortfolioItem(dto.getCode(), dto.getName(), dto.getWeight(), null);
     }
+
+    public static PortfolioItemDTO fromPortfolioInputItemDTO(PortfolioInputItemDTO dto) {
+        String stockName = dto.getStock();
+        int indexOfParenthesis1 = stockName.lastIndexOf('(');
+        int indexOfParenthesis2 = stockName.lastIndexOf(')');
+        String code = stockName.substring(indexOfParenthesis1 + 1, indexOfParenthesis2);
+        String name = stockName.substring(0, indexOfParenthesis1 - 1);
+        return new PortfolioItemDTO(code, name, dto.getWeight());
+    }
 }

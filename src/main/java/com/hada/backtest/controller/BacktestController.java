@@ -38,7 +38,6 @@
         public String postBacktest(@ModelAttribute BacktestInputDTO backtestInputDTO, Model model) {
             model.addAttribute("backtestInputDTO", backtestInputDTO);
             model.addAttribute("backtestReturnDTO", backtestService.getBacktestReturnDTO(backtestInputDTO));
-
             return "backtest_portfolio";
         }
 

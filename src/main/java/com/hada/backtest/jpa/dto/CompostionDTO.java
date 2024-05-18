@@ -7,14 +7,14 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Getter
 @Setter
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
-public class PortfolioInputDTO {
+@NoArgsConstructor
+public class CompostionDTO {
     private long id;
     private String name;
     private String description;
-    private List<PortfolioInputItemDTO> items;
+    private List<CompostionItemDTO> items;
     private int size;
 }

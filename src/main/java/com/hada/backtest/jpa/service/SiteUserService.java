@@ -43,7 +43,7 @@ public class SiteUserService implements UserDetailsService {
     	return siteUserRepository.save(siteUser);
     }
     public SiteUser getUser(String username) {
-        Optional<SiteUser> siteUser = this.siteUserRepository.findByusername(username);
+        Optional<SiteUser> siteUser = this.siteUserRepository.findByUsername(username);
         if (siteUser.isPresent()) {
             return siteUser.get();
         } else {

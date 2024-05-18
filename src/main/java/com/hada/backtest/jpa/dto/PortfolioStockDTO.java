@@ -1,4 +1,4 @@
-package com.hada.backtest.dto;
+package com.hada.backtest.jpa.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

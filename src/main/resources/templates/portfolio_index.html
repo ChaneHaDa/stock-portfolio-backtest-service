@@ -16,11 +16,10 @@
             </div>
             <div class="px-3 mb-1 py-1" th:each="portfolio : ${portfolios}">
                 <form th:action="@{/portfolio/compositions}" method="post">
-                    <input type="hidden" th:name="portfolioId" th:value="${portfolio.id}">
+                    <input type="hidden" th:name="id" th:value="${portfolio.id}">
                     <div class="row">
                         <div class="col">
-                            <input type="hidden" th:name="portfolioName" th:value="${portfolio.portfolioName}">
-                            <span th:text="${portfolio.portfolioName}"></span>
+                            <span th:text="${portfolio.name}"></span>
                         </div>
                         <div class="col">
                             <span th:text="${portfolio.description}"></span>

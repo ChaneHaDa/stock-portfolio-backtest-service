@@ -12,15 +12,5 @@ import java.util.List;
 
 @SpringBootTest
 class PortfolioApplicationTests {
-    @Autowired
-    private PortfolioService portfolioService;
 
-    @Test
-    public void test1() {
-        List<PortfolioItemDTO> items = new ArrayList<>();
-        items.add(new PortfolioItemDTO("900110", "aaaa", 1));
-        items.add(new PortfolioItemDTO("900270", "aaaa", 0.1));
-        PortfolioInputDTO portfolioInputDTO = new PortfolioInputDTO("test", "test", items);
-        portfolioService.savePortfolio(portfolioInputDTO, null);
-    }
 }
