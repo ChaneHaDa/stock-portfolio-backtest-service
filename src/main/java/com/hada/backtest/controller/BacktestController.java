@@ -1,20 +1,14 @@
     package com.hada.backtest.controller;
 
-
     import com.hada.backtest.dto.BacktestInputDTO;
     import com.hada.backtest.dto.BacktestItemDTO;
-    import com.hada.backtest.dto.BacktestReturnDTO;
-    import com.hada.backtest.jpa.service.StockPriceService;
     import com.hada.backtest.service.BacktestService;
-    import com.hada.backtest.utils.RorCalculator;
     import org.springframework.stereotype.Controller;
     import org.springframework.ui.Model;
     import org.springframework.web.bind.annotation.*;
 
     import java.util.ArrayList;
-    import java.util.HashMap;
     import java.util.List;
-    import java.util.Map;
 
     @Controller
     @RequestMapping("/backtest-portfolio")

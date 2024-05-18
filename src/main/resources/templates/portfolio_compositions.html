@@ -125,11 +125,15 @@
         });
 
         function removeInput() {
-          var countInput = document.querySelector('input[name="size"]');
-          var elemToRemove = document.getElementById('input' + x);
-          elemToRemove.parentNode.removeChild(elemToRemove);
-          x--;
-          countInput.value = x;
+            if (x == 1){
+                alert('더 이상 삭제할수없습니다.');
+            }else{
+              var countInput = document.querySelector('input[name="size"]');
+              var elemToRemove = document.getElementById('input' + x);
+              elemToRemove.parentNode.removeChild(elemToRemove);
+              x--;
+              countInput.value = x;
+            }
         }
 
         function handleEnterKey(event) {

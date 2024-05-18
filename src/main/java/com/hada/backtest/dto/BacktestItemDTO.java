@@ -1,6 +1,6 @@
 package com.hada.backtest.dto;
 
-import com.hada.backtest.jpa.dto.CompostionItemDTO;
+import com.hada.backtest.jpa.dto.PortfolioInputItemDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +18,7 @@ public class BacktestItemDTO {
         this.weight = weight;
     }
 
-    public static BacktestItemDTO fromCompostionItemDTO(CompostionItemDTO dto) {
+    public static BacktestItemDTO fromPortfolioInoutItemDTO(PortfolioInputItemDTO dto) {
         return new BacktestItemDTO(dto.getStock(), dto.getWeight());
     }
 }

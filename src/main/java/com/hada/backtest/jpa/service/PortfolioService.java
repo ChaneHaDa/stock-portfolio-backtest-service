@@ -36,13 +36,13 @@ public class PortfolioService {
         portfolioItemRepository.saveAll(portfolioItemList);
     }
 
-    public CompostionDTO getPortfolioComposition(Long id) {
+    public PortfolioInputDTO getPortfolioComposition(Long id) {
         Portfolio portfolio = portfolioRepository.findById(id).orElse(null);
         List<PortfolioItem> portfolioItems = portfolioItemRepository.findByPortfolio(portfolio);
-        List<CompostionItemDTO> portfolioItemDTOList = portfolioItems.stream()
-                .map(CompostionItemDTO::fromEntity)
+        List<PortfolioInputItemDTO> portfolioItemDTOList = portfolioItems.stream()
+                .map(PortfolioInputItemDTO::fromEntity)
                 .toList();
-        return new CompostionDTO(portfolio.getId(), portfolio.getName(), portfolio.getDescription(), portfolioItemDTOList, portfolioItemDTOList.size());
+        return new PortfolioInputDTO(portfolio.getId(), portfolio.getName(), portfolio.getDescription(), portfolioItemDTOList, portfolioItemDTOList.size());
     }
 
 
@@ -54,20 +54,20 @@ public class PortfolioService {
         portfolioRepository.deleteById(id);
     }
 
-    public void updatePortfolio(CompostionDTO compostionDTO) {
-        Portfolio portfolio = portfolioRepository.findById(compostionDTO.getId()).orElse(null);
+    public void updatePortfolio(PortfolioInputDTO portfolioInputDTO) {
+        Portfolio portfolio = portfolioRepository.findById(portfolioInputDTO.getId()).orElse(null);
         List<PortfolioItem> portfolioItems = portfolioItemRepository.findByPortfolio(portfolio);
-        portfolio.setName(compostionDTO.getName());
-        portfolio.setDescription(compostionDTO.getDescription());
+        portfolio.setName(portfolioInputDTO.getName());
+        portfolio.setDescription(portfolioInputDTO.getDescription());
 
-        for(int i = compostionDTO.getSize(); i < portfolioItems.size(); i++) {
+        for(int i = portfolioInputDTO.getSize(); i < portfolioItems.size(); i++) {
             PortfolioItem portfolioItem = portfolioItems.get(i);
             portfolioItemRepository.delete(portfolioItem);
             portfolioItems.remove(i);
         }
 
-        for (int i = 0; i < compostionDTO.getItems().size(); i++) {
-            CompostionItemDTO compostionItemDTO = compostionDTO.getItems().get(i);
+        for (int i = 0; i < portfolioInputDTO.getItems().size(); i++) {
+            PortfolioInputItemDTO compostionItemDTO = portfolioInputDTO.getItems().get(i);
             String stockName = compostionItemDTO.getStock();
             int indexOfParenthesis1 = stockName.lastIndexOf('(');
             int indexOfParenthesis2 = stockName.lastIndexOf(')');
