@@ -6,17 +6,16 @@
             <div class="p-3 border">
                 <form th:action="@{/calculator/ror}">
                     <label for="buyPrice" class="form-label fs-7 fw-bold">매수 금액</label>
-                    <input type="text" class="form-control" name="buyPrice" th:value="${buyPrice}">
+                    <input type="text" class="form-control" name="buyPrice" th:value="${CalculatorRorInputDTO != null} ?${CalculatorRorInputDTO.buyPrice} : 0">
                     <label for="quantity" class="form-label fs-7 fw-bold">매수 수량</label>
-                    <input type="text" class="form-control" name="quantity" th:value="${quantity}">
+                    <input type="text" class="form-control" name="quantity" th:value="${CalculatorRorInputDTO != null} ?${CalculatorRorInputDTO.quantity} : 0">
                     <label for="sellPrice" class="form-label fs-7 fw-bold">매도 금액</label>
-                    <input type="text" class="form-control" name="sellPrice" th:value="${sellPrice}">
+                    <input type="text" class="form-control" name="sellPrice" th:value="${CalculatorRorInputDTO != null} ?${CalculatorRorInputDTO.sellPrice} : 0">
                     <div class="col text-center my-3">
                         <button type="submit" class="btn btn-dark">계산</button>
                     </div>
                 </form>
             </div>
-
             <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
             <div class="p-3 border">
                 <table class="table">
@@ -28,23 +27,24 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td th:text="${ror!= null} ? ${ror} : 0"></td>
-                        <td th:text="${profit!= null} ? ${profit} : 0"></td>
+                        <td th:text="${CalculatorRorReturnDTO != null} ? ${CalculatorRorReturnDTO.ror} : 0"></td>
+                        <td th:text="${CalculatorRorReturnDTO != null} ? ${CalculatorRorReturnDTO.profit} : 0"></td>
                     </tr>
                     </tbody>
                 </table>
             </div>
         </div>
+
         <div class="my-2">
             <div class="p-3 mb-2 bg-secondary text-white fs-4">복리 계산기</div>
             <div class="p-3 border">
                 <form th:action="@{/calculator/welfare}">
                     <label for="price" class="form-label fs-7 fw-bold">초기 금액</label>
-                    <input type="text" class="form-control" name="price" th:value="${price}">
+                    <input type="text" class="form-control" name="price" th:value="${calculatorWelfareInputDTO != null} ? ${calculatorWelfareInputDTO.price} : 0">
                     <label for="term" class="form-label fs-7 fw-bold">복리 횟수</label>
-                    <input type="text" class="form-control" name="term" th:value="${term}">
+                    <input type="text" class="form-control" name="term" th:value="${calculatorWelfareInputDTO != null} ? ${calculatorWelfareInputDTO.term} : 0">
                     <label for="welfareRor" class="form-label fs-7 fw-bold">수익률</label>
-                    <input type="text" class="form-control" name="welfareRor" th:value="${welfareRor}">
+                    <input type="text" class="form-control" name="ror" th:value="${calculatorWelfareInputDTO != null} ? ${calculatorWelfareInputDTO.ror} : 0">
                     <div class="col text-center my-3">
                         <button type="submit" class="btn btn-dark">계산</button>
                     </div>
@@ -57,7 +57,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">총 수익</h5>
-                                <p class="card-text" th:text="${totalProfit}"></p>
+                                <p class="card-text" th:text="${calculatorWelfareReturnDTO != null} ? ${calculatorWelfareReturnDTO.totalProfit} : 0"></p>
                             </div>
                         </div>
                     </div>
@@ -65,13 +65,13 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">최종 금액</h5>
-                                <p class="card-text" th:text="${finalAmount}"></p>
+                                <p class="card-text" th:text="${calculatorWelfareReturnDTO != null} ? ${calculatorWelfareReturnDTO.finalAmount} : 0"></p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
-                <div th:if="${rorList != null}">
+                <div th:if="${calculatorWelfareReturnDTO != null}">
                     <table class="table">
                         <thead>
                         <tr>
@@ -82,12 +82,11 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <!-- 여기에 각 행을 추가 -->
-                            <tr th:each="index : ${#numbers.sequence(0, rorList.size()-1)}">
+                            <tr th:each="index : ${#numbers.sequence(0, calculatorWelfareReturnDTO.rorList.size()-1)}">
                                 <td th:text="${index+1}"></td>
-                                <td th:text="${revenueList.get(index)}"></td>
-                                <td th:text="${priceList.get(index)}"></td>
-                                <td th:text="${rorList.get(index)}"></td>
+                                <td th:text="${calculatorWelfareReturnDTO.revenueList.get(index)}"></td>
+                                <td th:text="${calculatorWelfareReturnDTO.amountList.get(index)}"></td>
+                                <td th:text="${calculatorWelfareReturnDTO.rorList.get(index)}"></td>
                             </tr>
                         </tbody>
                     </table>

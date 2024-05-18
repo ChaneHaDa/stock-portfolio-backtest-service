@@ -5,34 +5,28 @@ import java.util.List;
 
 public final class RorCalculator {
 
-    public static double getRor(double buyPrice, double sellPrice){
-        if(buyPrice == 0){
-            return 0;
-        }
-        Double ror = (sellPrice - buyPrice) / buyPrice * 100;
-        return Math.round(ror * 100) / 100.0;
+    public static double setFormat(double value){
+        return Math.round(value * 100) / 100.0;
     }
 
-    public static double getRor(long buyPrice, long sellPrice) {
-        return getRor((double) buyPrice, (double) sellPrice);
+    public static  <T extends Number> double getRor(T buyPrice, T sellPrice) {
+        double p1 = buyPrice.doubleValue();
+        double p2 = sellPrice.doubleValue();
+        if(p1 == 0){
+            return 0;
+        }
+        double ror = (p2 - p1) / p1;
+        return setFormat(ror);
     }
 
     public static long getCashByRor(long cash, double ror){
         return (long) (cash * (1 + ror / 100));
     }
 
-    public static List<Double> getRorList(List<Double> priceList){
+    public static <T extends Number> List<Double> getRorList(List<T> priceList) {
         List<Double> rorList = new ArrayList<>();
-        for(int i = 1; i < priceList.size(); i++){
-            rorList.add(getRor(priceList.get(i - 1), priceList.get(i)));
-        }
-        return rorList;
-    }
-
-    public static List<Double> getRorList(List<Long> priceList, boolean isLong){
-        List<Double> rorList = new ArrayList<>();
-        for(int i = 1; i < priceList.size(); i++){
-            rorList.add(getRor(priceList.get(i - 1), priceList.get(i)));
+        for (int i = 0; i < priceList.size() - 1; i++) {
+            rorList.add(getRor(priceList.get(i), priceList.get(i + 1)));
         }
         return rorList;
     }

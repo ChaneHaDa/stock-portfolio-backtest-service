@@ -24,11 +24,11 @@
 
     <!-- 포트폴리오 영역 -->
     <div class="container mt-4">
-        <div>
-            <div class="p-3 mb-2 bg-secondary text-white fs-4" th:text="${portfolio.portfolioName}"></div>
+        <div th:object="${compostionDTO}">
+<!--            <div class="p-3 mb-2 bg-secondary text-white fs-4" th:text="*{name}"></div>-->
             <div class="p-3 border">
                 <form th:action="@{/portfolio/backtest}" method="post">
-                    <input type="hidden" th:name="portfolioId" th:value="${portfolio.id}">
+                    <input type="hidden" th:field="*{id}">
                     <div class="mx-2">
                         <div class="p-3 mb-2 bg-secondary text-white fs-5 bg-opacity-75">포트폴리오 설명</div>
                         <div class="row m-2">
@@ -36,9 +36,8 @@
                                 <div class="col-3">
                                     <label>포트폴리오 이름</label>
                                 </div>
-                                <div class="
-                                col-9">
-                                    <input type="text" class="form-control" th:value="${portfolio.portfolioName}" th:name="portfolioName">
+                                <div class="col-9">
+                                    <input type="text" class="form-control" th:field="*{name}">
                                 </div>
                             </div>
                             <div>
@@ -46,44 +45,42 @@
                                     <label>포트폴리오 설명</label>
                                 </div>
                                 <div class="col-9">
-                                    <input type="text" class="form-control" th:value="${portfolio.description}" th:name="description">
+                                    <input type="text" class="form-control" th:field="*{description}">
                                 </div>
                             </div>
-
                         </div>
                         <div class="p-3 mb-2 bg-secondary text-white fs-5 bg-opacity-75">포트폴리오 구성</div>
                         <div id="inputFields">
-                            <div class="row m-2" th:each="i : ${#numbers.sequence(1, count)}" th:id="'input' + ${i}">
+                            <div class="row m-2" th:each="item, iterStat : *{items}" th:id="'input' + ${iterStat.index + 1}">
                                 <div class="col-3">
-                                    <label th:text="'종목 ' + ${i}">종목</label>
+                                    <label th:text="'종목 ' + ${iterStat.index + 1}">종목</label>
                                 </div>
                                 <div class="col-5" data-toggle="modal" data-target="#stockSearchModal">
-                                    <input type="text" class="form-control" th:id="'stock' + ${i}"  th:value="${#strings.isEmpty(#vars['stock' + i]) ? '' : #vars['stock' + i]}"  th:name="'stock' + ${i}" th:placeholder="'종목 ' + ${i}" readonly>
+                                    <input type="text" class="form-control" th:id="'stock' + ${iterStat.index}" th:field="*{items[__${iterStat.index}__].stock}" th:placeholder="'종목 ' + ${iterStat.index + 1}" readonly>
                                 </div>
                                 <div class="col-4">
-                                    <input type="text" class="form-control" th:value="${#strings.isEmpty(#vars['weight' + i]) ? '' : #vars['weight' + i]}" th:name="'weight' + ${i}" th:placeholder="'비중 ' + ${i}">
+                                    <input type="text" class="form-control" th:id="'weight' + ${iterStat.index}" th:field="*{items[__${iterStat.index}__].weight}" th:placeholder="'비중 '+ ${iterStat.index + 1}">
                                 </div>
-                                <input type="hidden" class="form-control" th:value="${#strings.isEmpty(#vars['id' + i]) ? '' : #vars['id' + i]}" th:name="'id' + ${i}">
                             </div>
                         </div>
                     </div>
-<!--                    <div class="col text-center">-->
-<!--                        <button type="button" id="addInput" class="btn btn-secondary">+</button>-->
-<!--                        <button type="button" class="btn btn-secondary" onclick="removeInput()">-</button>-->
-<!--                    </div>-->
+                    <div class="col text-center">
+                        <button type="button" id="addInput" class="btn btn-secondary">+</button>
+                        <button type="button" class="btn btn-secondary" onclick="removeInput()">-</button>
+                    </div>
                     <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
                     <div class="col text-center">
                         <input type="submit" value="수정하기" class="btn btn-dark" onclick="javascript: form.action='/portfolio/update';"/>
                         <input type="submit" value="백테스트" class="btn btn-dark" onclick="javascript: form.action='/portfolio/backtest';"/>
                     </div>
-                    <input type="hidden" name="count" th:value="${count != null} ? ${count} : 1">
+                    <input type="hidden" th:field="*{size}">
                 </form>
             </div>
         </div>
     </div>
 
     <script>
-        var countInput = document.querySelector('input[name="count"]');
+        var countInput = document.querySelector('input[name="size"]');
         var x = parseInt(countInput.value);
         var stockInput;
 
@@ -91,7 +88,7 @@
           var maxFields = 10;
           var addButton = document.getElementById('addInput');
           var inputFields = document.getElementById('inputFields');
-          var countField = document.querySelector('input[name="count"]');
+          var countField = document.querySelector('input[name="size"]');
 
           $('.col-5[data-toggle="modal"]').on('click', function() {
             var stockDiv = $(this);
@@ -110,10 +107,10 @@
                           종목 ${x}
                       </div>
                       <div class="col-5" data-toggle="modal" data-target="#stockSearchModal">
-                          <input type="text" class="form-control" name="stock${x}" placeholder="종목 ${x}" readonly>
+                          <input type="text" class="form-control" name="items[${x-1}].stock" placeholder="종목 ${x}" readonly>
                       </div>
                       <div class="col-4">
-                          <input type="text" class="form-control" name="weight${x}" placeholder="비중 ${x}">
+                          <input type="text" class="form-control" name="items[${x-1}].weight" placeholder="비중 ${x}">
                       </div>
                   `;
                   inputFields.appendChild(newField);
@@ -128,7 +125,7 @@
         });
 
         function removeInput() {
-          var countInput = document.querySelector('input[name="count"]');
+          var countInput = document.querySelector('input[name="size"]');
           var elemToRemove = document.getElementById('input' + x);
           elemToRemove.parentNode.removeChild(elemToRemove);
           x--;
@@ -146,7 +143,7 @@
             var form = document.getElementById('stockSearchForm');
             var formData = new FormData(form);
 
-            fetch('/searchStock?searchTerm=' + formData.get('searchTerm'), {
+            fetch('/search-stock?searchTerm=' + formData.get('searchTerm'), {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',

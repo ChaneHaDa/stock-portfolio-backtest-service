@@ -1,11 +1,8 @@
 package com.hada.backtest;
 
-import com.hada.backtest.stock.info.StockInfo;
-import com.hada.backtest.stock.info.StockInfoRepository;
-import org.junit.jupiter.api.Test;
+import com.hada.backtest.jpa.repository.StockInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;

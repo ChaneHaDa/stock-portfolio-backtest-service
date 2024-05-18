@@ -26,19 +26,21 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <form id="portfolioSaveForm" th:action="@{/portfolio/save}" method="post">
+                    <form id="portfolioSaveForm" th:action="@{/portfolio/save}"  method="post">
                         <div class="row my-1">
-                            <input type="text" class="form-control" id="portfolioSaveInput" name="portfolioName" placeholder="포트폴리오 이름을 입력하세요!" />
+                            <input type="text" class="form-control" name="name" placeholder="포트폴리오 이름을 입력하세요!" />
                         </div>
                         <div class="row my-1">
-                            <input type="text" class="form-control" id="description" name="description" placeholder="설명을 입력하세요!" />
+                            <input type="text" class="form-control" name="description" placeholder="설명을 입력하세요!" />
                         </div>
                         <div class="row my-1">
                             <button type="submit" id="portfolioSaveButton" class="btn btn-secondary">저장</button>
                         </div>
-                        <div th:each="i : ${#numbers.sequence(1, count)}">
-                            <input type="hidden" class="form-control"  th:value="${#strings.isEmpty(#vars['stock' + i]) ? '' : #vars['stock' + i]}"  th:name="'stock' + ${i}">
-                            <input type="hidden" class="form-control" th:value="${#strings.isEmpty(#vars['weight' + i]) ? '' : #vars['weight' + i]}" th:name="'weight' + ${i}">
+                        <div th:if="${backtestInputDTO != null}" th:object="${backtestInputDTO}">
+                            <div th:each="item, iterStat : *{items}" th:id="'input' + ${iterStat.index + 1}">
+                                <input type="hidden" class="form-control"  th:field="*{items[__${iterStat.index}__].stock}">
+                                <input type="hidden" class="form-control" th:field="*{items[__${iterStat.index}__].weight}">
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -51,33 +53,34 @@
         <div>
             <div class="p-3 mb-2 bg-secondary text-white fs-4">포트폴리오 백테스트</div>
             <div class="p-3 border">
-                <form th:action="@{/backtest-portfolio}" method="post">
+                <form th:action="@{/backtest-portfolio}" th:object="${backtestInputDTO}" method="post">
                     <div>
                         <label for="startYear" class="form-label fs-5 fw-bold">시작 년도</label>
-                        <select class="form-select" name="startYear">
-                            <option th:each="year : ${#numbers.sequence(2020, 2023)}" th:text="${year}" th:value="${year}" th:selected="${year} == ${startYear}"></option>
+                        <select class="form-select" name="startDate">
+                            <option th:each="year : ${#numbers.sequence(2020, 2023)}" id="startDate" th:text="${year}" th:value="${year}" th:selected="${year} == *{startDate}"></option>
                         </select>
                         <label for="endYear" class="form-label fs-5 fw-bold">끝 년도</label>
-                        <select class="form-select" name="endYear">
-                            <option th:each="year : ${#numbers.sequence(2020, 2023)}" th:text="${year}" th:value="${year}" th:selected="${year} == ${endYear}"></option>
+                        <select class="form-select" name="endDate">
+                            <option th:each="year : ${#numbers.sequence(2020, 2023)}" id="endDate" th:text="${year}" th:value="${year}" th:selected="${year} == *{endDate}"></option>
                         </select>
                         <label for="startAmount" class="form-label fs-5 fw-bold">시작 금액</label>
-                        <input type="text" class="form-control" name="startAmount" th:value="${startAmount}">
+                        <input type="text" class="form-control" id="startAmount" th:field="*{startAmount}">
                     </div>
 
+                    <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
                     <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
                     <div class="mx-2">
                         <div class="p-3 mb-2 bg-secondary text-white fs-5 bg-opacity-75">포트폴리오 구성</div>
                         <div id="inputFields">
-                            <div class="row m-2" th:each="i : ${#numbers.sequence(1, count)}" th:id="'input' + ${i}">
+                            <div class="row m-2" th:each="item, iterStat : *{items}" th:id="'input' + ${iterStat.index + 1}">
                                 <div class="col-3">
-                                    <label th:text="'종목 ' + ${i}">종목</label>
+                                    <label th:text="'종목 ' + ${iterStat.index + 1}">종목</label>
                                 </div>
                                 <div class="col-5" data-toggle="modal" data-target="#stockSearchModal">
-                                    <input type="text" class="form-control" th:id="'stock' + ${i}"  th:value="${#strings.isEmpty(#vars['stock' + i]) ? '' : #vars['stock' + i]}"  th:name="'stock' + ${i}" th:placeholder="'종목 ' + ${i}" readonly>
+                                    <input type="text" class="form-control" th:id="'stock' + ${iterStat.index}" th:field="*{items[__${iterStat.index}__].stock}" th:placeholder="'종목 ' + ${iterStat.index + 1}" readonly>
                                 </div>
                                 <div class="col-4">
-                                    <input type="text" class="form-control" th:value="${#strings.isEmpty(#vars['weight' + i]) ? '' : #vars['weight' + i]}" th:name="'weight' + ${i}" th:placeholder="'비중 ' + ${i}">
+                                    <input type="text" class="form-control" th:id="'weight' + ${iterStat.index}" th:field="*{items[__${iterStat.index}__].weight}" th:placeholder="'비중 '+ ${iterStat.index + 1}">
                                 </div>
                             </div>
                         </div>
@@ -91,12 +94,12 @@
                     <div class="col text-center">
                         <button type="submit" class="btn btn-dark">분석하기</button>
                     </div>
-                    <input type="hidden" name="count" th:value="${count != null} ? ${count} : 1">
+                    <input type="hidden" name="size" th:value="*{size != null} ? *{size} : 1">
                 </form>
             </div>
         </div>
 
-        <div class="my-3" th:if="${backtestResult != null}">
+        <div class="my-3" th:if="${backtestReturnDTO != null}">
             <div class="p-3 mb-2 bg-secondary text-white fs-4">결과</div>
             <div class="p-3 border">
                 <div class="p-3 mb-2 bg-secondary text-white fs-5 bg-opacity-75">결과 요약</div>
@@ -112,11 +115,11 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td th:text="${backtestResult.startAmount}"></td>
-                        <td th:text="${backtestResult.totalRor}"></td>
-                        <td th:text="${backtestResult.maxRor}"></td>
-                        <td th:text="${backtestResult.minRor}"></td>
-                        <td th:text="${backtestResult.endAmount}"></td>
+                        <td th:text="${backtestInputDTO.startAmount}"></td>
+                        <td th:text="${backtestReturnDTO.totalRor}"></td>
+                        <td th:text="${backtestReturnDTO.maxRor}"></td>
+                        <td th:text="${backtestReturnDTO.minRor}"></td>
+                        <td th:text="${backtestReturnDTO.endAmount}"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -125,61 +128,12 @@
                 </div>
 
                 <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
-                <div class="p-3 mb-2 bg-secondary text-white fs-5 bg-opacity-75">년도별 요약</div>
-                <div class="p-3" th:each="yearResult : ${backtestResultByYear}">
-                    <div class="p-2 mb-2 bg-secondary text-white fs-7 bg-opacity-50" th:text="${yearResult.key}"></div>
-                    <div class="p-2 m-1 border">
-                        <h3>종합</h3>
-                        <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>총 수익률</th>
-                                <th>월 최고 수익률</th>
-                                <th>월 최저 수익률</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td th:text="${yearResult.value.totalRor}"></td>
-                                <td th:text="${yearResult.value.maxRor}"></td>
-                                <td th:text="${yearResult.value.minRor}"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="p-2 m-1 border">
-                        <h3>종목별</h3>
-                        <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
-                        <div th:each="stockName : ${stockNames}">
-                            <h5 th:text="${stockName}"></h5>
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>총 수익률</th>
-                                    <th>월 최고 수익률</th>
-                                    <th>월 최저 수익률</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td th:text="${yearResult.value[stockName.toString()].totalRorByStock}"></td>
-                                    <td th:text="${yearResult.value[stockName.toString()].maxRorByStock}"></td>
-                                    <td th:text="${yearResult.value[stockName.toString()].minRorByStock}"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 
     <script>
-        var countInput = document.querySelector('input[name="count"]');
+        var countInput = document.querySelector('input[name="size"]');
         var x = parseInt(countInput.value);
         var stockInput;
 
@@ -187,7 +141,7 @@
           var maxFields = 10;
           var addButton = document.getElementById('addInput');
           var inputFields = document.getElementById('inputFields');
-          var countField = document.querySelector('input[name="count"]');
+          var countField = document.querySelector('input[name="size"]');
 
           $('.col-5[data-toggle="modal"]').on('click', function() {
             var stockDiv = $(this);
@@ -206,10 +160,10 @@
                           종목 ${x}
                       </div>
                       <div class="col-5" data-toggle="modal" data-target="#stockSearchModal">
-                          <input type="text" class="form-control" name="stock${x}" placeholder="종목 ${x}" readonly>
+                          <input type="text" class="form-control" name="items[${x-1}].stock" placeholder="종목 ${x}" readonly>
                       </div>
                       <div class="col-4">
-                          <input type="text" class="form-control" name="weight${x}" placeholder="비중 ${x}">
+                          <input type="text" class="form-control" name="items[${x-1}].weight" placeholder="비중 ${x}">
                       </div>
                   `;
                   inputFields.appendChild(newField);
@@ -224,7 +178,7 @@
         });
 
         function removeInput() {
-          var countInput = document.querySelector('input[name="count"]');
+          var countInput = document.querySelector('input[name="size"]');
           var elemToRemove = document.getElementById('input' + x);
           elemToRemove.parentNode.removeChild(elemToRemove);
           x--;
@@ -242,7 +196,7 @@
             var form = document.getElementById('stockSearchForm');
             var formData = new FormData(form);
 
-            fetch('/searchStock?searchTerm=' + formData.get('searchTerm'), {
+            fetch('/search-stock?searchTerm=' + formData.get('searchTerm'), {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
