@@ -8,6 +8,11 @@
 * 복리, 수익률 계산기
 * 증권 포트폴리오 백테스트 및 회원 저장 기능
 
+## 배포
+* docker-compose(nginx, spring boot, certbot), AWS(EC2)
+* https://backtest-portfolio.site/
+* 테스트 배포중
+
 ## 프로젝트 내용
 KRX에 상장한 증권으로 구성된 포트폴리오를 과거 데이터로 백테스트를 제공하는 서비스
 
@@ -19,41 +24,39 @@ https://github.com/ChaneHaDa/krx-json-data
 ## Entity
 ### StockPrice
 * 주식의 가격정보로 종가가 기준
-* id, itmsNm, srtnCd
+* id, code, name, date, price
 
 ### StockInfo
 * 주식의 정보로 종목코드, 종목명에 해당하는 데이터 저장
-* id, itmsNm, srtnCd
+* id, code, name
 
 ### Portfolio
 * 포트폴리오 저장을 위한 entity
 * id, portfolioName, description, username(SiteUser)
 
-### PortfolioComposition
+### PortfolioItem
 * 포트폴리오의 구성 종목, 비중
-* id, portfolio(ManyToOne), itmsNm, srtnCd, allocation
+* id, portfolio(ManyToOne), code, name, weight
 
 ### Siteuser
 * User를 저장
 * id, username, password, authorities
 
 ## Package
-### api
-공공데이터 포탈의 데이터를 처리하기 위함
 ### config
 Security 설정등의 설정들
 ### controller
-기타 컨트롤러들
-### management
-관리자를 위한 기능
-### portfolio
-portfolio Domain
-### stock
-stockinfo, stockprice domain
-### user
-사용자의 정보를 저장하기 위함
+JPA와 관련이 없는 컨트롤러들
+### dto
+JPA와 관련이 없는 dto
+### exception
+예외처리를 위함
+### service
+JPA와 관련이 없는 서비스들
+### jpa
+portfolio, stock, user등 jpa와 관련된 파일들
 ### utils
-josn 파싱을 위한 것과 각종 계산을 위함 유틸 파일
+각종 계산을 위함 유틸 파일
 
 # 환경
 ## 개발언어 
