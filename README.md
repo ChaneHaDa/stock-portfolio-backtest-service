@@ -12,7 +12,7 @@
 * docker-compose(nginx, spring boot, certbot), AWS(EC2)
 * https://backtest-portfolio.site/
 * 24.05.19. 부터 테스트 배포중
-* ![image](https://github.com/ChaneHaDa/stock-portfolio-backtest-service/assets/140226331/776623ae-77c1-436f-91fd-b36801e1a73d)
+![image](https://github.com/ChaneHaDa/stock-portfolio-backtest-service/assets/140226331/776623ae-77c1-436f-91fd-b36801e1a73d)
 
 
 ## 프로젝트 주요 기능
