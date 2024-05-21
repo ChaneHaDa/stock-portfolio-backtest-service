@@ -8,6 +8,7 @@ import com.hada.backtest.jpa.dto.StockPriceDTO;
 import com.hada.backtest.jpa.service.StockPriceService;
 import com.hada.backtest.utils.RorCalculator;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,6 +73,7 @@ public class BacktestService {
             stockCodeList.add(stockName.substring(indexOfParenthesis1 + 1, indexOfParenthesis2));
             weightList.add(item.getWeight());
         }
+
         List<Double> rorList = getPortfolioRorList(getortfolioStockDTOList(stockCodeList, weightList), startYear, endYear);
         double totalRor = RorCalculator.getTotalRor(rorList);
         double endAmount = backtestInputDTO.getStartAmount() * (1 + totalRor);

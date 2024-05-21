@@ -1,5 +1,7 @@
 package com.hada.backtest.dto;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +12,9 @@ import java.util.List;
 public class BacktestInputDTO {
     private String startDate;
     private String endDate;
+    @Positive
     private double startAmount;
+    @Valid
     List<BacktestItemDTO> items;
     private int size;
 

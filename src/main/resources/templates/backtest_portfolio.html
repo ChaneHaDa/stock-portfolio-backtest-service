@@ -54,6 +54,7 @@
             <div class="p-3 mb-2 bg-secondary text-white fs-4">포트폴리오 백테스트</div>
             <div class="p-3 border">
                 <form th:action="@{/backtest-portfolio}" th:object="${backtestInputDTO}" method="post">
+                    <div th:replace="~{form_errors :: formErrorsFragment}"></div>
                     <div>
                         <label for="startYear" class="form-label fs-5 fw-bold">시작 년도</label>
                         <select class="form-select" name="startDate">
@@ -80,7 +81,7 @@
                                     <input type="text" class="form-control" th:id="'stock' + ${iterStat.index}" th:field="*{items[__${iterStat.index}__].stock}" th:placeholder="'종목 ' + ${iterStat.index + 1}" readonly>
                                 </div>
                                 <div class="col-4">
-                                    <input type="text" class="form-control" th:id="'weight' + ${iterStat.index}" th:field="*{items[__${iterStat.index}__].weight}" th:placeholder="'비중 '+ ${iterStat.index + 1}">
+                                    <input type="number" min='0' max='1' step='0.01' class="form-control" th:id="'weight' + ${iterStat.index}" th:field="*{items[__${iterStat.index}__].weight}" th:placeholder="'비중 '+ ${iterStat.index + 1}">
                                 </div>
                             </div>
                         </div>
@@ -163,7 +164,7 @@
                           <input type="text" class="form-control" name="items[${x-1}].stock" placeholder="종목 ${x}" readonly>
                       </div>
                       <div class="col-4">
-                          <input type="text" class="form-control" name="items[${x-1}].weight" placeholder="비중 ${x}">
+                          <input type="number" min='0' max='1' step='0.01' class="form-control" name="items[${x-1}].weight" placeholder="비중 ${x}">
                       </div>
                   `;
                   inputFields.appendChild(newField);
