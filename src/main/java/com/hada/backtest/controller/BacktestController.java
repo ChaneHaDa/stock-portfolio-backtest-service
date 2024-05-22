@@ -36,7 +36,7 @@ public class BacktestController {
             return "backtest_portfolio";
         }
 
-        int weightSum = 0;
+        double weightSum = 0;
         for (BacktestItemDTO item : backtestInputDTO.getItems()) {
             weightSum += item.getWeight();
         }
