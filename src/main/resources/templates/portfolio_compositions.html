@@ -24,10 +24,11 @@
 
     <!-- 포트폴리오 영역 -->
     <div class="container mt-4">
-        <div th:object="${compostionDTO}">
+        <div>
 <!--            <div class="p-3 mb-2 bg-secondary text-white fs-4" th:text="*{name}"></div>-->
             <div class="p-3 border">
-                <form th:action="@{/portfolio/backtest}" method="post">
+                <form th:action="@{/portfolio/backtest}" method="post" th:object="${portfolioInputDTO}">
+                    <div th:replace="~{form_errors :: formErrorsFragment}"></div>
                     <input type="hidden" th:field="*{id}">
                     <div class="mx-2">
                         <div class="p-3 mb-2 bg-secondary text-white fs-5 bg-opacity-75">포트폴리오 설명</div>

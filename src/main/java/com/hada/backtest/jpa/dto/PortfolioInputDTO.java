@@ -1,8 +1,8 @@
 package com.hada.backtest.jpa.dto;
 
-import lombok.AllArgsConstructor;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -11,8 +11,11 @@ import java.util.List;
 @Setter
 public class PortfolioInputDTO {
     private long id;
+    @NotBlank
     private String name;
+    @NotBlank
     private String description;
+    @Valid
     private List<PortfolioInputItemDTO> items;
     private int size;
 
