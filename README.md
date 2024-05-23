@@ -5,8 +5,8 @@
 증권 포트폴리오 백테스트 제공 서비스
 
 ## 주요사항
-* 24.05.18.을 기준으로 기존 프로젝트를 리팩토링
-* 현재 새로운 기능을 추가중
+* 24.05.18. 리팩토링
+* 20.01. ~ 24.04. 코스피, 코스닥 데이터 사용
 
 ## 배포
 * docker-compose(nginx, spring boot, certbot), AWS(EC2)
@@ -14,8 +14,6 @@
 * 24.05.19. 부터 테스트 배포중
   
 ![image](https://github.com/ChaneHaDa/stock-portfolio-backtest-service/assets/140226331/6a2785de-9aa5-4ca1-970c-ae92f8e3329f)
-
-
 
 ## 프로젝트 주요 기능
 * 코스피, 코스닥에 상장중인 종목으로 구성한 포트폴리오 구성 및 백테스트
@@ -32,8 +30,8 @@
 
 # 환경
 ## 개발언어 
-* Spring Boot(JAVA 17)
-* HTML, BootStrap
+* Java 17, Gradle, Spring Boot, Spring MVC
+* AWS EC2, docker-compose, Nginx, certbot
 
 ## 개발환경
 * IntellJ
