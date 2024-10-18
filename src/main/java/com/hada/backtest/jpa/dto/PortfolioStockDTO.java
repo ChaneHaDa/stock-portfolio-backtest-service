@@ -1,14 +1,13 @@
 package com.hada.backtest.jpa.dto;
 
-import lombok.AllArgsConstructor;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Map;
 
 @Getter
 @Setter
 public class PortfolioStockDTO {
+    
     private String name;
     private String code;
     private Map<String, Long> priceMap;

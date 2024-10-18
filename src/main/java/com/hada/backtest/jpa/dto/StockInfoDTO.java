@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class StockInfoDTO {
+    
     private String name;
     private String code;
 

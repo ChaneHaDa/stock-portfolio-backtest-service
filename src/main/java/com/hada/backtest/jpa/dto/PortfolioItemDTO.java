@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class PortfolioItemDTO {
+    
     private String code;
     private String name;
     private double weight;

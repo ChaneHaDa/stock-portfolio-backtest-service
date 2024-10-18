@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BacktestItemDTO {
+    
     private String stock;
     private double weight;
 

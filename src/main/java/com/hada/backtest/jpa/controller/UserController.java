@@ -1,7 +1,7 @@
 package com.hada.backtest.jpa.controller;
 
-import com.hada.backtest.jpa.service.SiteUserService;
 import com.hada.backtest.jpa.dto.UserCreateForm;
+import com.hada.backtest.jpa.service.SiteUserService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -15,7 +15,7 @@ public class UserController {
 
     private final SiteUserService siteUserService;
 
-    public UserController(SiteUserService siteUserService){
+    public UserController(SiteUserService siteUserService) {
         this.siteUserService = siteUserService;
     }
 
@@ -36,7 +36,7 @@ public class UserController {
             return "signup_form";
         }
 
-        if (siteUserService.findByUsername(userCreateForm.getUsername())){
+        if (siteUserService.findByUsername(userCreateForm.getUsername())) {
             bindingResult.rejectValue("username", "usernameDuplicated",
                     "이미 사용중인 사용자ID입니다.");
             return "signup_form";

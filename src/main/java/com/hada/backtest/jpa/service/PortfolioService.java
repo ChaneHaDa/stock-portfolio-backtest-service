@@ -1,22 +1,25 @@
 package com.hada.backtest.jpa.service;
 
-import com.hada.backtest.jpa.dto.*;
+import com.hada.backtest.jpa.dto.PortfolioInputDTO;
+import com.hada.backtest.jpa.dto.PortfolioInputItemDTO;
+import com.hada.backtest.jpa.dto.PortfolioItemDTO;
 import com.hada.backtest.jpa.entity.Portfolio;
 import com.hada.backtest.jpa.entity.PortfolioItem;
+import com.hada.backtest.jpa.entity.SiteUser;
 import com.hada.backtest.jpa.repository.PortfolioItemRepository;
 import com.hada.backtest.jpa.repository.PortfolioRepository;
-import com.hada.backtest.jpa.entity.SiteUser;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PortfolioService {
+    
     private final PortfolioRepository portfolioRepository;
     private final PortfolioItemRepository portfolioItemRepository;
     private final SiteUserService siteUserService;
 
-    public PortfolioService(PortfolioRepository portfolioRepository, PortfolioItemRepository portfolioItemRepository, SiteUserService siteUserService) {
+    public PortfolioService(PortfolioRepository portfolioRepository, PortfolioItemRepository portfolioItemRepository,
+                            SiteUserService siteUserService) {
         this.portfolioRepository = portfolioRepository;
         this.portfolioItemRepository = portfolioItemRepository;
         this.siteUserService = siteUserService;
@@ -42,7 +45,8 @@ public class PortfolioService {
         List<PortfolioInputItemDTO> portfolioItemDTOList = portfolioItems.stream()
                 .map(PortfolioInputItemDTO::fromEntity)
                 .toList();
-        return new PortfolioInputDTO(portfolio.getId(), portfolio.getName(), portfolio.getDescription(), portfolioItemDTOList, portfolioItemDTOList.size());
+        return new PortfolioInputDTO(portfolio.getId(), portfolio.getName(), portfolio.getDescription(),
+                portfolioItemDTOList, portfolioItemDTOList.size());
     }
 
 
@@ -60,7 +64,7 @@ public class PortfolioService {
         portfolio.setName(portfolioInputDTO.getName());
         portfolio.setDescription(portfolioInputDTO.getDescription());
 
-        for(int i = portfolioInputDTO.getSize(); i < portfolioItems.size(); i++) {
+        for (int i = portfolioInputDTO.getSize(); i < portfolioItems.size(); i++) {
             PortfolioItem portfolioItem = portfolioItems.get(i);
             portfolioItemRepository.delete(portfolioItem);
             portfolioItems.remove(i);

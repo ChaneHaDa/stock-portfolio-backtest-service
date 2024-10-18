@@ -1,15 +1,13 @@
 package com.hada.backtest.jpa.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
 public class PortfolioInputDTO {
+
     private long id;
     private String name;
     private String description;

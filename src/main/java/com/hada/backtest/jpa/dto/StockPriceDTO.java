@@ -1,10 +1,9 @@
 package com.hada.backtest.jpa.dto;
 
 import com.hada.backtest.jpa.entity.StockPrice;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -25,6 +24,7 @@ public class StockPriceDTO {
     }
 
     public static StockPriceDTO fromEntity(StockPrice stockPrice) {
-        return new StockPriceDTO(stockPrice.getCode(), stockPrice.getPrice(), stockPrice.getDate(), stockPrice.getName());
+        return new StockPriceDTO(stockPrice.getCode(), stockPrice.getPrice(), stockPrice.getDate(),
+                stockPrice.getName());
     }
 }
