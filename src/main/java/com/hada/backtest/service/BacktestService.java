@@ -65,7 +65,7 @@ public class BacktestService {
         List<String> stockCodeList = new ArrayList<>();
         List<Double> weightList = new ArrayList<>();
 
-        for (BacktestItemDTO item : backtestInputDTO.getItems()) {
+        for (BacktestItemDTO item : backtestInputDTO.getBacktestItemDTOS()) {
             String stockName = item.getStock();
             int indexOfParenthesis1 = stockName.lastIndexOf('(');
             int indexOfParenthesis2 = stockName.lastIndexOf(')');

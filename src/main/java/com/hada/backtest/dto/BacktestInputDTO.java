@@ -7,22 +7,23 @@ import lombok.Setter;
 @Setter
 @Getter
 public class BacktestInputDTO {
-    
+
     private String startDate;
     private String endDate;
     private double startAmount;
-    List<BacktestItemDTO> items;
-    private int size;
+    List<BacktestItemDTO> backtestItemDTOS;
+    private int backtestItemDTOSize;
 
     public BacktestInputDTO() {
     }
 
-    public BacktestInputDTO(String startDate, String endDate, double startAmount, List<BacktestItemDTO> items,
-                            int size) {
+    public BacktestInputDTO(String startDate, String endDate, double startAmount,
+                            List<BacktestItemDTO> backtestItemDTOS,
+                            int backtestItemDTOSize) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.startAmount = startAmount;
-        this.items = items;
-        this.size = size;
+        this.backtestItemDTOS = backtestItemDTOS;
+        this.backtestItemDTOSize = backtestItemDTOSize;
     }
 }
