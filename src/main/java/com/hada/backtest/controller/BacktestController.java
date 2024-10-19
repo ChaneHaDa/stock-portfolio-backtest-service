@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/backtest-portfolio")
 public class BacktestController {
-    
+
     private final BacktestService backtestService;
 
     public BacktestController(BacktestService backtestService) {
@@ -24,9 +24,9 @@ public class BacktestController {
 
     @GetMapping("")
     public String getBacktest(Model model) {
-        List<BacktestItemDTO> items = new ArrayList<>();
-        items.add(new BacktestItemDTO("삼성전자 (005930)", 0.5));
-        model.addAttribute("backtestInputDTO", new BacktestInputDTO("2020", "2023", 100000, items, 1));
+        List<BacktestItemDTO> backtestItemDTOS = new ArrayList<>();
+        backtestItemDTOS.add(new BacktestItemDTO("삼성전자 (005930)", 0.5));
+        model.addAttribute("backtestInputDTO", new BacktestInputDTO("2020", "2023", 100000, backtestItemDTOS, 1));
         return "backtest_portfolio";
     }
 
