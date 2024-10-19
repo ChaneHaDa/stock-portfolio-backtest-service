@@ -44,7 +44,7 @@
                         <div th:if="${backtestInputDTO != null}" th:object="${backtestInputDTO}">
                             <div th:each="item, iterStat : *{backtestItemDTOS}" th:id="'input' + ${iterStat.index + 1}">
                                 <input type="hidden" class="form-control"
-                                       th:field="*{backtestItemDTOS[__${iterStat.index}__].stock}">
+                                       th:field="*{backtestItemDTOS[__${iterStat.index}__].stockName}">
                                 <input type="hidden" class="form-control"
                                        th:field="*{backtestItemDTOS[__${iterStat.index}__].weight}">
                             </div>
@@ -88,7 +88,7 @@
                                 </div>
                                 <div class="col-5" data-toggle="modal" data-target="#stockSearchModal">
                                     <input type="text" class="form-control" th:id="'stock' + ${iterStat.index}"
-                                           th:field="*{backtestItemDTOS[__${iterStat.index}__].stock}"
+                                           th:field="*{backtestItemDTOS[__${iterStat.index}__].stockName}"
                                            th:placeholder="'종목 ' + ${iterStat.index + 1}" readonly>
                                 </div>
                                 <div class="col-4">
@@ -177,7 +177,7 @@
                           종목 ${x}
                       </div>
                       <div class="col-5" data-toggle="modal" data-target="#stockSearchModal">
-                          <input type="text" class="form-control" name="backtestItemDTOS[${x-1}].stock" placeholder="종목 ${x}" readonly>
+                          <input type="text" class="form-control" name="backtestItemDTOS[${x-1}].stockName" placeholder="종목 ${x}" readonly>
                       </div>
                       <div class="col-4">
                           <input type="text" class="form-control" name="backtestItemDTOS[${x-1}].weight" placeholder="비중 ${x}">
