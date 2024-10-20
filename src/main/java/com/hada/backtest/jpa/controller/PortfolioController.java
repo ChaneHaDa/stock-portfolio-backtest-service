@@ -56,9 +56,10 @@ public class PortfolioController {
 
     @PostMapping("/backtest")
     public String getBacktest(@ModelAttribute PortfolioInputDTO portfolioInputDTO, Model model) {
-        List<BacktestItemDTO> items = portfolioInputDTO.getItems().stream()
+        List<BacktestItemDTO> backtestItemDTOS = portfolioInputDTO.getPortfolioInputItemDTOS().stream()
                 .map(BacktestItemDTO::fromPortfolioInoutItemDTO).toList();
-        BacktestInputDTO backtestInputDTO = new BacktestInputDTO("2020", "2023", 100000, items, items.size());
+        BacktestInputDTO backtestInputDTO = new BacktestInputDTO("2020", "2023", 100000, backtestItemDTOS,
+                backtestItemDTOS.size());
         model.addAttribute("backtestInputDTO", backtestInputDTO);
         return "backtest_portfolio";
     }

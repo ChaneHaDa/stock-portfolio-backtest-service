@@ -7,9 +7,9 @@ import lombok.Setter;
 @Setter
 @Getter
 public class PortfolioItemDTO {
-    
+
     private String code;
-    private String name;
+    private String stockName;
     private double weight;
 
     public PortfolioItemDTO() {
@@ -17,16 +17,16 @@ public class PortfolioItemDTO {
 
     public PortfolioItemDTO(String code, String name, double weight) {
         this.code = code;
-        this.name = name;
+        this.stockName = name;
         this.weight = weight;
     }
 
     public static PortfolioItem fromDTO(PortfolioItemDTO dto) {
-        return new PortfolioItem(dto.getCode(), dto.getName(), dto.getWeight(), null);
+        return new PortfolioItem(dto.getCode(), dto.getStockName(), dto.getWeight(), null);
     }
 
     public static PortfolioItemDTO fromPortfolioInputItemDTO(PortfolioInputItemDTO dto) {
-        String stockName = dto.getStock();
+        String stockName = dto.getStockName();
         int indexOfParenthesis1 = stockName.lastIndexOf('(');
         int indexOfParenthesis2 = stockName.lastIndexOf(')');
         String code = stockName.substring(indexOfParenthesis1 + 1, indexOfParenthesis2);

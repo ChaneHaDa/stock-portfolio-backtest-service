@@ -20,6 +20,6 @@ public class BacktestItemDTO {
     }
 
     public static BacktestItemDTO fromPortfolioInoutItemDTO(PortfolioInputItemDTO dto) {
-        return new BacktestItemDTO(dto.getStock(), dto.getWeight());
+        return new BacktestItemDTO(dto.getStockName(), dto.getWeight());
     }
 }

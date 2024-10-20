@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PortfolioService {
-    
+
     private final PortfolioRepository portfolioRepository;
     private final PortfolioItemRepository portfolioItemRepository;
     private final SiteUserService siteUserService;
@@ -26,7 +26,7 @@ public class PortfolioService {
     }
 
     public void savePortfolio(PortfolioInputDTO portfolioInputDTO, String username) {
-        List<PortfolioItemDTO> portfolioItemDTOList = portfolioInputDTO.getItems().stream()
+        List<PortfolioItemDTO> portfolioItemDTOList = portfolioInputDTO.getPortfolioInputItemDTOS().stream()
                 .map(PortfolioItemDTO::fromPortfolioInputItemDTO)
                 .toList();
         List<PortfolioItem> portfolioItemList = portfolioItemDTOList.stream()
@@ -64,15 +64,15 @@ public class PortfolioService {
         portfolio.setName(portfolioInputDTO.getName());
         portfolio.setDescription(portfolioInputDTO.getDescription());
 
-        for (int i = portfolioInputDTO.getSize(); i < portfolioItems.size(); i++) {
+        for (int i = portfolioInputDTO.getPortfolioInputItemDTOSize(); i < portfolioItems.size(); i++) {
             PortfolioItem portfolioItem = portfolioItems.get(i);
             portfolioItemRepository.delete(portfolioItem);
             portfolioItems.remove(i);
         }
 
-        for (int i = 0; i < portfolioInputDTO.getItems().size(); i++) {
-            PortfolioInputItemDTO compostionItemDTO = portfolioInputDTO.getItems().get(i);
-            String stockName = compostionItemDTO.getStock();
+        for (int i = 0; i < portfolioInputDTO.getPortfolioInputItemDTOS().size(); i++) {
+            PortfolioInputItemDTO compostionItemDTO = portfolioInputDTO.getPortfolioInputItemDTOS().get(i);
+            String stockName = compostionItemDTO.getStockName();
             int indexOfParenthesis1 = stockName.lastIndexOf('(');
             int indexOfParenthesis2 = stockName.lastIndexOf(')');
             String code = stockName.substring(indexOfParenthesis1 + 1, indexOfParenthesis2);

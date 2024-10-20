@@ -9,18 +9,18 @@ import lombok.Setter;
 public class PortfolioInputItemDTO {
 
     private long id;
-    private String stock;
+    private String stockName;
     private double weight;
 
     public PortfolioInputItemDTO() {
         id = 0;
-        stock = "";
+        stockName = "";
         weight = 0;
     }
 
-    public PortfolioInputItemDTO(long id, String stock, double weight) {
+    public PortfolioInputItemDTO(long id, String stockName, double weight) {
         this.id = id;
-        this.stock = stock;
+        this.stockName = stockName;
         this.weight = weight;
     }
 

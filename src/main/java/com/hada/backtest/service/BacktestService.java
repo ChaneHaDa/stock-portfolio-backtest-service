@@ -28,10 +28,11 @@ public class BacktestService {
             List<StockPriceDTO> stockPrices = stockPriceService.getStockPriceListByCode(s);
             Map<String, Long> price = new HashMap<>();
             for (StockPriceDTO stockPriceDTO : stockPrices) {
-                price.put(stockPriceDTO.getDate().toString(), stockPriceDTO.getPrice());
+                price.put(stockPriceDTO.getDate().toString(), stockPriceDTO.getStockPrice());
             }
             portfolioStockDTOList.add(
-                    new PortfolioStockDTO(stockPrices.get(0).getName(), s, price, weightList.get(code.indexOf(s))));
+                    new PortfolioStockDTO(stockPrices.get(0).getStockName(), s, price,
+                            weightList.get(code.indexOf(s))));
         }
         return portfolioStockDTOList;
     }
