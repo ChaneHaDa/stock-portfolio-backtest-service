@@ -1,14 +1,16 @@
 package com.hada.backtest.jpa.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import java.util.ArrayList;
+import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 @Entity
 @Getter
@@ -59,4 +61,5 @@ public class SiteUser implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

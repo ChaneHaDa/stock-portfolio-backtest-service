@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CalculatorRorReturnDTO {
+    
     private double ror;
     private long profit;
 

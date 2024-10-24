@@ -1,13 +1,13 @@
 package com.hada.backtest.dto;
 
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
 public class CalculatorWelfareReturnDTO {
+
     private double totalProfit;
     private double finalAmount;
     private List<Double> revenueList;
@@ -19,7 +19,8 @@ public class CalculatorWelfareReturnDTO {
         finalAmount = 0.0;
     }
 
-    public CalculatorWelfareReturnDTO(double totalProfit, double finalAmount, List<Double> revenueList, List<Double> amountList, List<Double> rorList) {
+    public CalculatorWelfareReturnDTO(double totalProfit, double finalAmount, List<Double> revenueList,
+                                      List<Double> amountList, List<Double> rorList) {
         this.totalProfit = totalProfit;
         this.finalAmount = finalAmount;
         this.revenueList = revenueList;

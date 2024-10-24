@@ -6,14 +6,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class StockInfoDTO {
-    private String name;
-    private String code;
+
+    private String stockName;
+    private String stockCode;
 
     public StockInfoDTO() {
     }
 
-    public StockInfoDTO(String name, String code) {
-        this.name = name;
-        this.code = code;
+    public StockInfoDTO(String stockName, String stockCode) {
+        this.stockName = stockName;
+        this.stockCode = stockCode;
     }
 }
