@@ -7,15 +7,15 @@ import com.hada.backtest.jpa.dto.PortfolioStockDTO;
 import com.hada.backtest.jpa.dto.StockPriceDTO;
 import com.hada.backtest.jpa.service.StockPriceService;
 import com.hada.backtest.utils.RorCalculator;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.stereotype.Service;
 
 @Service
 public class BacktestService {
+
     private final StockPriceService stockPriceService;
 
     public BacktestService(StockPriceService stockPriceService) {
@@ -24,13 +24,15 @@ public class BacktestService {
 
     public List<PortfolioStockDTO> getortfolioStockDTOList(List<String> code, List<Double> weightList) {
         List<PortfolioStockDTO> portfolioStockDTOList = new ArrayList<>();
-        for(String s : code) {
+        for (String s : code) {
             List<StockPriceDTO> stockPrices = stockPriceService.getStockPriceListByCode(s);
             Map<String, Long> price = new HashMap<>();
-            for(StockPriceDTO stockPriceDTO : stockPrices) {
-                price.put(stockPriceDTO.getDate().toString(), stockPriceDTO.getPrice());
+            for (StockPriceDTO stockPriceDTO : stockPrices) {
+                price.put(stockPriceDTO.getDate().toString(), stockPriceDTO.getStockPrice());
             }
-            portfolioStockDTOList.add(new PortfolioStockDTO(stockPrices.get(0).getName(), s, price, weightList.get(code.indexOf(s))));
+            portfolioStockDTOList.add(
+                    new PortfolioStockDTO(stockPrices.get(0).getStockName(), s, price,
+                            weightList.get(code.indexOf(s))));
         }
         return portfolioStockDTOList;
     }
@@ -44,9 +46,9 @@ public class BacktestService {
             weightList.add(portfolioStockDTO.getWeight());
             for (int i = startYear; i <= endYear + 1; i++) {
                 String key = String.valueOf(i) + "-01-01";
-                if(portfolioStockDTO.getPriceMap().containsKey(key)) {
+                if (portfolioStockDTO.getPriceMap().containsKey(key)) {
                     priceList.add(portfolioStockDTO.getPriceMap().get(key));
-                }else {
+                } else {
                     priceList.add(0L);
                 }
             }
@@ -64,15 +66,16 @@ public class BacktestService {
         List<String> stockCodeList = new ArrayList<>();
         List<Double> weightList = new ArrayList<>();
 
-        for(BacktestItemDTO item : backtestInputDTO.getItems()) {
-            String stockName = item.getStock();
+        for (BacktestItemDTO item : backtestInputDTO.getBacktestItemDTOS()) {
+            String stockName = item.getStockName();
             int indexOfParenthesis1 = stockName.lastIndexOf('(');
             int indexOfParenthesis2 = stockName.lastIndexOf(')');
             stockNameList.add(stockName);
             stockCodeList.add(stockName.substring(indexOfParenthesis1 + 1, indexOfParenthesis2));
             weightList.add(item.getWeight());
         }
-        List<Double> rorList = getPortfolioRorList(getortfolioStockDTOList(stockCodeList, weightList), startYear, endYear);
+        List<Double> rorList = getPortfolioRorList(getortfolioStockDTOList(stockCodeList, weightList), startYear,
+                endYear);
         double totalRor = RorCalculator.getTotalRor(rorList);
         double endAmount = backtestInputDTO.getStartAmount() * (1 + totalRor);
         double maxRor = rorList.stream().max(Double::compareTo).orElse(0.0);

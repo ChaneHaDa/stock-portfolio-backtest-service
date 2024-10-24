@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CalculatorWelfareInputDTO {
+    
     private double price;
     private long term;
     private double ror;

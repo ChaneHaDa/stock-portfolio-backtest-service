@@ -14,7 +14,7 @@ public class CalculatorRorInputDTO {
     private double sellPrice;
     @PositiveOrZero
     private long quantity;
-
+    
     public CalculatorRorInputDTO() {
         buyPrice = 0.0;
         sellPrice = 0.0;

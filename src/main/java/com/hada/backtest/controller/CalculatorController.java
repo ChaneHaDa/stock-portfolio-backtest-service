@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/calculator")
 public class CalculatorController {
-
+    
     private final CalculatorService calculatorService;
 
     public CalculatorController(CalculatorService calculatorService) {
@@ -27,8 +27,9 @@ public class CalculatorController {
     }
 
     @GetMapping("/ror")
-    public String getRor(Model model, @Valid @ModelAttribute CalculatorRorInputDTO calculatorRorInputDTO, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
+    public String getRor(Model model, @Valid @ModelAttribute CalculatorRorInputDTO calculatorRorInputDTO,
+                         BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "calculator";
         }
         model.addAttribute("CalculatorRorInputDTO", calculatorRorInputDTO);
@@ -37,8 +38,9 @@ public class CalculatorController {
     }
 
     @GetMapping("/welfare")
-    public String getWelfare(Model model, @ModelAttribute CalculatorWelfareInputDTO calculatorWelfareInputDTO, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
+    public String getWelfare(Model model, @ModelAttribute CalculatorWelfareInputDTO calculatorWelfareInputDTO,
+                             BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "calculator";
         }
         model.addAttribute("calculatorWelfareInputDTO", calculatorWelfareInputDTO);

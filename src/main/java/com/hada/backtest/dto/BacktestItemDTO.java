@@ -7,18 +7,19 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BacktestItemDTO {
-    private String stock;
+
+    private String stockName;
     private double weight;
 
     public BacktestItemDTO() {
     }
 
-    public BacktestItemDTO(String stock, double weight) {
-        this.stock = stock;
+    public BacktestItemDTO(String stockName, double weight) {
+        this.stockName = stockName;
         this.weight = weight;
     }
 
     public static BacktestItemDTO fromPortfolioInoutItemDTO(PortfolioInputItemDTO dto) {
-        return new BacktestItemDTO(dto.getStock(), dto.getWeight());
+        return new BacktestItemDTO(dto.getStockName(), dto.getWeight());
     }
 }

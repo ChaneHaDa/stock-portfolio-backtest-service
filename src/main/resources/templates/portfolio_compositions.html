@@ -1,17 +1,21 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
     <!-- 주식 검색 모달창 -->
-    <div class="modal fade" id="stockSearchModal" tabindex="-1" role="dialog" aria-labelledby="stockSearchModalLabel" aria-hidden="true">
+    <div class="modal fade" id="stockSearchModal" tabindex="-1" role="dialog" aria-labelledby="stockSearchModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
                     <!-- 주식 검색 폼 -->
                     <form id="stockSearchForm">
                         <div class="row my-1">
-                            <input type="text" class="form-control" id="stockSearchInput" name="searchTerm" placeholder="종목명 혹은 종목코드" onkeydown="handleEnterKey(event)" />
+                            <input type="text" class="form-control" id="stockSearchInput" name="searchTerm"
+                                   placeholder="종목명 혹은 종목코드" onkeydown="handleEnterKey(event)"/>
                         </div>
                         <div class="row my-1">
-                            <button type="button" id="searchButton" class="btn btn-secondary" onclick="searchStock()">검색</button>
+                            <button type="button" id="searchButton" class="btn btn-secondary" onclick="searchStock()">
+                                검색
+                            </button>
                         </div>
                     </form>
                     <!-- 검색 결과 표시 영역 -->
@@ -25,7 +29,7 @@
     <!-- 포트폴리오 영역 -->
     <div class="container mt-4">
         <div th:object="${compostionDTO}">
-<!--            <div class="p-3 mb-2 bg-secondary text-white fs-4" th:text="*{name}"></div>-->
+            <!--            <div class="p-3 mb-2 bg-secondary text-white fs-4" th:text="*{name}"></div>-->
             <div class="p-3 border">
                 <form th:action="@{/portfolio/backtest}" method="post">
                     <input type="hidden" th:field="*{id}">
@@ -51,15 +55,20 @@
                         </div>
                         <div class="p-3 mb-2 bg-secondary text-white fs-5 bg-opacity-75">포트폴리오 구성</div>
                         <div id="inputFields">
-                            <div class="row m-2" th:each="item, iterStat : *{items}" th:id="'input' + ${iterStat.index + 1}">
+                            <div class="row m-2" th:each="item, iterStat : *{items}"
+                                 th:id="'input' + ${iterStat.index + 1}">
                                 <div class="col-3">
                                     <label th:text="'종목 ' + ${iterStat.index + 1}">종목</label>
                                 </div>
                                 <div class="col-5" data-toggle="modal" data-target="#stockSearchModal">
-                                    <input type="text" class="form-control" th:id="'stock' + ${iterStat.index}" th:field="*{items[__${iterStat.index}__].stock}" th:placeholder="'종목 ' + ${iterStat.index + 1}" readonly>
+                                    <input type="text" class="form-control" th:id="'stock' + ${iterStat.index}"
+                                           th:field="*{items[__${iterStat.index}__].stockName}"
+                                           th:placeholder="'종목 ' + ${iterStat.index + 1}" readonly>
                                 </div>
                                 <div class="col-4">
-                                    <input type="text" class="form-control" th:id="'weight' + ${iterStat.index}" th:field="*{items[__${iterStat.index}__].weight}" th:placeholder="'비중 '+ ${iterStat.index + 1}">
+                                    <input type="text" class="form-control" th:id="'weight' + ${iterStat.index}"
+                                           th:field="*{items[__${iterStat.index}__].weight}"
+                                           th:placeholder="'비중 '+ ${iterStat.index + 1}">
                                 </div>
                             </div>
                         </div>
@@ -70,8 +79,10 @@
                     </div>
                     <hr role="separator" aria-orientation="horizontal" class="v-divider theme--light">
                     <div class="col text-center">
-                        <input type="submit" value="수정하기" class="btn btn-dark" onclick="javascript: form.action='/portfolio/update';"/>
-                        <input type="submit" value="백테스트" class="btn btn-dark" onclick="javascript: form.action='/portfolio/backtest';"/>
+                        <input type="submit" value="수정하기" class="btn btn-dark"
+                               onclick="javascript: form.action='/portfolio/update';"/>
+                        <input type="submit" value="백테스트" class="btn btn-dark"
+                               onclick="javascript: form.action='/portfolio/backtest';"/>
                     </div>
                     <input type="hidden" th:field="*{size}">
                 </form>
@@ -107,7 +118,7 @@
                           종목 ${x}
                       </div>
                       <div class="col-5" data-toggle="modal" data-target="#stockSearchModal">
-                          <input type="text" class="form-control" name="items[${x-1}].stock" placeholder="종목 ${x}" readonly>
+                          <input type="text" class="form-control" name="items[${x-1}].stockName" placeholder="종목 ${x}" readonly>
                       </div>
                       <div class="col-4">
                           <input type="text" class="form-control" name="items[${x-1}].weight" placeholder="비중 ${x}">
