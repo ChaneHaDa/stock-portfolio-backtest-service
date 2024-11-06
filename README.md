@@ -11,7 +11,7 @@
 ## 배포
 * docker-compose(nginx, spring boot, certbot), AWS(EC2)
 * https://backtest-portfolio.site/
-* 24.05.19. 부터 테스트 배포중
+* 24.05.19. 부터 배포중
   
 ![image](https://github.com/ChaneHaDa/stock-portfolio-backtest-service/assets/140226331/6a2785de-9aa5-4ca1-970c-ae92f8e3329f)
 
