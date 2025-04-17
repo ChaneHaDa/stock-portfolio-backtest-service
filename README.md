@@ -36,6 +36,21 @@
     *   Spring Boot Validation
     *   Bootstrap (CSS)
 
+## JPA 엔티티
+
+*   **SiteUser:** 사용자 정보를 저장하는 엔티티 (ID, 비밀번호, 이메일 등)
+*   **Portfolio:** 사용자가 생성한 포트폴리오 정보를 저장하는 엔티티 (이름, 설명, 사용자 연결)
+*   **PortfolioItem:** 포트폴리오에 포함된 개별 주식 종목 및 비중 정보를 저장하는 엔티티 (포트폴리오 및 주식 정보 연결)
+*   **StockInfo:** 주식 종목의 기본 정보(코드, 이름 등)를 저장하는 엔티티
+*   **StockPrice:** 주식 종목의 일별 가격 정보(날짜, 시가, 고가, 저가, 종가 등)를 저장하는 엔티티
+<img width="1200" alt="Untitled" src="https://github.com/ChaneHaDa/stock-portfolio-backtest-service/assets/140226331/7b371215-9122-4b9e-8201-35a164381b08">
+
+## 배포
+* docker-compose(nginx, spring boot, certbot), AWS(EC2)
+* 24.05.19. ~ 25.04.01 배포, 새로운 구조로 리팩토링
+  
+![image](https://github.com/ChaneHaDa/stock-portfolio-backtest-service/assets/140226331/6a2785de-9aa5-4ca1-970c-ae92f8e3329f)
+
 ## 설정 및 실행 방법
 
 1.  **저장소 복제:**
@@ -100,18 +115,3 @@
     └── test/                     # 테스트 코드
         └── java/com/hada/backtest/ # 테스트 소스 코드 루트
 ```
-
-## JPA 엔티티
-
-*   **SiteUser:** 사용자 정보를 저장하는 엔티티 (ID, 비밀번호, 이메일 등)
-*   **Portfolio:** 사용자가 생성한 포트폴리오 정보를 저장하는 엔티티 (이름, 설명, 사용자 연결)
-*   **PortfolioItem:** 포트폴리오에 포함된 개별 주식 종목 및 비중 정보를 저장하는 엔티티 (포트폴리오 및 주식 정보 연결)
-*   **StockInfo:** 주식 종목의 기본 정보(코드, 이름 등)를 저장하는 엔티티
-*   **StockPrice:** 주식 종목의 일별 가격 정보(날짜, 시가, 고가, 저가, 종가 등)를 저장하는 엔티티
-<img width="1200" alt="Untitled" src="https://github.com/ChaneHaDa/stock-portfolio-backtest-service/assets/140226331/7b371215-9122-4b9e-8201-35a164381b08">
-
-## 배포
-* docker-compose(nginx, spring boot, certbot), AWS(EC2)
-* 24.05.19. ~ 25.04.01 배포, 새로운 구조로 리팩토링
-  
-![image](https://github.com/ChaneHaDa/stock-portfolio-backtest-service/assets/140226331/6a2785de-9aa5-4ca1-970c-ae92f8e3329f)
